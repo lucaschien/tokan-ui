@@ -153,8 +153,10 @@ const testForClickOutsideFn = (isOutSide) => {
   testForClickOutside.value = isOutSide
 }
 
-const testAjax = () => {
+const testAjax = async () => {
   console.log(ajax);
+  const result = await ajax.get('https://jsonplaceholder.typicode.com/posts');
+  console.log('result::', result);
 }
 
 </script>

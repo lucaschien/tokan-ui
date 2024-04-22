@@ -2,9 +2,9 @@ import axios from 'axios'
 import router from '@/router/index';
 
 const CancelToken = axios.CancelToken;
-export const cancelAxios = [];
+export let cancelAxios = [];
 
-function AjaxDefine () {
+function AjaxDefine() {
   const ajax = {
     setAuthorization() {
       // const token = cookies.get('justkaB');
