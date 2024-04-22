@@ -1,5 +1,5 @@
 <template>
-  <div class="HomeView">
+  <div class="Home">
     <p class="mt-4">button</p>
     <button type="button" class="btn btn-primary">Primary</button>
     <button type="button" class="btn btn-secondary">Secondary</button>

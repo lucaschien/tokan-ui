@@ -16,16 +16,21 @@ const router = createRouter({
       component: () => import('../containers/Full.vue'),
       children: [
         {
-          path: 'home',
-          name: 'HomeView',
-          component: () => import('../views/HomeView.vue')
+          path: 'Home',
+          name: 'Home',
+          component: () => import('../views/Home.vue')
         },
         {
-          path: 'about',
-          name: 'AboutView',
-          component: () => import('../views/AboutView.vue')
+          path: 'About',
+          name: 'About',
+          component: () => import('../views/About.vue')
         }
       ]
+    },
+    {
+      path: '/GUI',
+      name: 'GUI',
+      component: () => import('../views/GUI.vue'),
     }
   ]
 })

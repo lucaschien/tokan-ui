@@ -1,0 +1,21 @@
+.Login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: $grey1;
+  > div {
+    box-shadow: 0 5px 10px rgba($main-grey, 0.8);
+    background-color: #fff;
+    border-radius: 10px;
+    border: 2px solid $main-blue;
+    padding: 30px;
+    width: 80%;
+    input, button, label {
+      width: 100%;
+    }
+    label {
+      margin-top: 20px;
+    }
+  }
+}

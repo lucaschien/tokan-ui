@@ -1,0 +1,70 @@
+// alert.js
+.pop-dialog {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  z-index: 9999;
+  transition: all .2s ease-in-out;
+  &.show {
+    visibility: visible;
+    background: rgba(0,0,0,0.4);
+    .dialog {
+      transform: scale(1);
+    }
+  }
+  &.timer {
+    .dialog {
+      height: 100px;
+      section {
+        height: 100%;
+      }
+    }
+  }
+  &.warnConfirm {
+  }
+  .dialog {
+    background-color: #fff;
+    min-width: 400px;
+    transform: scale(0.1);
+    transition: transform .2s ease-in-out;
+    border-radius: 6px;
+    section, footer {
+      text-align: center;
+      padding: 20px;
+    }
+    footer {
+      //background-color: $grey11;
+      border-radius: 0 0 6px 6px;
+      button {
+        width: 30%;
+        margin: 0 10px;
+      }
+    }
+    section {
+      padding-top: 30px;
+      font-size: 2rem;
+      height: calc(100% - 71px);
+      overflow: auto;
+      border-radius: 6px;
+      width: 100%;
+      word-break: break-all;
+    }
+  }
+}
+.dialog-enter-active,
+.dialog-leave-active {
+  transition: transform 0.2s;
+}
+.dialog-enter-from,
+.dialog-leave-to {
+  .dialog {
+    transform: scale(0.1);
+    transition-duration: 0.2s;
+  }
+}

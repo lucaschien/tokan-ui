@@ -1,4 +1,6 @@
 #app {
+  font-size: 3rem;
+  color: $gray2;
 }
 
 .wrapper {
@@ -28,6 +30,7 @@ header {
   width: 40px;
   margin-right: 20px;
 }
+
 nav {
   display: inline-block;
   width: calc(100% - 120px);
@@ -40,3 +43,29 @@ nav {
     }
   }
 }
+
+a {
+  color: $main-blue;
+  text-decoration: underline;
+}
+
+// 全域改變 bootstrap 的 css 樣式
+$baseFontSize: 2rem;
+.btn {
+  font-size: $baseFontSize;
+}
+.table {
+  font-size: $baseFontSize;
+}
+.form-control {
+  font-size: $baseFontSize;
+}
+.form-select {
+  font-size: $baseFontSize;
+}
+.form-check-label {
+  user-select: none;
+}
+
+
+
