@@ -1,48 +1,7 @@
 #app {
-  font-size: 3rem;
+  //font-size: 1.3rem;
   color: $gray2;
-}
-
-.wrapper {
-  border: 1px solid red;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 60px 2rem 0 2rem;
-  font-weight: normal;
-  min-height: 100vh;
-}
-
-header {
-  background-color: #fff;
-  border-bottom: 2px solid $green;
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 2;
-}
-
-.logo {
-  display: inline-block;
-  border: 1px solid $red;
-  width: 40px;
-  margin-right: 20px;
-}
-
-nav {
-  display: inline-block;
-  width: calc(100% - 120px);
-
-  a {
-    padding: 10px;
-    color: $main-grey;
-    &.active {
-      color: $main-blue;
-    }
-  }
+  background-color: $grey1;
 }
 
 a {
@@ -50,13 +9,94 @@ a {
   text-decoration: underline;
 }
 
+.wrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 80px 2rem 0 2rem;
+  font-weight: normal;
+  min-height: 100vh;
+}
+
+header.pageHeaber {
+  background-color: #fff;
+  border-bottom: 2px solid $main-blue;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+
+  .home-link {
+    display: inline-block;
+    margin-right: 30px;
+    .logo {
+      display: inline-block;
+      width: 40px;
+    }
+  }
+
+  .main-nav-box {
+    display: inline-block;
+    .menu-btn {
+      font-size: 1.2rem;
+      padding: 2px 10px;
+    }
+    nav {
+      box-shadow: 0 5px 7px rgba($main-grey, 0.8);
+      border-top: 2px solid $main-blue;
+      background-color: #fff;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 100%;
+      z-index: 1;
+      padding: 10px;
+      visibility: hidden;
+      opacity: 0;
+      transition: all 0.2s;
+      
+      &.show {
+        visibility: inherit;
+        opacity: 1;
+      }
+      a {
+        display: inline-block;
+        padding: 10px 15px;
+        margin: 0 10px 0 0;
+        text-decoration: none;
+        border-radius: 8px;
+        &.disabled {
+          color: $main-grey;
+          cursor: not-allowed;
+        }
+        &.active {
+          color: #fff;
+          background-color: $main-blue;
+        }
+      }
+    }
+  }
+  
+  h5 {
+    margin: 0;
+    color: $main-blue;
+  }
+}
+
+
 // 全域改變 bootstrap 的 css 樣式
 $baseFontSize: 2rem;
 .btn {
   font-size: $baseFontSize;
 }
 .table {
-  font-size: $baseFontSize;
+}
+.form-label {
+  font-size: 1.5rem;
 }
 .form-control {
   font-size: $baseFontSize;
@@ -64,6 +104,16 @@ $baseFontSize: 2rem;
 .form-select {
   font-size: $baseFontSize;
 }
+.form-check {
+  margin-left: $baseFontSize;
+}
+.form-check-input {
+  font-size: $baseFontSize;
+}
 .form-check-label {
   user-select: none;
+  font-size: $baseFontSize;
+}
+.form-switch {
+  margin-left: 2.8rem;
 }

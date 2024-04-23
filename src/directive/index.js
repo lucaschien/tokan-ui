@@ -1,8 +1,10 @@
-import { clickOutside } from './ClickOutside'
+import { ClickOutside } from './ClickOutside'
 import { Focus } from './Focus'
+import { BsTooltip } from './BsTooltip'
 
 
 export const initDirective = (app) => {
-  clickOutside(app);
+  ClickOutside(app);
   Focus(app);
+  BsTooltip(app);
 }

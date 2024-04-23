@@ -1,5 +1,5 @@
-export const clickOutside = (app) => {
-  app.directive('clickOutside', {
+export const ClickOutside = (app) => {
+  app.directive('ClickOutside', {
     mounted (el, binding) {
       setTimeout(() => {
         // 在該 DOM 元素上定義一個函式 (注意: 此時只是定義還沒事件註冊)

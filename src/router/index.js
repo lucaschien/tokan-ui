@@ -18,12 +18,18 @@ const router = createRouter({
         {
           path: 'Home',
           name: 'Home',
-          component: () => import('../views/Home.vue')
+          component: () => import('../views/Home.vue'),
+          meta: {
+            breadcrumb: ['功能首頁']
+          }
         },
         {
-          path: 'About',
-          name: 'About',
-          component: () => import('../views/About.vue')
+          path: 'FormingMachine',
+          name: 'FormingMachine',
+          component: () => import('../views/FormingMachine.vue'),
+          meta: {
+            breadcrumb: ['成型機作業']
+          }
         }
       ]
     },
