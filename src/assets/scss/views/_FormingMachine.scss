@@ -1,4 +1,18 @@
 .FormingMachine {
   background-color: #fff;
   
+  // 讀取狀態
+  .status-box {
+    padding: 40px 0;
+    text-align: center;
+    i {
+      margin-right: 10px;
+    }
+  }
+
+  // 選擇成型機機號
+  .choice-machine-box {
+    text-align: center;
+  }
+
 }

@@ -179,15 +179,10 @@
     <div class="one-gui-box">
       <div class="title">html5-qrcode</div>
       <div>
-        <input class="form-control w-100 mb-2" v-model="barcodeValue">
-        <button class="btn btn-primary me-3" 
-          @click="scanBarcode()">開始掃描</button>
-        <!-- barcode 相機初始化位置 -->
-        <div class="barcode-reader-box" v-show="openScanView">
-          <div id="barcode-reader"></div>
-          <button class="btn btn-primary mt-4 w-100" 
-            @click="handleStop()">停止掃描</button>
-        </div>
+        <InputScanBarcode 
+          :scanCallback="(val) => {
+            console.log(val)
+          }"/>
       </div>
     </div>
 
@@ -197,18 +192,18 @@
 </template>
 
 <script setup>
-import { ref, inject, onMounted } from 'vue';
-import { ajax } from '@/common/ajax';
-import { useHtml5QrCode } from '@/hooks/html5-qr-code'
+import { ref, inject } from 'vue'
+import { ajax } from '@/common/ajax'
+import InputScanBarcode from '@/components/InputScanBarcode.vue'
 
 // 測試環境變數
 const VITE_BACKEND_HOST = import.meta.env.VITE_BACKEND_HOST
 
 // 測試 alert.js
-const popMsg = inject('popMsg');
-const openConfirm = inject('openConfirm');
-const timerMsg = inject('timerMsg');
-const openWarnConfirm = inject('openWarnConfirm');
+const popMsg = inject('popMsg')
+const openConfirm = inject('openConfirm')
+const timerMsg = inject('timerMsg')
+const openWarnConfirm = inject('openWarnConfirm')
 
 // 測試 direactive: ClickOutside.js
 const testForClickOutside = ref(false)
@@ -226,31 +221,6 @@ const testAjax = async () => {
   console.log('result::', result);
 }
 
-// 測試 html5-qr-code 套件
-let html5QrCode
-const barcodeValue = ref('')
-const openScanView = ref(false)
-// 開始掃描
-const scanBarcode = () => {
-  openScanView.value = true;
-  html5QrCode.start(barcodeSuccessCallback)
-}
-// 停止相機
-const handleStop = () => {
-  openScanView.value = false;
-  html5QrCode.handleStop()
-}
-// 掃描成功後的回呼函式
-const barcodeSuccessCallback = (decodedText) => {
-  openScanView.value = false;
-  // 傳入 searchProductName 去做後續處理
-  barcodeValue.value = decodedText
-    // 停止相機
-  handleStop()
-}
-onMounted(() => {
-  html5QrCode = useHtml5QrCode('barcode-reader')
-})
 
 
 </script>

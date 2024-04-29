@@ -1,6 +1,8 @@
+@import './variable'; // 提醒要有優先於 bootstrap
 @import 'bootstrap/scss/bootstrap';
 
-@import './variable';
 @import './alert';
+@import './custom';
 @import 'App';
+@import './components/index';
 @import './views/index';
