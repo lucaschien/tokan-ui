@@ -1,6 +1,6 @@
 <template>
-  <div class="GUI">
-    <header>GUI</header>
+  <div class="ClientGUI ClientFull">
+    <header>ClientGUI</header>
 
     <div class="one-gui-box">
       <h1 class="title">環境變數</h1>

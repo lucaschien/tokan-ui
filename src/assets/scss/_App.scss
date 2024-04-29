@@ -17,7 +17,7 @@ a {
   min-height: 100vh;
 }
 
-header.pageHeaber {
+header.ClientHeader {
   background-color: #fff;
   border-bottom: 2px solid $main-blue;
   padding: 10px;
@@ -62,7 +62,7 @@ header.pageHeaber {
       visibility: hidden;
       opacity: 0;
       transition: all 0.2s;
-      
+
       &.show {
         visibility: inherit;
         opacity: 1;
@@ -84,7 +84,7 @@ header.pageHeaber {
       }
     }
   }
-  
+
   h5 {
     margin: 0;
     color: $main-blue;
@@ -94,39 +94,45 @@ header.pageHeaber {
   }
 }
 
-
 // 全域改變 bootstrap 的 css 樣式
 $baseFontSize: 2rem;
-.btn {
-  font-size: 1.5rem;
-  &.btn-success {
-    color: #fff;
-    &:hover {
+// C端樣式
+.ClientFull {
+  .btn {
+    font-size: 1.5rem;
+    &.btn-success {
       color: #fff;
+      &:hover {
+        color: #fff;
+      }
     }
   }
+  .table {
+  }
+  .form-label {
+    font-size: 1.8rem;
+  }
+  .form-control {
+    font-size: $baseFontSize;
+  }
+  .form-select {
+    font-size: 1.5rem;
+  }
+  .form-check {
+    margin-left: $baseFontSize;
+  }
+  .form-check-input {
+    font-size: $baseFontSize;
+  }
+  .form-check-label {
+    user-select: none;
+    font-size: $baseFontSize;
+  }
+  .form-switch {
+    margin-left: 2.8rem;
+  }
 }
-.table {
-}
-.form-label {
-  font-size: 1.8rem;
-}
-.form-control {
-  font-size: $baseFontSize;
-}
-.form-select {
-  font-size: 1.5rem;
-}
-.form-check {
-  margin-left: $baseFontSize;
-}
-.form-check-input {
-  font-size: $baseFontSize;
-}
-.form-check-label {
-  user-select: none;
-  font-size: $baseFontSize;
-}
-.form-switch {
-  margin-left: 2.8rem;
+// B端樣式
+.AdminFull {
+  border: 1px solid green;
 }

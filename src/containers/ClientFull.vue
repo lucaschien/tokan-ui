@@ -1,6 +1,6 @@
 <template>
-  <div class="Full">
-    <Header/>
+  <div class="ClientFull">
+    <ClientHeader/>
     <div class="wrapper">
       <RouterView />
     </div>
@@ -9,5 +9,5 @@
 
 <script setup>
 import { RouterView } from 'vue-router'
-import Header from '@/components/Header.vue'
+import ClientHeader from '@/components/ClientHeader.vue'
 </script>

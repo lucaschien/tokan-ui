@@ -1,6 +1,8 @@
-@import './GUI';
-@import './Login';
-@import './Home';
+@import './ClientGUI';
+
+@import './AppHome';
+@import './AdminLogin';
+@import './ClientHome';
 @import './FormingMachine';
 @import './FormingMachineFnEnter';
 @import './FormingMachinePatrol';
@@ -12,4 +14,3 @@
 @import './FormingMachineWaterLeakageAdjustment';
 @import './FormingMachineProductionInterruption';
 @import './FormingMachineClean';
-

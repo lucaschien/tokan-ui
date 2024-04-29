@@ -82,7 +82,7 @@ function AjaxDefine() {
         const text = '尚未授權或已登出，請重新登入';
         const callback = () => {
           //cookies.remove('justkaB', { domain: '.justka.ai' });
-          router.push({ name: 'Login' });
+          router.push({ name: 'AdminLogin' });
         }
         alert(text);
         callback();

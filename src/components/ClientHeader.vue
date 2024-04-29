@@ -1,9 +1,9 @@
 <template>
-  <header class="pageHeaber">
+  <header class="ClientHeader">
     <div>
       <RouterLink 
         class="home-link"
-        :to="{ name: 'Home' }"
+        :to="{ name: 'ClientHome' }"
         @click="showMenu = false">
         <img alt="回功能首頁" class="logo" src="/logo.svg" />
       </RouterLink>
@@ -59,7 +59,7 @@ const router = useRouter()
 const showMenu = ref(false)
 
 function logOut() {
-  router.push({ name: 'Login' })
+  router.push({ name: 'AppHome' })
 }
 
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="Login">
+  <div class="AdminLogin">
     <div>
       <div class="logo-box">
         <img class="logo" src="/logo.svg" alt="logo"/>
@@ -24,7 +24,7 @@ const account = ref('')
 const password = ref('')
 
 function login() {
-  router.push({ name: 'Home' })
+  router.push({ name: 'AdminHome' })
 }
 
 </script>

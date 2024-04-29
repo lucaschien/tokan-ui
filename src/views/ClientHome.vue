@@ -1,5 +1,5 @@
 <template>
-  <div class="Home">
+  <div class="ClientHome">
     <div class="card-box">
       <div :class="['card m-2 align-items-center', { disabled: true }]">
         <RouterLink 

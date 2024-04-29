@@ -1,24 +1,30 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from '../views/Login.vue'
+import AppHome from '../views/AppHome.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'Login',
-      component: Login
+      name: 'AppHome',
+      component: AppHome
     },
     {
-      path: '/views',
-      name: 'Full',
-      redirect: '/admin/home',
-      component: () => import('../containers/Full.vue'),
+      path: '/AdminLogin',
+      name: 'AdminLogin',
+      component: () => import('../views/Admin/AdminLogin.vue'),
+    },
+    // C端
+    {
+      path: '/Client',
+      name: 'ClientFull',
+      redirect: '/Client/ClientHome',
+      component: () => import('../containers/ClientFull.vue'),
       children: [
         {
-          path: 'Home',
-          name: 'Home',
-          component: () => import('../views/Home.vue'),
+          path: 'ClientHome',
+          name: 'ClientHome',
+          component: () => import('../views/ClientHome.vue'),
           meta: {
             breadcrumb: ['功能首頁']
           }
@@ -124,15 +130,32 @@ const router = createRouter({
         },
 
 
-        
 
-        
+
+
+      ]
+    },
+    // B端
+    {
+      path: '/Admin',
+      name: 'AdminFull',
+      redirect: '/Admin/AdminHome',
+      component: () => import('../containers/AdminFull.vue'),
+      children: [
+        {
+          path: 'AdminHome',
+          name: 'AdminHome',
+          component: () => import('../views/Admin/AdminHome.vue'),
+          meta: {
+            breadcrumb: ['功能首頁']
+          }
+        }
       ]
     },
     {
-      path: '/GUI',
-      name: 'GUI',
-      component: () => import('../views/GUI.vue'),
+      path: '/ClientGUI',
+      name: 'ClientGUI',
+      component: () => import('../views/ClientGUI.vue'),
     }
   ]
 })
