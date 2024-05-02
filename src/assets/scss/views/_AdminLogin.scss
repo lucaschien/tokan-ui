@@ -4,6 +4,7 @@
   justify-content: center;
   min-height: 100vh;
   background-color: $grey1;
+  padding: 20px 0;
   .logo-box {
     text-align: center;
     .logo {
@@ -14,6 +15,9 @@
     .company-name {
       width: 240px;
       max-width: 60%;
+    }
+    h4 {
+      color: $main-blue;
     }
   }
   > div {

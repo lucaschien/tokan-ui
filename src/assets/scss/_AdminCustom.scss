@@ -1,0 +1,112 @@
+// B端專屬樣式
+$adminlLeft: 210px;
+
+.AdminFull {
+  min-width: 1280px;
+  .AdminHeader {
+    border-bottom: 1px solid $main-grey;
+    padding: 15px 30px;
+    margin-left: $adminlLeft;
+    position: fixed;
+    left: 0;
+    top: 0;
+    right: 0;
+    z-index: 1;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 6px rgba($main-grey, 0.8);
+    .breadcrumb-box {
+      font-size: 20px;
+      color: $main-blue;
+    }
+    .logout {
+      text-decoration: none;
+      border: 1px solid $main-blue;
+      border-radius: 5px;
+      padding: 2px 8px;
+    }
+  }
+  .AdminMenu {
+    border-right: 1px solid $main-grey;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    height: 100vh;
+    width: $adminlLeft;
+    background-color: #fff;
+    .logo {
+      margin: 15px auto;
+      height: 50px;
+      display: block;
+      user-select: none;
+    }
+    .menu-box {
+      height: calc(100vh - 80px);
+      padding: 15px;
+      overflow: auto;
+      a {
+        position: relative;
+        padding: 10px 0 10px 13px;
+        display: block;
+        text-decoration: none;
+        border-bottom: 1px solid $main-grey; 
+        color: $gray2;
+        &:hover {
+          color: $main-blue;
+        }
+        &:before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 13px;
+          padding: 7px 0;
+          border: 2px solid $main-blue;
+          border-radius: 3px;
+          display: inline-block;
+        }
+        &.active {
+          color: $main-blue;
+        }
+      }
+    }
+  }
+  .wrapper {
+    font-weight: normal;
+    min-height: 100vh;
+    margin-left: $adminlLeft;
+    padding: 80px 30px 20px 30px;
+    box-shadow: 0px 0px 6px rgba($main-grey, 0.8) inset;
+  }
+
+  .nav-tabs-content {
+    background-color: #fff;
+    padding: 20px;
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+  }
+
+  .search-box {
+    position: relative;
+    padding: 15px 15px;
+    display: flex;
+    align-items: center;
+    
+    > *, .form-label, .form-select, .form-control {
+      width: auto;
+      margin: 0 10px 0 0;
+    }
+  }
+  .table-box {
+    background-color: #fff;
+    border: 1px solid $main-grey;
+    border-radius: 5px;
+  }
+}
+.AdminPrintBtn {
+  font-size: 20px;
+  padding: 3px 10px;
+}

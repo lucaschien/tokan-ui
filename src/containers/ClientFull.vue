@@ -9,5 +9,5 @@
 
 <script setup>
 import { RouterView } from 'vue-router'
-import ClientHeader from '@/components/ClientHeader.vue'
+import ClientHeader from '@/components/Client/ClientHeader.vue'
 </script>

@@ -1,14 +1,16 @@
 <template>
   <div class="AdminFull">
-    <!-- <Header/>
+    <AdminMenu />
+    <AdminHeader/>
     <div class="wrapper">
       <RouterView />
-    </div> -->
-    <RouterView />
+    </div>
   </div>
 </template>
 
 <script setup>
 import { RouterView } from 'vue-router'
+import AdminMenu from '@/components/Admin/AdminMenu.vue'
+import AdminHeader from '@/components/Admin/AdminHeader.vue'
 
 </script>

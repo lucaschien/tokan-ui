@@ -134,7 +134,7 @@
     </div>
 
     <div class="one-gui-box">
-      <div class="title">vue Directive</div>
+      <h1 class="title">vue Directive</h1>
       <div>v-focus:
         <input class="form-control" type="text" v-focus>
       </div>
@@ -160,7 +160,7 @@
     </div>
 
     <div class="one-gui-box">
-      <div class="title">alert.js</div>
+      <h1 class="title">alert.js</h1>
       <div>
         <button class="btn btn-secondary m-1" @click="popMsg('popMsg')">popMsg</button>
         <button class="btn btn-secondary m-1" @click="openConfirm('openConfirm')">openConfirm</button>
@@ -170,14 +170,14 @@
     </div>
 
     <div class="one-gui-box">
-      <div class="title">ajax.js</div>
+      <h1 class="title">ajax.js</h1>
       <div>
         <button class="btn btn-secondary" @click="testAjax()">call ajax</button>
       </div>
     </div>
 
     <div class="one-gui-box">
-      <div class="title">html5-qrcode</div>
+      <h1 class="title">html5-qrcode</h1>
       <div>
         <InputScanBarcode 
           :scanCallback="(val) => {

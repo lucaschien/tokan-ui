@@ -2,7 +2,10 @@
 @import 'bootstrap/scss/bootstrap';
 
 @import './alert';
-@import './custom';
+@import './ClientCustom';
+@import './AdminCustom';
 @import 'App';
 @import './components/index';
 @import './views/index';
+
+@import './Print'; // 列印規範用

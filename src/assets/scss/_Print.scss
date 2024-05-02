@@ -1,0 +1,44 @@
+@media print {
+  @page {
+    //margin: 0px; /* 間距 */
+    //size: A4 portrait; /* 尺寸混和 */
+  }
+  //.content {
+  //  page-break-inside: avoid; /* 使元素不會於換頁時中斷*/
+  //  page-break-after: always; /* 碰到該元素時換頁 */
+  //}
+  
+
+  .AdminFull {
+    // 要列印的區塊
+    .table-box {
+      padding: 0;
+      margin: 0;
+      width: calc(100% - 90px); // 表格容器寬度
+      border: 1px solid red;
+      table, .table {
+        margin-bottom: 0;
+        // 強迫列印模式都要把有顏色的地方都印出
+        -webkit-print-color-adjust: exact ;
+        color-adjust: exact;
+      }
+    }
+
+    // 列印時不出現
+    .AdminMenu, .AdminHeader, .search-box {
+      display: none;
+    }
+    .no-print {
+      display: none;
+    }
+    .nav-tabs-content {
+      border: 0;
+      padding: 0;
+    }
+    .wrapper {
+      padding: 0;
+      margin-left: 0;
+      box-shadow: none;
+    }
+  }
+}

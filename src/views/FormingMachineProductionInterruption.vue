@@ -26,21 +26,24 @@
         <label class="form-label col-2">中斷原因</label>
         <div class="row col-8 mb-4">
           <div class="form-check col-3">
-            <input class="form-check-input" type="radio" name="sample1" id="test1">
-            <label class="form-check-label" for="test1">無排程</label>
+            <input class="form-check-input" type="radio" 
+              name="reason" id="noSchedule" value="noSchedule"
+              v-model="stopReason">
+            <label class="form-check-label" for="noSchedule">無排程</label>
           </div>
           <div class="form-check col-4">
-            <input class="form-check-input" type="radio" name="sample1" id="test2">
-            <label class="form-check-label" for="test2">原物料不足</label>
+            <input class="form-check-input" type="radio" 
+              name="reason" id="noMaterials" value="noMaterials"
+              v-model="stopReason">
+            <label class="form-check-label" for="noMaterials">原物料不足</label>
           </div>
         </div>
-        <button class="btn btn-primary w-100 mt-5" @click="interruptionFn()">送出</button>
+        <button class="btn btn-primary w-100 mt-5" 
+          @click="interruptionFn()">送出</button>
       </div>
 
-      <!-- 中斷中畫面 -->
+      <!-- 中斷畫面 -->
       <div class="text-center" v-if="status === 'INTERRUPTION'">
-        <button class="btn btn-primary change-status-btn"
-          @click="off()">關機</button>
         <button class="btn btn-success change-status-btn"
           @click="resumeWork()">恢復生產</button>
       </div>
@@ -51,12 +54,13 @@
 
 <script setup>
 import { ref, onMounted, inject } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import RouterBackBtn from '@/components/RouterBackBtn.vue'
 
 const popMsg = inject('popMsg')
 const openConfirm = inject('openConfirm')
 const route = useRoute()
+const router = useRouter();
 
 const nowMachine = ref(null)
 
@@ -66,20 +70,26 @@ onMounted(() => {
 
 const status = ref('WORDKING')
 
-// 中斷生產
+const stopReason = ref(null)
+
+// 送出
 function interruptionFn() {
-  popMsg('資料已送出', () => {
-    status.value = 'INTERRUPTION'
-  })
+  if (stopReason.value === 'noSchedule') { 
+    popMsg('執行關機程序', () => {
+      // 返回選擇成型機單元
+      router.push({ name: 'FormingMachine' })
+    })
+  }
+
+  if (stopReason.value === 'noMaterials') {
+    popMsg('資料已送出', () => {
+      status.value = 'INTERRUPTION'
+      stopReason.value = null
+    })
+  }
 }
 
-// 關機
-function off() {
-  openConfirm('確定關機？', () => {
-    popMsg('TODO... 執行關機程序')
-  })
-}
-// 
+// 恢復生產
 function resumeWork() {
   popMsg('已恢復生產作業', () => {
     status.value = 'WORDKING'

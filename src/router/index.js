@@ -130,28 +130,35 @@ const router = createRouter({
         },
 
 
-
-
-
       ]
     },
     // B端
     {
       path: '/Admin',
       name: 'AdminFull',
-      redirect: '/Admin/AdminHome',
+      redirect: '/Admin/AdminDefectiveUtilization',
       component: () => import('../containers/AdminFull.vue'),
       children: [
         {
-          path: 'AdminHome',
-          name: 'AdminHome',
-          component: () => import('../views/Admin/AdminHome.vue'),
+          path: 'AdminDefectiveUtilization',
+          name: 'AdminDefectiveUtilization',
+          component: () => import('../views/Admin/AdminDefectiveUtilization.vue'),
           meta: {
-            breadcrumb: ['功能首頁']
+            breadcrumb: ['不良率與稼動率統計']
           }
-        }
+        },
+        {
+          path: 'AdminFormingMachineFailureHistory',
+          name: 'AdminFormingMachineFailureHistory',
+          component: () => import('../views/Admin/AdminFormingMachineFailureHistory.vue'),
+          meta: {
+            breadcrumb: ['成型機故障履歷的統計']
+          }
+        },
+        
       ]
     },
+    // other
     {
       path: '/ClientGUI',
       name: 'ClientGUI',
