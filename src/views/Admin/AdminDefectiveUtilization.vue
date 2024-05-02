@@ -34,8 +34,8 @@
             <td>99.9%</td>
             <td>0.1%</td>
           </tr>
-          <tr>
-            <td>成型1號機</td>
+          <tr v-for="item in 100" :key="item">
+            <td>成型{{item}}號機</td>
             <td>1000</td>
             <td>999</td>
             <td>1</td>
