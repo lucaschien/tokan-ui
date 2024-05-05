@@ -9,11 +9,7 @@ const router = createRouter({
       name: 'AppHome',
       component: AppHome
     },
-    {
-      path: '/AdminLogin',
-      name: 'AdminLogin',
-      component: () => import('../views/Admin/AdminLogin.vue'),
-    },
+
     // C端
     {
       path: '/Client',
@@ -134,6 +130,11 @@ const router = createRouter({
     },
     // B端
     {
+      path: '/AdminLogin',
+      name: 'AdminLogin',
+      component: () => import('../views/Admin/AdminLogin.vue'),
+    },
+    {
       path: '/Admin',
       name: 'AdminFull',
       redirect: '/Admin/AdminDefectiveUtilization',
@@ -155,7 +156,15 @@ const router = createRouter({
             breadcrumb: ['成型機故障履歷的統計']
           }
         },
-        
+        {
+          path: 'AdminReport',
+          name: 'AdminReport',
+          component: () => import('../views/Admin/AdminReport.vue'),
+          meta: {
+            breadcrumb: ['報表下載']
+          }
+        },
+
       ]
     },
     // other

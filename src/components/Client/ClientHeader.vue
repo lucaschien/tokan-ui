@@ -5,7 +5,7 @@
         class="home-link"
         :to="{ name: 'ClientHome' }"
         @click="showMenu = false">
-        <img alt="回功能首頁" class="logo" src="/logo.svg" />
+        <img alt="回功能首頁" class="logo" src="/img/logo.svg" />
       </RouterLink>
       
       <div class="main-nav-box">

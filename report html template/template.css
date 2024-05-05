@@ -1,0 +1,48 @@
+table {
+  border: 1px solid #6d6d6d;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  border: 1px solid #6d6d6d;
+  padding: 1px 4px;
+}
+
+.logo {
+  max-height: 60px;
+}
+
+.fc-red {
+  color: red;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+}
+
+.span-check-box {
+  border: 1px solid #000;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 1px;
+  user-select: none;
+  margin-right: 3px;
+}
+
+.span-check-box.active {
+  background-color: #000;
+}
+
+.noBorder {
+  border-color: transparent;
+}
+
+/* 用來放有重複性質,且左右排序的表格容器用 */
+.oneSampleLRTableBox {
+  display: flex;
+  align-items: top;
+}

@@ -1,0 +1,340 @@
+<template>
+  <!-- 2-M-011-02-2.6杯身裁切日報表 -->
+  <div class="Report_2_M_011_02_2_6">
+    <table>
+      <tbody>
+        <tr>
+          <td rowspan="2" align="center" valign="middle" style="width: 30%; font-size: 30px;" class="noBorder">5oz</td>
+          <td height="55" align="center" valign="middle" style="width: 40%;" class="noBorder">
+            <img class="logo" src="/img/full_logo.png">
+          </td>
+          <td valign="bottom" class="noBorder" style="width: 30%;">
+            生產日期:
+            <span style="display: inline-block; width: 6.5%;"></span>年
+            <span style="display: inline-block; width: 6.5%;"></span>月
+            <span style="display: inline-block; width: 6.5%;"></span>日，星期
+          </td>
+        </tr>
+        <tr>
+          <td class="noBorder" align="center" style="font-size: 20px;">杯身裁切日報表</td>
+          <td class="noBorder" align="left" >生產班別：
+            <span class="span-check-box active"></span>早班
+            <span class="span-check-box"></span>中班
+            <span class="span-check-box"></span>晚班</td>
+        </tr>
+      </tbody>
+    </table>
+    <table>
+      <tbody>
+        <tr>
+          <td colspan="4">操作者:</td>
+          <td colspan="4" style="text-align: center;">號機</td>
+        </tr>
+        <tr>
+          <td colspan="4" style="text-align: center; width: 50%;">原紙種類:一般</td>
+          <td colspan="4" style="text-align: center; width: 50%;">原紙種類:FSC</td>
+        </tr>
+        <tr>
+          <td colspan="4">
+            <span style="display: inline-block; width: 23%;" class="fc-red">領編: </span>
+            <span style="display: inline-block; width: 23%;">使編: </span>
+            <span style="display: inline-block; width: 23%;">米數: </span>
+            <span style="display: inline-block; width: 23%;">貼標: </span>
+          </td>
+          <td colspan="4">
+            <span style="display: inline-block; width: 23%;" class="fc-red">領編: </span>
+            <span style="display: inline-block; width: 23%;">使編: </span>
+            <span style="display: inline-block; width: 23%;">米數: </span>
+            <span style="display: inline-block; width: 23%;">貼標: </span>
+          </td>
+        </tr>
+        <tr>
+          <td>紙捲外觀</td>
+          <td>□良□不良</td>
+          <td>杯內面檢查</td>
+          <td>□良□不良</td>
+          <td>紙捲外觀</td>
+          <td>□良□不良</td>
+          <td>杯內面檢查</td>
+          <td>□良□不良</td>
+        </tr>
+        <tr>
+          <td>杯外面檢查</td>
+          <td>□良□不良</td>
+          <td>毛邊檢查</td>
+          <td>□良□不良</td>
+          <td>杯外面檢查</td>
+          <td>□良□不良</td>
+          <td>毛邊檢查</td>
+          <td>□良□不良</td>
+        </tr>
+        <tr>
+          <td>原紙有無印刷</td>
+          <td colspan="3">□有，產品編號:<span>
+            </span><span>；□無</span></td>
+          <td>原紙有無印刷</td>
+          <td colspan="3">□有，產品編號:<span>
+            </span><span>；□無</span></td>
+        </tr>
+        <tr>
+          <td>始切時間</td>
+          <td></td>
+          <td>完切時間</td>
+          <td></td>
+          <td>始切時間</td>
+          <td></td>
+          <td>完切時間</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>入箱箱號</td>
+          <td>車□未滿</td>
+          <td>車□未滿</td>
+          <td>車□未滿</td>
+          <td>入箱箱號</td>
+          <td>車□未滿</td>
+          <td>車□未滿</td>
+          <td>車□未滿</td>
+        </tr>
+        <tr>
+          <td>入箱數量</td>
+          <td align="right">
+            <span style="display: inline-block; width: 48%;">,</span>
+            <span style="display: inline-block; width: 48%;">PC</span>
+          </td>
+          <td align="right">
+            <span style="display: inline-block; width: 48%;">,</span>
+            <span style="display: inline-block; width: 48%;">PC</span>
+          </td>
+          <td align="right">
+            <span style="display: inline-block; width: 48%;">,</span>
+            <span style="display: inline-block; width: 48%;">PC</span>
+          </td>
+          <td>入箱數量</td>
+          <td align="right">
+            <span style="display: inline-block; width: 48%;">,</span>
+            <span style="display: inline-block; width: 48%;">PC</span>
+          </td>
+          <td align="right">
+            <span style="display: inline-block; width: 48%;">,</span>
+            <span style="display: inline-block; width: 48%;">PC</span>
+          </td>
+          <td align="right">
+            <span style="display: inline-block; width: 48%;">,</span>
+            <span style="display: inline-block; width: 48%;">PC</span>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4">
+            <span style="display: inline-block; width: 23%;" class="fc-red">領編: </span>
+            <span style="display: inline-block; width: 23%;">使編: </span>
+            <span style="display: inline-block; width: 23%;">米數: </span>
+            <span style="display: inline-block; width: 23%;">貼標: </span>
+          </td>
+          <td colspan="4">
+            <span style="display: inline-block; width: 23%;" class="fc-red">領編: </span>
+            <span style="display: inline-block; width: 23%;">使編: </span>
+            <span style="display: inline-block; width: 23%;">米數: </span>
+            <span style="display: inline-block; width: 23%;">貼標: </span>
+          </td>
+        </tr>
+        <tr>
+          <td>紙捲外觀</td>
+          <td>□良□不良</td>
+          <td>杯內面檢查</td>
+          <td>□良□不良</td>
+          <td>紙捲外觀</td>
+          <td>□良□不良</td>
+          <td>杯內面檢查</td>
+          <td>□良□不良</td>
+        </tr>
+        <tr>
+          <td>杯外面檢查</td>
+          <td>□良□不良</td>
+          <td>毛邊檢查</td>
+          <td>□良□不良</td>
+          <td>杯外面檢查</td>
+          <td>□良□不良</td>
+          <td>毛邊檢查</td>
+          <td>□良□不良</td>
+        </tr>
+        <tr>
+          <td>原紙有無印刷</td>
+          <td colspan="3">□有，產品編號:<span>
+            </span><span>；□無</span></td>
+          <td>原紙有無印刷</td>
+          <td colspan="3">□有，產品編號:<span>
+            </span><span>；□無</span></td>
+        </tr>
+        <tr>
+          <td>始切時間</td>
+          <td></td>
+          <td>完切時間</td>
+          <td></td>
+          <td>始切時間</td>
+          <td></td>
+          <td>完切時間</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>入箱箱號</td>
+          <td>車□未滿</td>
+          <td>車□未滿</td>
+          <td>車□未滿</td>
+          <td>入箱箱號</td>
+          <td>車□未滿</td>
+          <td>車□未滿</td>
+          <td>車□未滿</td>
+        </tr>
+        <tr>
+          <td>入箱數量</td>
+          <td align="right">
+            <span style="display: inline-block; width: 48%;">,</span>
+            <span style="display: inline-block; width: 48%;">PC</span>
+          </td><td align="right">
+            <span style="display: inline-block; width: 48%;">,</span>
+            <span style="display: inline-block; width: 48%;">PC</span>
+          </td><td align="right">
+            <span style="display: inline-block; width: 48%;">,</span>
+            <span style="display: inline-block; width: 48%;">PC</span>
+          </td>
+          <td>入箱數量</td>
+          <td align="right">
+            <span style="display: inline-block; width: 48%;">,</span>
+            <span style="display: inline-block; width: 48%;">PC</span>
+          </td><td align="right">
+            <span style="display: inline-block; width: 48%;">,</span>
+            <span style="display: inline-block; width: 48%;">PC</span>
+          </td><td align="right">
+            <span style="display: inline-block; width: 48%;">,</span>
+            <span style="display: inline-block; width: 48%;">PC</span>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4">
+            <span style="display: inline-block; width: 23%;" class="fc-red">領編: </span>
+            <span style="display: inline-block; width: 23%;">使編: </span>
+            <span style="display: inline-block; width: 23%;">米數: </span>
+            <span style="display: inline-block; width: 23%;">貼標: </span>
+          </td>
+          <td colspan="4">
+            <span style="display: inline-block; width: 23%;" class="fc-red">領編: </span>
+            <span style="display: inline-block; width: 23%;">使編: </span>
+            <span style="display: inline-block; width: 23%;">米數: </span>
+            <span style="display: inline-block; width: 23%;">貼標: </span>
+          </td>
+        </tr>
+        <tr>
+          <td>紙捲外觀</td>
+          <td>□良□不良</td>
+          <td>杯內面檢查</td>
+          <td>□良□不良</td>
+          <td>紙捲外觀</td>
+          <td>□良□不良</td>
+          <td>杯內面檢查</td>
+          <td>□良□不良</td>
+        </tr>
+        <tr>
+          <td>杯外面檢查</td>
+          <td>□良□不良</td>
+          <td>毛邊檢查</td>
+          <td>□良□不良</td>
+          <td>杯外面檢查</td>
+          <td>□良□不良</td>
+          <td>毛邊檢查</td>
+          <td>□良□不良</td>
+        </tr>
+        <tr>
+          <td>原紙有無印刷</td>
+          <td colspan="3">□有，產品編號:<span>
+            </span><span>；□無</span></td>
+          <td>原紙有無印刷</td>
+          <td colspan="3">□有，產品編號:<span>
+            </span><span>；□無</span></td>
+        </tr>
+        <tr>
+          <td>始切時間</td>
+          <td></td>
+          <td>完切時間</td>
+          <td></td>
+          <td>始切時間</td>
+          <td></td>
+          <td>完切時間</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>入箱箱號</td>
+          <td>車□未滿</td>
+          <td>車□未滿</td>
+          <td>車□未滿</td>
+          <td>入箱箱號</td>
+          <td>車□未滿</td>
+          <td>車□未滿</td>
+          <td>車□未滿</td>
+        </tr>
+        <tr>
+          <td>入箱數量</td>
+          <td align="right">
+            <span style="display: inline-block; width: 48%;">,</span>
+            <span style="display: inline-block; width: 48%;">PC</span>
+          </td><td align="right">
+            <span style="display: inline-block; width: 48%;">,</span>
+            <span style="display: inline-block; width: 48%;">PC</span>
+          </td><td align="right">
+            <span style="display: inline-block; width: 48%;">,</span>
+            <span style="display: inline-block; width: 48%;">PC</span>
+          </td>
+          <td>入箱數量</td>
+          <td align="right">
+            <span style="display: inline-block; width: 48%;">,</span>
+            <span style="display: inline-block; width: 48%;">PC</span>
+          </td><td align="right">
+            <span style="display: inline-block; width: 48%;">,</span>
+            <span style="display: inline-block; width: 48%;">PC</span>
+          </td><td align="right">
+            <span style="display: inline-block; width: 48%;">,</span>
+            <span style="display: inline-block; width: 48%;">PC</span>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="4" style="text-align: center;">
+            當班一般原紙總裁切數:<span style="display: inline-block; width: 35%;"></span>PC
+          </td>
+          <td colspan="4" style="text-align: center;">
+            當班FSC原紙總裁切數:<span style="display: inline-block; width: 35%;"></span>PC
+          </td>
+        </tr>
+        <tr>
+          <td>一般原紙領用卷數:</td>
+          <td colspan="3" align="right">
+            <span style="display: inline-block; width: 45%; text-align: right;">卷</span>
+            <span style="display: inline-block; width: 45%; text-align: right;">米</span>
+          </td>
+          <td>FSC原紙領用卷數:</td>
+          <td colspan="3" align="right">
+            <span style="display: inline-block; width: 45%; text-align: right;">卷</span>
+            <span style="display: inline-block; width: 45%; text-align: right;">米</span>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3" rowspan="3" valign="top">備註與問題回報:</td>
+          <td colspan="2" rowspan="2">狀況處理單位<br><span>□管理□生產□維修</span></td>
+          <td colspan="3" rowspan="3" valign="top">監控項目:</td>
+        </tr>
+        <tr>
+        </tr>
+        <tr>
+          <td colspan="2">處理人員</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="flex-between">
+      <span>廠長:</span>
+      <span>會計:</span>
+      <span>生管:</span>
+      <span>品管:</span>
+      <span>組長:</span>
+      <span>2-M-011-02-2.6</span>
+    </div>
+  </div>
+</template>

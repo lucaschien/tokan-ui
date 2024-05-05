@@ -11,11 +11,11 @@
     </ul>
     <div class="nav-tabs-content">
       <!-- for 故障履歷 -->
-      <div class="table-box" v-if="tab === 'TypeA'">
+      <div class="table-box print-box" v-if="tab === 'TypeA'">
         <!-- searh -->
         <div class="search-box">
-          <label class="form-label">時間區間</label> 
-          <VueDatePicker v-model="date1" range text-input :format="searchDateForamt"/>
+          <label class="form-label">時間&時間區間</label> 
+          <VueDatePicker v-model="date1" range text-input :format="searchDate1Foramt"/>
           <label class="form-label">機號</label> 
           <select class="form-select">
             <option :value="null">請選擇</option>
@@ -68,14 +68,16 @@
             </tr>
           </tbody>
         </table>
+        <!-- 頁碼 -->
+        <PaginationBox />
       </div>
 
       <!-- for 錯誤碼統計 -->
       <div class="table-box" v-if="tab ==='TypeB'">
         <!-- searh -->
         <div class="search-box">
-          <label class="form-label">start Date ~ end Date</label> 
-          <VueDatePicker v-model="date2" :enable-time-picker="false" range text-input />
+          <label class="form-label">日期區間</label> 
+          <VueDatePicker v-model="date2" :enable-time-picker="false" range text-input :format="searchDate2Foramt"/>
           <label class="form-label">錯誤碼</label> 
           <input class="form-control me-4" list="searchListOptions" id="exampleDataList" placeholder="請輸入錯誤碼...">
           <datalist id="searchListOptions">
@@ -120,18 +122,23 @@
 <script setup>
 import { ref } from 'vue'
 import AdminPrintBtn from '@/components/Admin/AdminPrintBtn.vue'
+import PaginationBox from '@/components/PaginationBox.vue'
 
 const tab = ref('TypeA')
 
 const date1 = ref('');
 const date2 = ref('');
 
-// 搜尋條件的小日曆 format 
-function searchDateForamt(date) {
+// 故障履歷 搜尋條件的小日曆 format 
+function searchDate1Foramt(date) {
   console.log('date >> ', date)
   if (!date || date.length < 2) {
     return ''
   }
+
+  // TODO... 這邊還要處理後端要的資料 model
+
+  // 處理呈現面
   const start = date[0]
   const day = start.getDate()
   const month = start.getMonth() + 1
@@ -144,6 +151,29 @@ function searchDateForamt(date) {
   const E_minutes = end.getMinutes()
 
   return `${year}-${month}-${day} ${S_hours}:${S_minutes} ~ ${E_hours}:${E_minutes}`
+}
+
+// 錯誤碼統計 搜尋條件的小日曆 format
+function searchDate2Foramt(date) {
+  console.log('date >> ', date)
+  if (!date || date.length < 2) {
+    return ''
+  }
+
+  // TODO... 這邊還要處理後端要的資料 model
+
+  // 處理呈現面
+  const start = date[0]
+  const S_year = start.getFullYear()
+  const S_month = start.getMonth() + 1
+  const S_day = start.getDate()
+
+  const end = date[1]
+  const E_year = start.getFullYear()
+  const E_month = start.getMonth() + 1
+  const E_day = end.getDate()
+
+  return `${S_year}-${S_month}-${S_day} ~ ${E_year}-${E_month}-${E_day}`
 }
 
 

@@ -1,6 +1,6 @@
 <template>
   <div class="AppHome">
-    <img class="logo" src="/logo.svg" />
+    <img class="logo" src="/img/logo.svg" />
     <h1>請選擇進入平台</h1>
     <div>
       <RouterLink :to="{ name: 'ClientHome' }">作業平台</RouterLink>

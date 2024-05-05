@@ -2,8 +2,8 @@
   <div class="AdminLogin">
     <div>
       <div class="logo-box">
-        <img class="logo" src="/logo.svg" alt="logo"/>
-        <img class="company-name" src="/company_name.png" alt="company name"/>
+        <img class="logo" src="/img/logo.svg" alt="logo"/>
+        <img class="company-name" src="/img/company_name.png" alt="company name"/>
         <h4 class="mt-2">管理平台</h4>
       </div>
       <label class="form-label">帳號</label>

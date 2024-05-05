@@ -52,7 +52,7 @@ $adminlLeft: 210px;
         padding: 10px 0 10px 13px;
         display: block;
         text-decoration: none;
-        border-bottom: 1px solid $main-grey; 
+        border-bottom: 1px solid $main-grey;
         color: $gray2;
         &:hover {
           color: $main-blue;
@@ -94,8 +94,11 @@ $adminlLeft: 210px;
     padding: 15px 15px;
     display: flex;
     align-items: center;
-    
-    > *, .form-label, .form-select, .form-control {
+
+    > *,
+    .form-label,
+    .form-select,
+    .form-control {
       width: auto;
       margin: 0 10px 0 0;
     }
@@ -104,6 +107,10 @@ $adminlLeft: 210px;
     background-color: #fff;
     border: 1px solid $main-grey;
     border-radius: 5px;
+  }
+  .PaginationBox {
+    display: flex;
+    justify-content: center;
   }
 }
 .AdminPrintBtn {

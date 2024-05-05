@@ -1,6 +1,6 @@
 <template>
   <div class="AdminDefectiveUtilization">
-    <div class="table-box">
+    <div class="table-box print-box">
       <!-- searh -->
       <div class="search-box">
         <label class="form-label">排程選擇</label> 

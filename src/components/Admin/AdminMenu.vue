@@ -1,11 +1,13 @@
 <template>
   <div class="AdminMenu">
-    <img class="logo" src="/logo.svg" alt="logo"/>
+    <img class="logo" src="/img/logo.svg" alt="logo"/>
     <div class="menu-box">
       <RouterLink :class="[{active: route.name === 'AdminDefectiveUtilization'}]"
         :to="{ name: 'AdminDefectiveUtilization' }">不良率與稼動率統計</RouterLink>
       <RouterLink :class="[{active: route.name === 'AdminFormingMachineFailureHistory'}]"
-      :to="{ name: 'AdminFormingMachineFailureHistory' }">成型機故障履歷的統計</RouterLink>
+        :to="{ name: 'AdminFormingMachineFailureHistory' }">成型機故障履歷的統計</RouterLink>
+      <RouterLink :class="[{active: route.name === 'AdminReport'}]"
+        :to="{ name: 'AdminReport' }">報表下載</RouterLink>
     </div>
   </div>
 </template>
