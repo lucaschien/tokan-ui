@@ -2,14 +2,15 @@
   <!-- 2-Q-007-01-2.6生產品質檢驗表 -->
   <div class="Report_2_Q_007_01_2_6">
     <div class="flex-between">
-    <div style="width: 33.3%; height: 55px;">
-      <img class="logo" src="/img/full_logo.png">
+      <div style="width: 33.3%; height: 55px;">
+        <img class="logo" src="/img/full_logo.png">
+      </div>
+      <div style="width: 33.3%; display: flex; justify-content: center; align-items: center; font-size: 24px;">
+        生產品質檢驗表
+      </div>
+      <div style="width: 33.3%"></div>
     </div>
-    <div style="width: 33.3%; display: flex; justify-content: center; align-items: center; font-size: 24px;">生產品質檢驗表
-    </div>
-    <div style="width: 33.3%"></div>
-    </div>
-    
+
     <table>
       <tbody>
         <tr>

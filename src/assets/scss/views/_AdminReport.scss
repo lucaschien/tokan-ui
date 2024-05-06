@@ -14,6 +14,21 @@
   }
   .fc-red {
     color: red;
+    .span-check-box {
+      border-color: red;
+      &.active {
+        background-color: red;
+      }
+    }
+  }
+  .fc-blue {
+    color: blue;
+    .span-check-box {
+      border-color: blue;
+      &.active {
+        background-color: blue;
+      }
+    }
   }
   .bg-green {
     background-color: #90ca7d;
