@@ -15,7 +15,7 @@ $baseFontSize: 2rem;
     left: 0;
     right: 0;
     z-index: 2;
-  
+
     .home-link {
       display: inline-block;
       margin-right: 30px;
@@ -24,7 +24,7 @@ $baseFontSize: 2rem;
         width: 45px;
       }
     }
-  
+
     .main-nav-box {
       display: inline-block;
       user-select: none;
@@ -48,7 +48,7 @@ $baseFontSize: 2rem;
         visibility: hidden;
         opacity: 0;
         transition: all 0.2s;
-  
+
         &.show {
           visibility: inherit;
           opacity: 1;
@@ -70,7 +70,7 @@ $baseFontSize: 2rem;
         }
       }
     }
-  
+
     h5 {
       margin: 0;
       color: $main-blue;
@@ -102,7 +102,7 @@ $baseFontSize: 2rem;
     font-size: 1.8rem;
   }
   .form-control {
-    font-size: $baseFontSize;
+    font-size: 1.5rem;
   }
   .form-select {
     font-size: 1.5rem;
@@ -121,7 +121,6 @@ $baseFontSize: 2rem;
     margin-left: 2.8rem;
   }
 }
-
 
 // 通用樣式: 選擇機器號碼
 $machineCardSize: 160px;
@@ -188,5 +187,3 @@ $machineCardSize: 160px;
   padding: 40px;
   background-color: #fff;
 }
-
-

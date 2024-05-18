@@ -21,11 +21,11 @@
         <div class="mb-3 row">
           <label class="form-label col-4">油視流器是否正常</label>
           <div class="col-8 d-flex">
-            <div class="form-check">
+            <div class="form-check me-3">
               <input class="form-check-input" type="radio" name="sample1" id="test1">
               <label class="form-check-label" for="test1">正常</label>
             </div>
-            <div class="form-check">
+            <div class="form-check me-3">
               <input class="form-check-input" type="radio" name="sample1" id="test2">
               <label class="form-check-label" for="test2">異常</label>
             </div>
@@ -42,7 +42,8 @@
               <input class="form-check-input" type="radio" name="sample2" id="test4">
               <label class="form-check-label" for="test4">正常</label>
             </div>
-            <div class="form-check">
+            <input class="form-control ms-2 me-3" style="width: 25%;" type="text">
+            <div class="form-check me-3">
               <input class="form-check-input" type="radio" name="sample2" id="test5">
               <label class="form-check-label" for="test5">異常</label>
             </div>

@@ -1,6 +1,6 @@
 .FormingMachine {
   background-color: #fff;
-  
+
   // 讀取狀態
   .status-box {
     padding: 40px 0;
@@ -15,4 +15,8 @@
     text-align: center;
   }
 
+  .start-btn {
+    height: 50vh;
+    font-size: 5rem;
+  }
 }

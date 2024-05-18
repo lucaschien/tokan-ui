@@ -35,7 +35,27 @@
       <div class="mb-3 row">
         <label class="form-label col-4">檢查杯數</label>
         <div class="col-8">
-          <input class="form-control" type="number" min="0"/>
+
+          <div class="form-check col-2">
+            <input class="form-check-input" type="radio" name="cupType" id="cup24" value="cup24"
+              v-model="dataModel.cupType"
+              @change="changeCups()"/>
+            <label class="form-check-label" for="cup24">24</label>
+          </div>
+          <div class="form-check col-2">
+            <input class="form-check-input" type="radio" name="cupType" id="cup40" value="cup40"
+              v-model="dataModel.cupType"
+              @change="changeCups()"/>
+            <label class="form-check-label" for="cup40">40</label>
+          </div>
+          <div class="form-check col-2">
+            <input class="form-check-input" type="radio" name="cupType" id="cupOther" value="cupOther" 
+              v-model="dataModel.cupType"
+              @change="changeCups()"/>
+            <label class="form-check-label" for="cupOther">其他</label>
+          </div>
+          <input class="form-control mt-2" v-if="dataModel.cupType === 'cupOther'"
+            type="number" min="0" placeholder="請輸入psc數" v-model="dataModel.cupNum"/>          
         </div>
       </div>
       <hr>
@@ -150,6 +170,21 @@ const popMsg = inject('popMsg')
 const route = useRoute()
 
 const nowMachine = ref(null)
+
+const dataModel = ref({
+  cupType: '',
+  cupNum: null
+})
+function changeCups() {
+  dataModel.value.cupNum = null;
+  if (dataModel.value.cupType === 'cup24') {
+    dataModel.value.cupNum = 24;
+  }
+  if (dataModel.value.cupType === 'cup40') {
+    dataModel.value.cupNum = 40;
+  }
+}
+
 
 onMounted(() => {
   nowMachine.value = route.query.machine;

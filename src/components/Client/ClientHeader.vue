@@ -14,8 +14,10 @@
           <i class="fa fa-bars" aria-hidden="true"></i>
         </button>
         <nav :class="[{ show: showMenu }]">
-          <a class="me-3 logout-btn"
-            @click="logOut()"><i class="fa fa-sign-out" aria-hidden="true"></i>登出</a>
+          <a class="me-1 logout-btn"
+            @click="rootStore.logout()"><i class="fa fa-sign-out" aria-hidden="true"></i>登出</a>
+          <RouterLink class="logout me-4"
+            :to="{ name: 'AppHome' }">回平台選擇</RouterLink>
 
           <RouterLink 
             class="disabled"
@@ -51,15 +53,12 @@
 
 <script setup>
 import { ref } from 'vue'
-import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { RouterLink, useRoute } from 'vue-router'
+import { useRootStore } from '@/stores/root'
 
 const route = useRoute()
-const router = useRouter()
+const rootStore = useRootStore()
 
 const showMenu = ref(false)
-
-function logOut() {
-  router.push({ name: 'AppHome' })
-}
 
 </script>

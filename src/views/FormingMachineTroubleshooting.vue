@@ -18,8 +18,17 @@
     <div class="custom-tables-box">
       <div class="mb-3 row">
         <label class="form-label col-4">狀況處理單位記錄</label>
-        <div class="col-8">
-          <textarea class="form-control" row="3"></textarea>
+        <div class="form-check col-2">
+          <input class="form-check-input" type="radio" name="sample1" id="test1">
+          <label class="form-check-label" for="test1">生產</label>
+        </div>
+        <div class="form-check col-2">
+          <input class="form-check-input" type="radio" name="sample1" id="test2">
+          <label class="form-check-label" for="test2">維修</label>
+        </div>
+        <div class="form-check col-2">
+          <input class="form-check-input" type="radio" name="sample1" id="test3">
+          <label class="form-check-label" for="test3">管理</label>
         </div>
       </div>
       <div class="mb-3 row">

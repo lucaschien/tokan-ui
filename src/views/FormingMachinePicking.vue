@@ -17,14 +17,14 @@
 
     <div class="custom-tables-box">
       <div class="mb-3 row">
-        <label class="form-label col-4">杯身紙台車</label>
+        <label class="form-label col-4">杯身紙台車編號</label>
         <div class="col-8">
           <InputScanBarcode 
             :scanCallback="(val) => { test1 = val }"/>
         </div>
       </div>
       <div class="mb-3 row">
-        <label class="form-label col-4">杯底紙</label>
+        <label class="form-label col-4">杯底紙編號</label>
         <div class="col-8">
           <InputScanBarcode 
             :scanCallback="(val) => { test2 = val }"/>
@@ -32,15 +32,17 @@
       </div>
       <div class="mb-3 row">
         <label class="form-label col-4">矽利康</label>
-        <div class="col-8">
-          <input class="form-control" type="text" >
+        <div class="col-7">
+          <input class="form-control" type="text" />
         </div>
+        <div class="col-1 fs-3">公升</div>
       </div>
       <div class="mb-3 row">
         <label class="form-label col-4">白油</label>
-        <div class="col-8">
-          <input class="form-control" type="text" >
+        <div class="col-7">
+          <input class="form-control" type="text" />
         </div>
+        <div class="col-1 fs-3">公升</div>
       </div>
       <button class="btn btn-primary w-100 mt-4" @click="popMsg('資料已送出')">送出</button>
     </div>

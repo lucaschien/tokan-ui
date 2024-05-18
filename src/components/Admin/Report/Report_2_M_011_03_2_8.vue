@@ -101,8 +101,7 @@
           </tr>
           <tr>
             <td align="center">生產總杯數(pcs)</td>
-            <td align="center"></td>
-            <td align="center"></td>
+            <td align="center" colspan="2"></td>
           </tr>
         </tbody>
       </table>
@@ -182,8 +181,7 @@
           </tr>
           <tr>
             <td align="center">生產總杯數(pcs)</td>
-            <td align="center"></td>
-            <td align="center"></td>
+            <td align="center" colspan="2"></td>
           </tr>
         </tbody>
       </table>
@@ -263,8 +261,7 @@
           </tr>
           <tr>
             <td align="center">生產總杯數(pcs)</td>
-            <td align="center"></td>
-            <td align="center"></td>
+            <td align="center" colspan="2"></td>
           </tr>
         </tbody>
       </table>

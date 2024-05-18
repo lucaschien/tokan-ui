@@ -8,17 +8,22 @@
         </i>
       </template>
     </div>
-    <RouterLink class="logout"
-      :to="{ name: 'AppHome'}">登出</RouterLink>
+    <div>
+      <RouterLink class="logout me-2"
+        :to="{ name: 'AppHome'}">回平台選擇</RouterLink>
+      <a class="logout"
+        href="javascript:;"
+        @click="rootStore.logout()">登出</a>
+    </div>
   </header>
 </template>
 
 <script setup>
-import { RouterLink, useRoute, useRouter } from 'vue-router'
+import { RouterLink, useRoute } from 'vue-router'
+import { useRootStore } from '@/stores/root'
 
 const route = useRoute()
-const router = useRouter()
-
+const rootStore = useRootStore()
 
 
 </script>

@@ -1,13 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import AppHome from '../views/AppHome.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
+      name: 'Login',
+      component: () => import('../views/Login.vue'),
+    },
+    {
+      path: '/AppHome',
       name: 'AppHome',
-      component: AppHome
+      component: () => import('../views/AppHome.vue'),
     },
 
     // C端
@@ -124,16 +128,9 @@ const router = createRouter({
             nav: 'FormingMachine'
           }
         },
-
-
       ]
     },
     // B端
-    {
-      path: '/AdminLogin',
-      name: 'AdminLogin',
-      component: () => import('../views/Admin/AdminLogin.vue'),
-    },
     {
       path: '/Admin',
       name: 'AdminFull',

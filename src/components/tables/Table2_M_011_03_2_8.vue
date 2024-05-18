@@ -6,7 +6,10 @@
     <div class="mb-3 row">
       <label class="form-label col-4">原紙種類: </label>
       <div class="col-8">
-        <input class="form-control" type="text" value="一般原紙" disabled>
+        <select class="form-select" disabled>
+          <option>一般原紙</option>
+          <option>FSC</option>
+        </select>
       </div>
     </div>
     <div class="mb-3 row">
@@ -24,7 +27,7 @@
     <div class="mb-3 row">
       <label class="form-label col-4">成型速度:</label>
       <div class="col-8">
-        <input class="form-control" type="number">
+        <input class="form-control" type="number" disabled>
       </div>
     </div>
 
@@ -149,13 +152,7 @@
     <div class="mb-3 row">
       <label class="form-label col-4">生產杯數(pcs):</label>
       <div class="col-8">
-        <input class="form-control" type="number">
-      </div>
-    </div>
-    <div class="mb-3 row">
-      <label class="form-label col-4">生產總杯數(pcs):</label>
-      <div class="col-8">
-        <input class="form-control" type="number">
+        <input class="form-control" type="number" disabled>
       </div>
     </div>
 

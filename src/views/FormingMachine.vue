@@ -33,22 +33,38 @@
       <div class="container">
         <div class="row mb-2">
           <div class="col-6">
-            <lable class="form-label">組長</lable>
-            <input class="form-control" type="text" v-model="dataModel.aaa">
-          </div>
-          <div class="col-6">
-            <lable class="form-label">裁切人員</lable>
-            <input class="form-control" type="text" v-model="dataModel.bbb">
+            <lable class="form-label">班別</lable>
+            <select class="form-select" v-model="basicInfo.shift" disabled>
+              <option value="MORNING">早班</option>
+              <option value="AFTERNOON">中班</option>
+              <option value="NIGHT">晚班</option>
+            </select>
           </div>
         </div>
         <div class="row mb-2">
           <div class="col-6">
-            <lable class="form-label">杯身紙台車編號</lable>
-            <input class="form-control" type="text" v-model="dataModel.ccc">
+            <lable class="form-label">組長</lable>
+            <input class="form-control" type="text" v-model="basicInfo.teamLeader"
+              :disabled="formingMachineLastBasicInfo">
           </div>
           <div class="col-6">
+            <lable class="form-label">生產人員</lable>
+            <input class="form-control" type="text" v-model="basicInfo.productionPersonnel"
+              :disabled="formingMachineLastBasicInfo">
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-6">
+            TODO... 改掃描
+            <lable class="form-label">杯身紙台車編號</lable>
+            <input class="form-control" type="text" v-model="basicInfo.cupPaperCartNumber"
+              :disabled="formingMachineLastBasicInfo">
+          </div>
+          <div class="col-6">
+            TODO... 改掃描
             <lable class="form-label">杯底紙編號</lable>
-            <input class="form-control" type="text" v-model="dataModel.ddd">
+            <input class="form-control" type="text" v-model="basicInfo.bottomPaperNumber"
+              :disabled="formingMachineLastBasicInfo">
           </div>
         </div>
         <div class="row mb-2">
@@ -57,19 +73,25 @@
             <div class="row ps-1">
               <div class="form-check col-2">
                 <input class="form-check-input" 
+                  v-model="basicInfo.paperType"
                   type="radio" 
-                  name="testPaper" 
-                  id="testPaper1">
-                <label class="form-check-label" for="testPaper1">
+                  name="paperType" 
+                  id="paperType1"
+                  value="GENERAL"
+                  :disabled="formingMachineLastBasicInfo">
+                <label class="form-check-label" for="paperType1">
                   一般原紙
                 </label>
               </div>
               <div class="form-check col-2">
                 <input class="form-check-input" 
+                  v-model="basicInfo.paperType"
                   type="radio" 
-                  name="testPaper" 
-                  id="testPaper2">
-                <label class="form-check-label" for="testPaper2">
+                  name="paperType" 
+                  id="paperType2"
+                  value="FSC"
+                  :disabled="formingMachineLastBasicInfo">
+                <label class="form-check-label" for="paperType2">
                   FSC
                 </label>
               </div>
@@ -77,7 +99,20 @@
           </div>
         </div>
         <button class="btn btn btn-primary w-100 mt-4"
-          @click="sned()">送出生產啟動</button>
+          @click="snedProductionInfo()">送出</button>
+      </div>
+    </div>
+
+    <!-- 生產啟動 -->
+    <div v-if="step === 4">
+      <div class="d-flex align-items-center">
+        <h1 class="me-5 mb-0">#{{ nowMachine }}</h1>
+        <button class="btn btn-outline-primary"
+          @click="backChoiceMachine()">選擇其它機號</button>
+      </div>
+      <div class="container pt-5">
+        <button class="btn btn btn-primary w-100 mt-4 start-btn"
+          @click="sendProductionStartUp()">生產啟動</button>
       </div>
     </div>
 
@@ -85,10 +120,39 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, inject, onMounted, computed } from 'vue'
+import { ajax } from '@/common/ajax'
+import { api } from '@/common/api'
+import { useRoute, useRouter } from 'vue-router'
+import { useAdminStore } from '@/stores/AdminStore';
 
+/* 機器狀態
+INITIAL("初始狀態"),
+MAINTENANCE("保養中"),
+PRODUCTION_INTERRUPTED("生產中斷中"),
+SHIFT_CHANGE("工作交接中"),
+AWAITING_MATERIAL("待料中"),
+RESTING("休息中"),
+IN_PRODUCTION("生產中"),
+MATERIAL_ISSUANCE("領料中"),
+MACHINE_CALIBRATION("漏水調機中"),
+TROUBLESHOOTING("故障排除中"),
+MACHINE_CLEANING("機台清潔中"),
+MOLD_CHANGE("模具更換中"),
+MACHINE_STOPPED_FOR_REPAIR("停機待修中");
+*/
+
+const route = useRoute()
 const router = useRouter()
+const popMsg = inject('popMsg')
+const adminStore = useAdminStore();
+const VITE_API_DOMAIN = import.meta.env.VITE_API_DOMAIN;
+
+// 當前時段所屬班別
+const nowTimeShift = computed(() => adminStore.nowShift);
+onMounted(() => {
+  adminStore.checkNowShift();
+})
 
 // 界面切換步驟
 const step = ref(1);
@@ -110,43 +174,77 @@ function getMachineStatus() {
   }, 600)
 }
 
-
 // 選擇哪台機器
 const nowMachine = ref(null)
 function choiceMachine(item) {
-  // TODO... 之後應該要放到 pinia & cookie 去記錄, 或是之後放到url上
   nowMachine.value = item
+  basicInfo.value.machineNumber = item
+  basicInfo.value.shift = nowTimeShift.value
   step.value = 2
   getMachineStatus()
+  adminStore.getFormingMachineBasicInfo(item)
+  // 放到url上去
+  router.replace({ name:'FormingMachine', query: { machine: item }})
 }
 // 重新選擇機器
 function backChoiceMachine() {
   nowMachine.value = null
+  basicInfo.value.machineNumber = null
   // 生產基本資料恢復預設值
-  resetDataModel()
+  resetBasicInfo()
   // 回到界面步驟 1
   step.value = 1
+  router.replace({ name:'FormingMachine'})
 }
 
-
-// 生產基本資料
-const dataModel = ref({
-  aaa: '', // 組長
-  bbb: '', // 裁切人員
-  ccc: '', // 杯身紙台車編號
-  ddd: '', // 杯底紙編號
-  eee: '', // FSC/一般原紙
+// 成型機生產基本資料
+const basicInfo = ref({
+  machineNumber: null,
+  shift: 'MORNING', // 班別 MORNING, AFTERNOON, NIGHT
+  teamLeader: '', // 組長
+  productionPersonnel: '', // 生產人員
+  cupPaperCartNumber: '', // 杯身紙台車編號
+  bottomPaperNumber: '', // 杯底紙編號
+  paperType: '', // FSC/一般原紙
 })
-function resetDataModel() {
-  dataModel.value.aaa = ''
-  dataModel.value.bbb = ''
-  dataModel.value.ccc = ''
-  dataModel.value.ddd = ''
-  dataModel.value.eee = ''
+function resetBasicInfo() {
+  adminStore.clearFormingMachineLastBasicInfo();
+  basicInfo.value.machineNumber = null
+  basicInfo.value.shift = ''
+  basicInfo.value.teamLeader = ''
+  basicInfo.value.productionPersonnel = ''
+  basicInfo.value.cupPaperCartNumber = ''
+  basicInfo.value.bottomPaperNumber = ''
+  basicInfo.value.paperType = ''
 }
-function sned() {
+// 新增一筆基本資料
+async function snedProductionInfo() {
+  step.value = 4
+  return
+
+  const path = VITE_API_DOMAIN + api.moldingMachine.saveBasicInfo;
+  const result = await ajax.post(path, basicInfo.value);
+  if (ajax.checkErrorCode(result.errorCode)) {
+    // 如果曾經有該班別的基本資料就不要進入步驟4而是直接進入成型機功能頁
+    if (!adminStore.formingMachineLastBasicInfo) {
+      step.value = 4
+      adminStore.getFormingMachineBasicInfo(nowMachine.value ) // 更新store的資料
+    } else {
+      router.push({ name: 'FormingMachineFnEnter', query: { machine: nowMachine.value } })
+    }
+  } else {
+    popMsg('新增基本資料失敗')
+  }
+}
+
+// 送出生產啟動
+function sendProductionStartUp() {
   router.push({ name: 'FormingMachineFnEnter', query: { machine: nowMachine.value } })
 }
 
-
+onMounted(() => {
+  if (route.query.machine) {
+    choiceMachine(route.query.machine)
+  }
+})
 </script>

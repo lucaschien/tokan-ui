@@ -1,21 +1,30 @@
 import axios from 'axios'
-import router from '@/router/index';
+import router from '@/router/index'
+import cookies from 'js-cookie'
 
 const CancelToken = axios.CancelToken;
 export let cancelAxios = [];
 
 function AjaxDefine() {
   const ajax = {
-    setAuthorization() {
-      // const token = cookies.get('justkaB');
-      // axios.defaults.headers.common.Authorization = token ? `Bearer ${token}` : '';
+    setAuthorization(token) {
+      console.log('token', token);
+      cookies.set('taiwantokan', token);
+      axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+    },
+    getAuthorization() {
+      let token = cookies.get('taiwantokan');
+      token = (token) ? `Bearer ${token}` : '';
+      if (token) {
+        axios.defaults.headers.common.Authorization = token;
+      }
     },
     setAccountId(id) {
-      //axios.defaults.headers.common['accountId'] = id;
+      axios.defaults.headers.common['accountId'] = id;
     },
     async baseConfig(options) {
       try {
-        //this.setAuthorization();
+        this.getAuthorization();
         const res = await axios(options);
         // for 權限過期或帳號錯誤
         if (res.data.errorCode === '35990011' || res.data.errorCode === '35990012') {
@@ -65,6 +74,7 @@ function AjaxDefine() {
       }
     },
     ErrorHandle(error) {
+      console.error(error);
       //console.log('import.meta.env.MODE', import.meta.env.MODE);
       // 注意: 302 這個是for第一次 POC 階段先這樣做,之後後端改變作法這邊再拿掉.
       /* if ((error.response && error.response.status === 302) || error.toString() === 'Error: Network Error') {
@@ -81,8 +91,8 @@ function AjaxDefine() {
       if (error.response && error.response.status === 401 && error.response.status === 302) {
         const text = '尚未授權或已登出，請重新登入';
         const callback = () => {
-          //cookies.remove('justkaB', { domain: '.justka.ai' });
-          router.push({ name: 'AdminLogin' });
+          //cookies.remove('taiwantokan', { domain: '.justka.ai' });
+          router.push({ name: 'Login' });
         }
         alert(text);
         callback();
