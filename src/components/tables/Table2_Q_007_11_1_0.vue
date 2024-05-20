@@ -5,7 +5,7 @@
 
     <div class="mb-3">
       <label class="form-label">生產日期</label>
-      <input type="text" class="form-control">
+      <input type="date" class="form-control">
     </div>
     <div class="mb-3">
       <label class="form-label">班別</label>

@@ -1,6 +1,7 @@
 <template>
   <div class="InputScanBarcode">
-    <input type="text" class="form-control me-2" v-model="barcodeValue">
+    <input type="text" class="form-control me-2" v-model="barcodeValue"
+       @change="changeBarcodeValue()">
     <button class="btn btn-primary" 
       @click="startScan()">
       <i class="fa fa-barcode" aria-hidden="true"></i>
@@ -15,13 +16,17 @@
 </template>
 
 <script setup>
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, watch, onMounted } from 'vue'
 import { useHtml5QrCode } from '@/hooks/html5-qr-code'
 
-const { scanCallback } = defineProps({
+const props = defineProps({
   scanCallback: {
     type: Function,
     default: () => {}
+  },
+  code: {
+    type: String,
+    default: ''
   }
 })
 
@@ -44,8 +49,21 @@ const stopScan = () => {
 // 掃描成功後的回呼函式
 const successCallback = (decodedText) => {
   barcodeValue.value = decodedText
-  scanCallback(decodedText)
+  props.scanCallback(decodedText)
   stopScan() // 停止相機
 }
+
+// 手動輸入
+function changeBarcodeValue() {
+  props.scanCallback(barcodeValue.value);
+}
+
+watch(() => props.code, (newValue) => {
+  barcodeValue.value = newValue;
+})
+
+onMounted(() => {
+  barcodeValue.value = (props.code)? props.code : barcodeValue.value;
+})
 
 </script>

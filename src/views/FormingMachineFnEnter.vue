@@ -1,7 +1,7 @@
 <template>
   <div class="FormingMachineFnEnter p-3">
-    <div class="d-flex align-items-center mb-3">
-      <h1 class="me-5 mb-0">#{{ nowMachine }}</h1>
+    <div class="d-flex align-items-center mb-3" v-if="nowMachineId">
+      <h1 class="me-5 mb-0">{{ oneFormingMachineInfo.name }}</h1>
       <RouterBackBtn 
         :btn-text="'選擇其它機號'"
         :router-name="'FormingMachine'"
@@ -10,35 +10,35 @@
     <div class="card-box">
       <div :class="['card m-2 align-items-center', { disabled: false }]">
         <RouterLink
-          :to="{ name: 'FormingMachinePatrol', query: { machine: nowMachine }}">巡查</RouterLink>
+          :to="{ name: 'FormingMachinePatrol', query: { machineId: nowMachineId }}">巡查</RouterLink>
       </div>
       <div :class="['card m-2 align-items-center', { disabled: false }]">
         <RouterLink
-          :to="{ name: 'FormingMachineHandover', query: { machine: nowMachine }}">工作交接</RouterLink>
+          :to="{ name: 'FormingMachineHandover', query: { machineId: nowMachineId }}">工作交接</RouterLink>
       </div>
       <div :class="['card m-2 align-items-center', { disabled: false }]">
         <RouterLink
-          :to="{ name: 'FormingMachinePicking', query: { machine: nowMachine }}">領料</RouterLink>
+          :to="{ name: 'FormingMachinePicking', query: { machineId: nowMachineId }}">領料</RouterLink>
       </div>
       <div :class="['card m-2 align-items-center', { disabled: false }]">
         <RouterLink
-          :to="{ name: 'FormingMachineWaterLeakageAdjustment', query: { machine: nowMachine }}">漏水調機</RouterLink>
+          :to="{ name: 'FormingMachineWaterLeakageAdjustment', query: { machineId: nowMachineId }}">漏水調機</RouterLink>
       </div>
       <div :class="['card m-2 align-items-center', { disabled: false }]">
         <RouterLink
-          :to="{ name: 'FormingMachineTroubleshooting', query: { machine: nowMachine }}">故障排除</RouterLink>
+          :to="{ name: 'FormingMachineTroubleshooting', query: { machineId: nowMachineId }}">故障排除</RouterLink>
       </div>
       <div :class="['card m-2 align-items-center', { disabled: false }]">
         <RouterLink
-          :to="{ name: 'FormingMachineReplaceProduct', query: { machine: nowMachine }}">更換產品</RouterLink>
+          :to="{ name: 'FormingMachineReplaceProduct', query: { machineId: nowMachineId }}">更換產品</RouterLink>
       </div>
       <div :class="['card m-2 align-items-center', { disabled: false }]">
         <RouterLink
-          :to="{ name: 'FormingMachineRestSwitch', query: { machine: nowMachine }}">休息狀態切換</RouterLink>
+          :to="{ name: 'FormingMachineRestSwitch', query: { machineId: nowMachineId }}">休息狀態切換</RouterLink>
       </div>
       <div :class="['card m-2 align-items-center', { disabled: false }]">
         <RouterLink
-          :to="{ name: 'FormingMachineClean', query: { machine: nowMachine }}">機台清潔</RouterLink>
+          :to="{ name: 'FormingMachineClean', query: { machineId: nowMachineId }}">機台清潔</RouterLink>
       </div>
       <div :class="['card m-2 align-items-center', { disabled: false }]">
         <a href="javascript:;"
@@ -50,7 +50,7 @@
       </div>
       <div :class="['card m-2 align-items-center', { disabled: false }]">
         <RouterLink
-          :to="{ name: 'FormingMachineProductionInterruption', query: { machine: nowMachine } }">生產中斷</RouterLink>
+          :to="{ name: 'FormingMachineProductionInterruption', query: { machineId: nowMachineId } }">生產中斷</RouterLink>
       </div>
       <div :class="['card m-2 align-items-center', { disabled: false }]">
         <a href="javascript:;"
@@ -61,17 +61,20 @@
 </template>
 
 <script setup>
-import { ref, onMounted, inject } from 'vue'
+import { ref, onMounted, inject, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { useClientStore } from '@/stores/ClientStore'
 import RouterBackBtn from '@/components/RouterBackBtn.vue'
 
 const openConfirm = inject('openConfirm')
 const route = useRoute()
+const clientStore = useClientStore()
 
-const nowMachine = ref(null)
+const nowMachineId = ref(null)
+const oneFormingMachineInfo = computed(() => clientStore.getOneFormingMachineInfo); // 當前成型機資料
 
 onMounted(() => {
-  nowMachine.value = route.query.machine;
+  nowMachineId.value = route.query.machineId;
 })
 
 //

@@ -1,1 +1,0 @@
-import{o as e,c as o,a as s}from"./index-BWHCkEjI.js";const r=s("i",{class:"fa fa-print","aria-hidden":"true"},null,-1),i=[r],p={__name:"AdminPrintBtn",setup(a){function t(){print()}return(c,n)=>(e(),o("button",{class:"btn btn-outline-secondary ms-2 AdminPrintBtn",onClick:n[0]||(n[0]=_=>t())},i))}};export{p as _};

@@ -5,10 +5,11 @@ import cookies from 'js-cookie'
 const CancelToken = axios.CancelToken;
 export let cancelAxios = [];
 
+axios.defaults.headers['ngrok-skip-browser-warning'] = 'any';
+
 function AjaxDefine() {
   const ajax = {
     setAuthorization(token) {
-      console.log('token', token);
       cookies.set('taiwantokan', token);
       axios.defaults.headers.common.Authorization = `Bearer ${token}`;
     },

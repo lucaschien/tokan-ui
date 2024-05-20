@@ -16,6 +16,17 @@
 </template>
 
 <script setup>
+/*
+  charlies_M
+  lucas_A
+  charlies_A
+  charlies_N
+  lucas_M
+  _M 早班
+  _N 晚班 
+  _A 午班
+*/
+
 import { ref, inject } from 'vue'
 import { useRouter } from 'vue-router'
 import { ajax } from '@/common/ajax'
@@ -41,8 +52,8 @@ async function login() {
   };
   const result = await ajax.post(path, param);
   if (ajax.checkErrorCode(result.errorCode)) {
-    // TODO... 這邊還要做將 token 寫到 ajax 的 header 的部分
-    ajax.setAuthorization(result.data.accessToken);
+    // 將 token 寫到 ajax 的 header 的部分
+    ajax.setAuthorization(result.data.accessToken)
     cookies.set('taiwantokanLoginInfo', JSON.stringify(result.data))
     router.push({ name: 'AppHome' })
   } else {
