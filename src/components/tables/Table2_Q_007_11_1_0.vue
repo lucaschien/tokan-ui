@@ -9,10 +9,12 @@
     </div>
     <div class="mb-3">
       <label class="form-label">班別</label>
-      <select class="form-select">
+      <!-- 提醒: 編輯不能改班別 -->
+      <select class="form-select" :disabled="props.detailItem"
+        v-model="dataModel.shift">
         <option :value="null">請選擇</option>
         <option>早班</option>
-        <option>中班</option>
+        <option>午班</option>
         <option>晚班</option>
       </select>
     </div>
@@ -43,41 +45,7 @@
         </div>
 
       </div>
-
-      <!-- <select class="form-select">
-        <option :value="null">請選擇</option>
-        <option>09:00</option>
-        <option>10:30</option>
-        <option>13:30</option>
-        <option>15:30</option>
-        <option>17:00</option>
-        <option>18:30</option>
-        <option>21:30</option>
-        <option>23:30</option>
-        <option>01:00</option>
-        <option>02:30</option>
-        <option>05:30</option>
-        <option>07:30</option>
-      </select> -->
     </div>
-    <!-- <div class="mb-3">
-      <label class="form-label">檢查結果</label>
-      <div class="form-check">
-        <input class="form-check-input" v-model="testResult"
-          value="NOTWORK" type="radio" name="testResult" id="NOTWORK">
-        <label class="form-check-label" for="NOTWORK">未生產</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" v-model="testResult"
-          value="NORMAL" type="radio" name="testResult" id="NORMAL">
-        <label class="form-check-label" for="NORMAL">正常</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" v-model="testResult"
-          value="ABNORMAL" type="radio" name="testResult" id="ABNORMAL">
-        <label class="form-check-label" for="ABNORMAL">異常</label>
-      </div>
-    </div> -->
 
     <div class="mb-3">
       <label class="form-label">異常調機措施</label>
@@ -89,8 +57,38 @@
 </template>
 
 <script setup>
-import { ref, inject } from 'vue'
+import { ref, inject, onMounted } from 'vue'
+import { ajax } from '@/common/ajax'
+import { api } from '@/common/api'
+import { useRoute } from 'vue-router'
+import { useRootStore } from '@/stores/root'
+import { useClientStore } from '@/stores/ClientStore'
+import moment from 'moment'
+
+const route = useRoute()
+const rootStore = useRootStore()
+const clientStore = useClientStore()
 const popMsg = inject('popMsg')
+const VITE_API_DOMAIN = import.meta.env.VITE_API_DOMAIN
+
+const props = defineProps({
+  detailItem: String,
+  seccessCallback: Function
+})
+
+// 提醒這個是單一個時段的資料格式
+const oneDataModel = {
+  machineId: route.query.machineId,
+  shift: clientStore.nowShift, // 班表, default 當前時間對應班別
+  productionDate: moment().format('YYYY-MM-DD'),
+  inspectionTime: '09:00:00',
+  teamLeader: '', // teamLeader
+  testResult: 'N', // 檢查結果
+  abnormalAdjustmentMeasures: '' // 異常調機措施
+};
+
+// 用來放後端資料整理過後用
+const uiModel = [];
 
 // TODO... 檢查結果
 const testResult = ref(null)
@@ -109,9 +107,16 @@ const testTimes = [
   '07:30', 
 ]
 
+onMounted(() => {
+  console.log('props.detailItem', props.detailItem);
+  // 區分是新增還是編輯
+  if (props.detailItem) { // 編輯
 
+  }
+  if (!props.detailItem) { // 新增
 
-
+  }
+})
 </script>
 
 <style lang="scss">

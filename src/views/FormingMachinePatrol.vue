@@ -25,12 +25,45 @@
         <option value="2_Q_007_01_2_6">包裝膜檢查</option>
       </select>
 
-      <div class="mb-3" >
-        <button class="btn btn-primary p-4" v-if="!lookDetail && choiceTable"
-          @click="lookDetail = true; lookDetailId='';">新增</button>
+      <div class="mb-3">
+        <div class="d-flex" v-if="!lookDetail && choiceTable">
+          <select class="form-select text-center" style="width: 150px;" v-model="createType">
+            <option value="MORNING">早班</option>
+            <option value="AFTERNOON">中班</option>
+            <option value="NIGHT">晚班</option>
+          </select>
+          <button class="btn btn-primary p-4 ms-1" :disabled="canUseCreateBtn"
+            @click="lookDetail = true; lookDetailItem=null;">新增</button>
+        </div>
         <button class="btn btn-primary p-4" v-if="lookDetail && choiceTable"
-          @click="lookDetail = false; lookDetailId='';">返回列表</button>
+          @click="backList()">返回列表</button>
       </div>
+
+      <!-- 紙杯破壞試驗檢查表 列表 -->
+      <table class="table" v-if="!lookDetail && choiceTable === '2_Q_007_11_1_0'">
+        <thead>
+          <tr>
+            <th width="80">#</th>
+            <th width="250">生產日期</th>
+            <th width="200">班別</th>
+            <th>組長</th>
+            <th width="100">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>2024-10-10</td>
+            <td>早班</td>
+            <td>王小明</td>
+            <td>
+              <button class="btn btn-outline-primary" @click="setDetailObj('2222')">
+                <i class="fa fa-pencil" aria-hidden="true"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <!-- 包裝膜檢查 列表 -->
       <table class="table" v-if="!lookDetail && choiceTable === '2_Q_007_01_2_6'">
@@ -38,15 +71,28 @@
           <tr>
             <th width="200">#</th>
             <th>班別</th>
+            <th>檢查結果</th>
             <th width="100">操作</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(item, index) in listData" :key="'2_Q_007_01_2_6' + item.id">
+          <tr v-for="(item, index) in listData" :key="'2_Q_007_01_2_6' + item.shift">
             <td>{{ index+1 }}</td>
-            <td>早班{{ index }}</td>
             <td>
-              <button class="btn btn-outline-primary" @click="setDetailId('1111')">
+              <template v-if="item.shift === 'MORNING'">早班</template>
+              <template v-if="item.shift === 'AFTERNOON'">午班</template>
+              <template v-if="item.shift === 'NIGHT'">晚班</template>
+            </td>
+            <td>
+              <div>印字正常: {{ item.normalPrint }}</div>
+              <div>印刷外觀正常: {{ item.normalPrintAppearance }}</div>
+              <div>包裝背封良好: {{ item.goodPackagingBackSeal }}</div>
+              <div>包裝上封口良好: {{ item.goodPackagingUpperSeal }}</div>
+              <div>包裝下封口良好: {{ item.goodPackagingLowerSeal }}</div>
+              <div>包裝袋寬幅正常: {{ item.normalPackagingBagWidth }}</div>
+            </td>
+            <td>
+              <button class="btn btn-outline-primary" @click="setDetailObj(item)">
                 <i class="fa fa-pencil" aria-hidden="true"></i>
               </button>
             </td>
@@ -58,12 +104,18 @@
       <Table2_M_011_13_1_4_SF_170 v-if="lookDetail && choiceTable === '2_M_011_13_1_4_SF_170'"/>
       <Table2_M_011_03_2_8 v-if="lookDetail && choiceTable === '2_M_011_03_2_8'"/>
 
-      <Table2_Q_007_11_1_0 v-if="lookDetail && choiceTable === '2_Q_007_11_1_0'"/>
+      <!-- 紙杯破壞試驗檢查表 -->
+      <Table2_Q_007_11_1_0 v-if="lookDetail && choiceTable === '2_Q_007_11_1_0'"
+        :detailItem="lookDetailItem" 
+        :seccessCallback="tableModifyCall"
+      />
 
       <!-- 包裝膜檢查 -->
       <Table2_Q_007_01_2_6 v-if="lookDetail && choiceTable === '2_Q_007_01_2_6'"
-        :detailId="lookDetailId" 
-        :seccessCallback="tableModifyCall"/>
+        :createShift="createType"
+        :detailItem="lookDetailItem" 
+        :seccessCallback="tableModifyCall"
+      />
 
     </div>
   </div>
@@ -95,23 +147,37 @@ const choiceTable = ref(null)
 const listData = ref([]) // 所有列表共用此變數
 const listIsempty = ref(false)
 const lookDetail = ref(false)
-const lookDetailId = ref('')
+const lookDetailItem = ref(null)
 
+const createType = ref('MORNING') // 新增樣式下拉選單
+
+// computed
+const canUseCreateBtn = computed(() => {
+  let re = false;
+  listData.value.forEach((item) => {
+    if (createType.value === item.shift) {
+      re = true;
+    }
+  });
+  return re;
+});
 
 // 切換巡查下拉選單
 function changeWork() {
   listData.value = []
   listIsempty.value = false
   lookDetail.value = false
-  lookDetailId.value = ''
+  lookDetailItem.value = null
 
   const param = {
-    machineNumber: nowMachineId.value,
+    machineId: nowMachineId.value,
     productionDate: moment().format('YYYY-MM-DD')
   }
-
+  
   // 撈取列表資料 依照不同下拉呼叫不同的函式
-  get2_Q_007_01_2_6List(param)
+  if (choiceTable.value === '2_Q_007_01_2_6') {
+    get2_Q_007_01_2_6List(param)
+  }
 }
 // 撈取包裝膜檢查列表
 async function get2_Q_007_01_2_6List(param) {
@@ -128,16 +194,22 @@ async function get2_Q_007_01_2_6List(param) {
   }
 }
 
-// 設定要觀看的id
-function setDetailId(id) {
-  lookDetailId.value = id;
+// 設定要觀看的物件
+function setDetailObj(item) {
+  lookDetailItem.value = item;
   lookDetail.value = true;
 }
 
 // 詳細頁儲存後的回呼韓式
 function tableModifyCall () {
-  lookDetailId.value = '';
+  lookDetailItem.value = null;
   lookDetail.value = false;
+}
+
+function backList() {
+  lookDetail.value = false; 
+  lookDetailItem.value = null;
+  changeWork();
 }
 
 onMounted(() => {

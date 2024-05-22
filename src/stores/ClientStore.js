@@ -76,83 +76,10 @@ export const useClientStore = defineStore('ClientStore', {
         popMsg(result.errorCode)
       }
       return
-      // TODO... 等api好了在拿掉
-      this.formingMachineList = [
-        {
-          "id": "55554944-2829-0000-0000-000000000000",
-          "name": "#1",
-          "status": "INITIAL",
-          "handler": "charlies",
-          "handlerType": null,
-          "dateTime": "2024-05-16 23:50:09",
-          "details": null,
-          "provisionType": "FORMING"
-        },
-        {
-          "id": "55554944-2831-3129-0000-000000000000",
-          "name": "#11",
-          "status": "INITIAL",
-          "handler": "charlies",
-          "handlerType": null,
-          "dateTime": "2024-05-16 23:50:09",
-          "details": null,
-          "provisionType": "FORMING_SF170"
-        },
-        {
-          "id": "55554944-2832-2900-0000-000000000000",
-          "name": "#3",
-          "status": "INITIAL",
-          "handler": "charlies",
-          "handlerType": null,
-          "dateTime": "2024-05-16 23:50:09",
-          "details": null,
-          "provisionType": "FORMING"
-        },
-        {
-          "id": "55554944-2833-2900-0000-000000000000",
-          "name": "#4",
-          "status": "INITIAL",
-          "handler": "charlies",
-          "handlerType": null,
-          "dateTime": "2024-05-16 23:50:09",
-          "details": null,
-          "provisionType": "FORMING"
-        },
-        {
-          "id": "55554944-2834-2900-0000-000000000000",
-          "name": "#5",
-          "status": "INITIAL",
-          "handler": "charlies",
-          "handlerType": null,
-          "dateTime": "2024-05-16 23:50:09",
-          "details": null,
-          "provisionType": "FORMING"
-        },
-        {
-          "id": "55554944-2835-2900-0000-000000000000",
-          "name": "#6",
-          "status": "INITIAL",
-          "handler": "charlies",
-          "handlerType": null,
-          "dateTime": "2024-05-16 23:50:09",
-          "details": null,
-          "provisionType": "FORMING"
-        },
-        {
-          "id": "efbbbf55-5549-4428-3129-000000000000",
-          "name": "#2",
-          "status": "INITIAL",
-          "handler": "charlies",
-          "handlerType": null,
-          "dateTime": "2024-05-16 23:50:09",
-          "details": null,
-          "provisionType": "FORMING"
-        }
-      ];
     },
 
     // 取得單一成型機詳細資訊
-    async getFormingMachineInfo(id, callback = () => {}) {
+    async getFormingMachineInfo(id, callback = () => { }) {
       const path = VITE_API_DOMAIN + formatPath(api.moldingMachine.formingMachineInfo, id)
       const result = await ajax.get(path)
       if (ajax.checkErrorCode(result.errorCode)) {
@@ -162,9 +89,6 @@ export const useClientStore = defineStore('ClientStore', {
         popMsg(result.errorCode)
       }
       return
-      // TODO... 等api好了在拿掉
-      this.oneFormingMachineInfo = { test: '哈哈哈' }
-      callback()
     },
 
     // 清除成型機基本基料
@@ -176,7 +100,7 @@ export const useClientStore = defineStore('ClientStore', {
     async getFormingMachineBasicInfo(id, otherShift) {
       const path = VITE_API_DOMAIN + api.moldingMachine.getBasicInfo
       const param = {
-        id: id,
+        machineId: id,
         shift: (!otherShift) ? this.nowShift : otherShift
       }
       const result = await ajax.post(path, param);
@@ -193,23 +117,8 @@ export const useClientStore = defineStore('ClientStore', {
         } */
       } else {
         popMsg(result.errorCode)
-      } 
-      return
-      // TODO... 等api好了在拿掉
-      this.formingMachineLastBasicInfo = {
-        "machineNumber": 1,
-        "shift": "AFTERNOON",
-        "productionDate": "2024-05-18",
-        "paperType": "GENERAL",
-        "cupPaperCartNumber": "",
-        "bottomPaperNumber": "",
-        "teamLeader": "lucas",
-        "productionPersonnel": "大雄",
-        "createDate": "2024-05-18T16:10:53.116372",
-        "crtUser": null,
-        "lastModifyDate": "2024-05-18T16:10:53.116372",
-        "mdyUser": null
       }
+      return
     },
 
   }

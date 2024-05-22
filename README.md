@@ -33,3 +33,12 @@ npm run build
 ```sh
 npm run lint
 ```
+
+charlies_M
+lucas_A
+charlies_A
+charlies_N
+lucas_M
+\_M 早班
+\_N 晚班
+\_A 午班

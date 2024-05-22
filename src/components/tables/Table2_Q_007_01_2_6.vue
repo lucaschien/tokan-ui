@@ -3,16 +3,32 @@
   <div class="custom-tables-box Table2_Q_007_01_2_6">
     <p>2-Q-007-01-2.6生產品質檢驗表</p>
 
-    <div class="mb-5">
+    <div class="mb-3">
       <label class="form-label">班別</label>
-      <!-- 提醒: 編輯不能改班別 -->
-      <select class="form-select" :disabled="props.detailId.length"
-        v-model="dataModel.shift">
-        <option :value="''">請選擇</option>
-        <option value="MORNING">早班</option>
-        <option value="AFTERNOON">中班</option>
-        <option value="NIGHT">晚班</option>
-      </select>
+      <!-- 新增 -->
+      <div class="fs-1" v-if="!props.detailItem">
+        <template v-if="props.createShift === 'MORNING'">早班</template>
+        <template v-if="props.createShift === 'AFTERNOON'">午班</template>
+        <template v-if="props.createShift === 'NIGHT'">晚班</template>
+      </div>
+      <div class="fs-1" v-if="props.detailItem">
+        <template v-if="dataModel.shift === 'MORNING'">早班</template>
+        <template v-if="dataModel.shift === 'AFTERNOON'">午班</template>
+        <template v-if="dataModel.shift === 'NIGHT'">晚班</template>
+      </div>
+    </div>
+
+    <div  class="mb-5">
+      <label class="form-label">檢查時間</label>
+      <div class="d-flex align-items-center">
+        <input type="text" class="form-control me-2" style="width:200px" 
+          :disabled="props.detailItem"
+          v-model="timeH" placeholder="範例 00"> 
+        <span class="fs-3" >:</span>
+        <input type="text" class="form-control ms-2" style="width:200px" 
+          :disabled="props.detailItem"
+          v-model="timeM" placeholder="範例 00">  
+      </div>
     </div>
     
     <div class="mb-5">
@@ -52,9 +68,10 @@
 
     <!-- 新增按鈕 -->
     <button class="btn btn-primary w-100 mt-4" 
-      @click="updatePackagingBagInspection()" v-if="!props.detailId">送出</button>
+      @click="updatePackagingBagInspection()" v-if="!props.detailItem">送出</button>
     <!-- 修改按鈕 -->
-    <button class="btn btn-primary w-100 mt-4" v-if="props.detailId">修改</button>
+    <button class="btn btn-primary w-100 mt-4"
+      @click="updatePackagingBagInspection()" v-if="props.detailItem">修改</button>
 
   </div>
 </template>
@@ -75,18 +92,20 @@ const popMsg = inject('popMsg')
 const VITE_API_DOMAIN = import.meta.env.VITE_API_DOMAIN
 
 const props = defineProps({
-  detailId: String,
+  createShift: String,
+  detailItem: String,
   seccessCallback: Function
 })
 
-const choiceShift = ref(clientStore.nowShift); 
+
 // const oneFormingMachineInfo = computed(() => clientStore.getOneFormingMachineInfo); // 當前成型機資料
 
 const dataModel = ref({
   machineId: route.query.machineId,
-  shift: clientStore.nowShift, // 班表, default 當前時間
+  shift: props.createShift,
   productionDate: moment().format('YYYY-MM-DD'),
-  operatorName: '', // 操作員姓名 TODO... 哪邊來?????
+  inspectionTime: '',
+  operatorName: rootStore.loginUserInfo.name, // 操作員姓名
   normalPrint: false, // 印字正常
   normalPrintAppearance: false, // 印刷外觀正常
   goodPackagingBackSeal: false, // 包裝背封良好
@@ -94,16 +113,20 @@ const dataModel = ref({
   goodPackagingLowerSeal: false, // 包裝下封口良好
   normalPackagingBagWidth: false, // 包裝袋寬幅正常
 });
+const timeH = ref(''); // 小時
+const timeM = ref(''); // 分鐘
 
-// 儲存包裝膜檢查
+// 儲存包裝膜檢查 (新增與修改)
 async function updatePackagingBagInspection() {
   const path = VITE_API_DOMAIN + api.moldingMachine.updatePackagingBagInspection;
-  const temp = dataModel.value;
+  let temp = dataModel.value;
+  temp.inspectionTime = timeH.value + ':' + timeM.value + ':00'; // 將秒數加回去
+
   const param = {
     "machineId": route.query.machineId,
-    "shift": choiceShift.value,
+    "shift": temp.shift,
     "productionDate": temp.productionDate,
-    "inspectionTime": '12:00:30',
+    "inspectionTime": temp.inspectionTime,
     "operatorName": rootStore.loginUserInfo.name,
     "normalPrint": (temp.normalPrint) ? 'Y': 'N',
     "normalPrintAppearance": (temp.normalPrintAppearance) ? 'Y': 'N',
@@ -127,12 +150,38 @@ clientStore.checkNowShift()
 
 
 // 撈取詳細資料
-function getDetail() {
+async function getDetail() {
   const path = VITE_API_DOMAIN + api.moldingMachine.getPackagingBagInspectionDetail;
-  console.log('撈取詳細資料', path);
+  const param = {
+    machineId: props.detailItem.machineId,
+    shift: props.detailItem.shift,
+    productionDate: props.detailItem.productionDate,
+    inspectionTime: props.detailItem.inspectionTime
+  };
+  const result = await ajax.post(path, param)
+  if (ajax.checkErrorCode(result.errorCode)) {
+    
+    timeH.value = result.data.inspectionTime.slice(0,2);
+    timeM.value = result.data.inspectionTime.slice(3,5);
+
+    dataModel.value.shift = result.data.shift;
+    dataModel.value.productionDate = result.data.productionDate;
+    dataModel.value.inspectionTime = result.data.inspectionTime;
+    dataModel.value.operatorName = result.data.operatorName;
+    dataModel.value.normalPrint = (result.data.normalPrint === 'Y') ? true : false;
+    dataModel.value.normalPrintAppearance = (result.data.normalPrintAppearance === 'Y') ? true : false;
+    dataModel.value.goodPackagingBackSeal = (result.data.goodPackagingBackSeal === 'Y') ? true : false;
+    dataModel.value.goodPackagingUpperSeal = (result.data.goodPackagingUpperSeal === 'Y') ? true : false;
+    dataModel.value.goodPackagingLowerSeal = (result.data.goodPackagingLowerSeal === 'Y') ? true : false;
+    dataModel.value.normalPackagingBagWidth = (result.data.normalPackagingBagWidth === 'Y') ? true : false;
+  } else {
+    popMsg(result.errorCode)
+  }
 }
 
-if (props.detailId) {
+if (props.detailItem) {
+  console.log('props.detailItem')
   getDetail();
 }
+
 </script>

@@ -13,8 +13,8 @@ export const api = {
   },
   moldingMachine: { // 成型機相關
     formingMachineList: '/tokan/api/v1/provision', // 取得成型機列表
-    formingMachineInfo : '/tokan/api/v1/provision/{0}', // 取得單一成型機資訊 {0}機器id
-    shiftUserList: '/tokan/api/v1/users/{0}', // 班別下使用者的名單 {0} 班別
+    formingMachineInfo: '/tokan/api/v1/provision/{0}', // 取得單一成型機資訊 {0}機器id
+    shiftUserList: '/tokan/api/v1/users/shiftType/{0}', // 班別下使用者的名單 {0} 班別
     saveBasicInfo: '/tokan/api/v1/moldingMachine/saveProductionBasicInfo', // 儲存基本資料
     getBasicInfo: '/tokan/api/v1/moldingMachine/getProductionBasicInfos', // 取得已建立基本資料
     launchProduction: '/tokan/api/v1/plc/launchProduction', // 生產啟動
@@ -22,5 +22,7 @@ export const api = {
     getPackagingBagInspections: '/tokan/api/v1/moldingMachine/getPackagingBagInspections', // 包裝膜檢查列表
     getPackagingBagInspectionDetail: '/tokan/api/v1/moldingMachine/getPackagingBagInspectionDetail', // 包裝膜檢查-詳細資料
     updatePackagingBagInspection: '/tokan/api/v1/moldingMachine/updatePackagingBagInspection', // 儲存 包裝膜檢查 (2-Q-007-01-2.6生產品質檢驗表)
+
+    updateCupDestructionTestInspection: '/tokan/api/v1/moldingMachine/updateCupDestructionTestInspection', // 儲存 巡查-紙杯破壞試驗檢查表 (2-Q-007-11-1.0紙杯破壞試驗檢查表)
   },
 };

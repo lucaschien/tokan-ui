@@ -36,7 +36,7 @@
               @change="changeShift(basicInfo.shift)">
               <option value="">請選擇</option>
               <option value="MORNING">早班</option>
-              <option value="AFTERNOON">中班</option>
+              <option value="AFTERNOON">午班</option>
               <option value="NIGHT">晚班</option>
             </select>
           </div>
@@ -256,7 +256,7 @@ async function snedProductionInfo() {
 function lastBasicInfoToBasicInfo () {
   if (formingMachineLastBasicInfo.value) {
     const temp = formingMachineLastBasicInfo.value;
-    basicInfo.value.machineId = temp.id;
+    //basicInfo.value.machineId = temp.id;
     basicInfo.value.shift = temp.shift;
     basicInfo.value.teamLeader = temp.teamLeader;
     basicInfo.value.productionPersonnel = temp.productionPersonnel;
@@ -292,14 +292,15 @@ async function changeShift(shift) {
 // 重新帶入最後基本資料
 const reUseBasicInfo = ref(false)
 // 點擊重新帶入最後基本資料按鈕
-function clickReUseBasicInfo() {
+function clickReUseBasicInfo() {  
   reUseBasicInfo.value = true;
   
-  basicInfo.value.teamLeader = ''
-  basicInfo.value.productionPersonnel = rootStore.loginUserInfo.name
+  //basicInfo.value.teamLeader = ''
+  //basicInfo.value.productionPersonnel = rootStore.loginUserInfo.name
   basicInfo.value.cupPaperCartNumber = ''
   basicInfo.value.bottomPaperNumber = ''
   basicInfo.value.paperType = ''
+
   clientStore.getFormingMachineBasicInfo(nowMachine.value.id, basicInfo.value.shift)
   setTimeout(() => {
     reUseBasicInfo.value = false;
