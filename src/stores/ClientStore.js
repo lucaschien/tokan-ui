@@ -6,6 +6,23 @@ import moment from 'moment'
 
 const VITE_API_DOMAIN = import.meta.env.VITE_API_DOMAIN
 
+/* 
+  成型機機器狀態:
+    INITIAL("初始狀態"),
+    MAINTENANCE("保養中"),
+    PRODUCTION_INTERRUPTED("生產中斷中"),
+    SHIFT_CHANGE("工作交接中"),
+    AWAITING_MATERIAL("待料中"),
+    RESTING("休息中"),
+    IN_PRODUCTION("生產中"),
+    MATERIAL_ISSUANCE("領料中"),
+    MACHINE_CALIBRATION("漏水調機中"),
+    TROUBLESHOOTING("故障排除中"),
+    MACHINE_CLEANING("機台清潔中"),
+    MOLD_CHANGE("模具更換中"),
+    MACHINE_STOPPED_FOR_REPAIR("停機待修中"),
+*/
+
 export const useClientStore = defineStore('ClientStore', {
   state: () => ({
     // 紀錄當前時段班別用
@@ -68,7 +85,7 @@ export const useClientStore = defineStore('ClientStore', {
 
     // 取得成型機列表
     async getFormingMachinList() {
-      const path = VITE_API_DOMAIN + api.moldingMachine.formingMachineList
+      const path = VITE_API_DOMAIN + api.fmoldingMachine.formingMachineList
       const result = await ajax.get(path)
       if (ajax.checkErrorCode(result.errorCode)) {
         this.formingMachineList = result.data
@@ -80,7 +97,7 @@ export const useClientStore = defineStore('ClientStore', {
 
     // 取得單一成型機詳細資訊
     async getFormingMachineInfo(id, callback = () => { }) {
-      const path = VITE_API_DOMAIN + formatPath(api.moldingMachine.formingMachineInfo, id)
+      const path = VITE_API_DOMAIN + formatPath(api.fmoldingMachine.formingMachineInfo, id)
       const result = await ajax.get(path)
       if (ajax.checkErrorCode(result.errorCode)) {
         this.oneFormingMachineInfo = result.data
@@ -91,6 +108,21 @@ export const useClientStore = defineStore('ClientStore', {
       return
     },
 
+    // 更新機器狀態
+    async changeStatus(id, status, callback = () => { }) {
+      const path = VITE_API_DOMAIN + api.fmoldingMachine.changeStatus;
+      const param = {
+        id: id,
+        status: status
+      };
+      const result = await ajax.post(path, param)
+      if (ajax.checkErrorCode(result.errorCode)) {
+        callback()
+      } else {
+        popMsg(result.errorCode)
+      }
+    },
+
     // 清除成型機基本基料
     clearFormingMachineLastBasicInfo() {
       this.formingMachineLastBasicInfo = null
@@ -98,7 +130,7 @@ export const useClientStore = defineStore('ClientStore', {
 
     // 取得成型機已建立的基本資料
     async getFormingMachineBasicInfo(id, otherShift) {
-      const path = VITE_API_DOMAIN + api.moldingMachine.getBasicInfo
+      const path = VITE_API_DOMAIN + api.fmoldingMachine.getBasicInfo
       const param = {
         machineId: id,
         shift: (!otherShift) ? this.nowShift : otherShift
@@ -120,6 +152,46 @@ export const useClientStore = defineStore('ClientStore', {
       }
       return
     },
+
+    // ●設定人機螢幕顯示
+    async setHumanMachineStatusDisplay(message, buttonType = 'ENABLE', provisionId, callback = () => { }) {
+      if (!message) {
+        popMsg('systrm error: message 未設定');
+        return;
+      }
+      const path = VITE_API_DOMAIN + api.fmoldingMachine.setHumanMachineStatusDisplay;
+      const param = {
+        provisionId: (provisionId) ? provisionId : this.oneFormingMachineInfo.id, // 成型機id
+        buttonType: buttonType, // 按鈕切換狀態
+        message: message // 人機螢幕顯示要顯示的文字
+      };
+      const result = await ajax.post(path, param);
+      if (ajax.checkErrorCode(result.errorCode)) {
+        callback();
+      } else {
+        popMsg(result.errorCode)
+      }
+    },
+
+    // ●解除啟動鍵限制 or 啟動鍵無功能 or 功能全開
+    async lockAndUnlockButton(message, buttonType, provisionId, callback = () => { }) {
+      if (!message || !buttonType) {
+        popMsg('systrm error: call lockAndUnlockButton error.');
+        return;
+      }
+      const path = VITE_API_DOMAIN + api.fmoldingMachine.lockAndUnlockButton;
+      const param = {
+        provisionId: (provisionId) ? provisionId : this.oneFormingMachineInfo.id, // 成型機id
+        buttonType: buttonType, // 按鈕切換狀態
+        message: message // 人機螢幕顯示要顯示的文字
+      };
+      const result = await ajax.post(path, param);
+      if (ajax.checkErrorCode(result.errorCode)) {
+        callback();
+      } else {
+        popMsg(result.errorCode)
+      }
+    }
 
   }
 })

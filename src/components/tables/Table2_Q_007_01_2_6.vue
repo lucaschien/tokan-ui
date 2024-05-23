@@ -19,15 +19,13 @@
     </div>
 
     <div  class="mb-5">
-      <label class="form-label">檢查時間</label>
+      <label class="form-label">檢查時間<span class="fs-4 ms-2">(請輸入24小時制格式)</span></label>
       <div class="d-flex align-items-center">
         <input type="text" class="form-control me-2" style="width:200px" 
-          :disabled="props.detailItem"
-          v-model="timeH" placeholder="範例 00"> 
+          v-model="timeH" placeholder="時: 範例 00"> 
         <span class="fs-3" >:</span>
         <input type="text" class="form-control ms-2" style="width:200px" 
-          :disabled="props.detailItem"
-          v-model="timeM" placeholder="範例 00">  
+          v-model="timeM" placeholder="分: 範例 00">  
       </div>
     </div>
     
@@ -97,7 +95,6 @@ const props = defineProps({
   seccessCallback: Function
 })
 
-
 // const oneFormingMachineInfo = computed(() => clientStore.getOneFormingMachineInfo); // 當前成型機資料
 
 const dataModel = ref({
@@ -118,7 +115,7 @@ const timeM = ref(''); // 分鐘
 
 // 儲存包裝膜檢查 (新增與修改)
 async function updatePackagingBagInspection() {
-  const path = VITE_API_DOMAIN + api.moldingMachine.updatePackagingBagInspection;
+  const path = VITE_API_DOMAIN + api.fmoldingMachine.updatePackagingBagInspection;
   let temp = dataModel.value;
   temp.inspectionTime = timeH.value + ':' + timeM.value + ':00'; // 將秒數加回去
 
@@ -144,14 +141,12 @@ async function updatePackagingBagInspection() {
   }
 }
 
-
 // 更新前端判斷當前時段的班別
 clientStore.checkNowShift()
 
-
 // 撈取詳細資料
 async function getDetail() {
-  const path = VITE_API_DOMAIN + api.moldingMachine.getPackagingBagInspectionDetail;
+  const path = VITE_API_DOMAIN + api.fmoldingMachine.getPackagingBagInspectionDetail;
   const param = {
     machineId: props.detailItem.machineId,
     shift: props.detailItem.shift,
@@ -180,8 +175,7 @@ async function getDetail() {
 }
 
 if (props.detailItem) {
-  console.log('props.detailItem')
-  getDetail();
+  console.log('props.detailItem', props.detailItem)
+  getDetail()
 }
-
 </script>

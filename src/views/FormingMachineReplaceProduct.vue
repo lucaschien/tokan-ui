@@ -41,14 +41,14 @@
         </div>
       </div>
       <div class="mb-3 row">
-        <label class="form-label col-4">杯身紙台車編號</label>
+        <label class="form-label col-4">杯身紙台車編號 xe giấy thân cốc</label>
         <div class="col-8">
           <InputScanBarcode 
             :scanCallback="(val) => {}"/>
         </div>
       </div>
       <div class="mb-3 row">
-        <label class="form-label col-4">杯底紙編號</label>
+        <label class="form-label col-4">杯底紙編號 giấy đế cốc</label>
         <div class="col-8">
           <InputScanBarcode 
             :scanCallback="(val) => {}"/>

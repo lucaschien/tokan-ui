@@ -19,7 +19,7 @@
           <td class="noBorder" align="center" style="font-size: 20px;">杯身裁切日報表</td>
           <td class="noBorder" align="left" >生產班別：
             <span class="span-check-box active"></span>早班
-            <span class="span-check-box"></span>中班
+            <span class="span-check-box"></span>午班
             <span class="span-check-box"></span>晚班</td>
         </tr>
       </tbody>

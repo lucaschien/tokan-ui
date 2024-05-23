@@ -102,15 +102,6 @@ const router = createRouter({
           }
         },
         {
-          path: 'FormingMachineRestSwitch',
-          name: 'FormingMachineRestSwitch',
-          component: () => import('../views/FormingMachineRestSwitch.vue'),
-          meta: {
-            breadcrumb: ['成型機作業', '休息狀態切換'],
-            nav: 'FormingMachine'
-          }
-        },
-        {
           path: 'FormingMachineClean',
           name: 'FormingMachineClean',
           component: () => import('../views/FormingMachineClean.vue'),

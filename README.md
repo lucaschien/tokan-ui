@@ -42,3 +42,13 @@ lucas_M
 \_M 早班
 \_N 晚班
 \_A 午班
+
+```
+1.領料 / nhận nguyên liệu
+2.領料選項 / mục lựa chọn nhận nguyên liệu
+3.杯身紙台車 / xe giấy thân cốc
+4.杯底紙 / giấy đế cốc
+5.矽利康 / keo dính silicon
+6.白油 / dầu trắng
+7.領料完成 / hoàn thành nhận nguyên liệu
+```

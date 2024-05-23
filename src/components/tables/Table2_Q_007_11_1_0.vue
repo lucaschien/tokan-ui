@@ -11,7 +11,7 @@
       <label class="form-label">班別</label>
       <!-- 提醒: 編輯不能改班別 -->
       <select class="form-select" :disabled="props.detailItem"
-        v-model="dataModel.shift">
+        v-model="oneDataModel.shift">
         <option :value="null">請選擇</option>
         <option>早班</option>
         <option>午班</option>
@@ -23,6 +23,7 @@
       <input type="text" class="form-control" value="王小明" disabled>
     </div>
     <div class="d-flex mb-3 checking-box">
+      <!-- TODO... 還要處理時段 -->
       <div class="one-box" v-for="(item, index) in 4" :key="'test'+index">
         <div class="fs-3">檢查時間</div>
         <input class="form-control" type="text" :value="testTimes[index]" disabled/>
@@ -72,6 +73,7 @@ const popMsg = inject('popMsg')
 const VITE_API_DOMAIN = import.meta.env.VITE_API_DOMAIN
 
 const props = defineProps({
+  createShift: String,
   detailItem: String,
   seccessCallback: Function
 })
@@ -109,11 +111,14 @@ const testTimes = [
 
 onMounted(() => {
   console.log('props.detailItem', props.detailItem);
+  
+
   // 區分是新增還是編輯
   if (props.detailItem) { // 編輯
 
   }
   if (!props.detailItem) { // 新增
+    // TODO.. 思考四個時段要做四次ajax的撈取,要依照班別的處理
 
   }
 })

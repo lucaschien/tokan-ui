@@ -22,7 +22,7 @@
             <span style="display: inline-block; margin-right: 20px;">三</span>
             <br>
             <span class="span-check-box active"></span>早班
-            <span class="span-check-box"></span>中班
+            <span class="span-check-box"></span>午班
             <span class="span-check-box"></span>晚班
           </td>
           <td>再檢單號:</td>

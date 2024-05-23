@@ -19,7 +19,7 @@
         <td style="width: 33.3%; font-size: 24px;" align="center" class="noBorder">SF-170成型機生產報表</td>
         <td style="width: 33.3%;" align="right" class="noBorder">生產班別：
           <span class="span-check-box active"></span>早班
-          <span class="span-check-box"></span>中班
+          <span class="span-check-box"></span>午班
           <span class="span-check-box"></span>晚班
         </td>
       </tr>

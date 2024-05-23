@@ -67,13 +67,13 @@
           </div>
           <div class="row mb-2">
             <div class="col-6">
-              <lable class="form-label">杯身紙台車編號</lable>
+              <lable class="form-label">杯身紙台車編號 xe giấy thân cốc</lable>
               <InputScanBarcode
                 :code="basicInfo.cupPaperCartNumber"
                 :scanCallback="(val) => { basicInfo.cupPaperCartNumber = val }"/>
             </div>
             <div class="col-6">
-              <lable class="form-label">杯底紙編號</lable>
+              <lable class="form-label">杯底紙編號 giấy đế cốc</lable>
               <InputScanBarcode 
                 :code="basicInfo.bottomPaperNumber"
                 :scanCallback="(val) => { basicInfo.bottomPaperNumber = val }"/>
@@ -137,22 +137,6 @@ import { useRootStore } from '@/stores/root'
 import { useClientStore } from '@/stores/ClientStore'
 import InputScanBarcode from '@/components/InputScanBarcode.vue'
 
-/* 
-  機器狀態:
-    INITIAL("初始狀態"),
-    MAINTENANCE("保養中"),
-    PRODUCTION_INTERRUPTED("生產中斷中"),
-    SHIFT_CHANGE("工作交接中"),
-    AWAITING_MATERIAL("待料中"),
-    RESTING("休息中"),
-    IN_PRODUCTION("生產中"),
-    MATERIAL_ISSUANCE("領料中"),
-    MACHINE_CALIBRATION("漏水調機中"),
-    TROUBLESHOOTING("故障排除中"),
-    MACHINE_CLEANING("機台清潔中"),
-    MOLD_CHANGE("模具更換中"),
-    MACHINE_STOPPED_FOR_REPAIR("停機待修中"),
-*/
 const route = useRoute()
 const router = useRouter()
 const popMsg = inject('popMsg')
@@ -184,9 +168,27 @@ function choiceMachine(item, gotNextCall = true) {
   // 透過UI選擇進來的
   if (gotNextCall) {
     // 放到 url 上去
-    router.replace({ name:'FormingMachine', query: { machineId: item.id }})
+    router.replace({ 
+      name:'FormingMachine', 
+      query: { 
+        machineId: item.id 
+      }
+    })
+    // 撈取機器詳細資料
     clientStore.getFormingMachineInfo(item.id, () => {
-      setTimeout(() => { step.value = 3 }, 1000)
+      setTimeout(() => { 
+        // 如果機器狀態是 INITIAL 才要進入 step 3
+        if (nowMachine.value.status === 'INITIAL') {
+          step.value = 3
+        } else { // 其他狀態直接進入成型機功能頁
+          router.push({ 
+            name: 'FormingMachineFnEnter',
+            query: {
+              machineId: nowMachine.value.id
+            } 
+          })
+        }
+      }, 1000)
     });
     clientStore.getFormingMachineBasicInfo(item.id)
   }
@@ -235,7 +237,7 @@ const canNotSnedProductionInfo = computed(() => {
 })
 // 新增一筆基本資料
 async function snedProductionInfo() {
-  const path = VITE_API_DOMAIN + api.moldingMachine.saveBasicInfo
+  const path = VITE_API_DOMAIN + api.fmoldingMachine.saveBasicInfo
   const result = await ajax.post(path, basicInfo.value)
   if (ajax.checkErrorCode(result.errorCode)) {
     // 如果機器狀態是 INITIAL 才要進入 步驟4
@@ -280,7 +282,7 @@ async function changeShift(shift) {
     return 
   }
   // 撈取班別下使用者的名單
-  const path = VITE_API_DOMAIN + formatPath(api.moldingMachine.shiftUserList, shift);
+  const path = VITE_API_DOMAIN + formatPath(api.fmoldingMachine.shiftUserList, shift);
   const result = await ajax.get(path);
   if (ajax.checkErrorCode(result.errorCode)) {
     teamLeader.value = result.data
@@ -318,7 +320,7 @@ watch(formingMachineLastBasicInfo, () => {
 
 // 送出生產啟動
 async function sendProductionStartUp() {
-  const path = VITE_API_DOMAIN + api.moldingMachine.launchProduction
+  const path = VITE_API_DOMAIN + api.fmoldingMachine.launchProduction
   const param = {
     provisionId: nowMachine.value.id
   }
