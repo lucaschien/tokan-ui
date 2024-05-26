@@ -40,12 +40,12 @@
         </div>
       </div> 
     </div>
-    <div class="mb-3 row">
+    <!-- <div class="mb-3 row">
       <label class="form-label col-4">成型速度:</label>
       <div class="col-8">
         <input class="form-control" type="number" disabled v-model.trim="dataModel.formingSpeed">
       </div>
-    </div>
+    </div> -->
 
     <div class="mb-3 row">
       <label class="form-label col-4">杯內檢查機電腦:</label>
@@ -201,13 +201,13 @@
       </div>
     </div>
 
-    <div class="mb-3 row">
+    <!-- <div class="mb-3 row">
       <label class="form-label col-4">生產杯數(pcs):</label>
       <div class="col-8">
         <input class="form-control" type="number" disabled 
           v-model="dataModel.producedCups">
       </div>
-    </div>
+    </div> -->
 
     <button class="btn btn-primary w-100 mt-4" :disabled="!canSaveBtn"
       @click="updateInspectionMoldingMachineProduction()">儲存</button>
@@ -240,7 +240,7 @@ const dataModel = ref({
   paperType: "GENERAL", // 原紙種類
   productionTimeStart: '', // 生產時間 起
   productionTimeEnd: '', // 生產時間 迄
-  formingSpeed: 0, // 成型速度 TODO... 之後要重成型機的基本資料帶過來這邊使用, 目前我先寫死 0
+  //formingSpeed: 0, // 成型速度 TODO... 前端不用帶
   cupInspectionComputer: "N", // 杯內檢查機電腦
   cupSideBottomHeater: "N", // 杯身兩側&杯底加熱器
   cupCurlingHeater2And3: "N", // 2&3號杯口捲邊加熱器
@@ -250,7 +250,7 @@ const dataModel = ref({
   appearanceConfirmation: "N", // 外觀確認
   destructionTestConfirmation: "N", // 破壞測試確認
   cupBottomPaperCuttingCompletenessCheck: "N", // 杯底紙裁切完整度檢查
-  producedCups: 0, // 生產杯數(pcs
+  //producedCups: 0, // 生產杯數(pcs) TODO... 前端不用帶
 });
 
 const canSaveBtn = computed(() => {
