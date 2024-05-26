@@ -227,4 +227,28 @@ async function updateInspectionSF170MoldingMachineProduction() {
   }
 }
 
+
+// 撈取詳細資料
+async function getDetail() {
+  const path = VITE_API_DOMAIN + api.fmoldingMachine.getInspectionSF170MoldingMachineProduction;
+  const param = {
+    machineId: props.detailItem.machineId,
+    shift: props.detailItem.shift,
+    productionDate: props.detailItem.productionDate,
+    paperType: props.detailItem.paperType
+  };
+  const result = await ajax.post(path, param)
+  if (ajax.checkErrorCode(result.errorCode)) {
+    dataModel.value = result.data;
+    // 將秒數長度截短程線
+    dataModel.value.productionTimeStart = dataModel.value.productionTimeStart.slice(0,5);
+    dataModel.value.productionTimeEnd = dataModel.value.productionTimeEnd.slice(0,5);
+  } else {
+    popMsg(result.errorCode)
+  }
+}
+
+if (props.detailItem) {
+  getDetail();
+}
 </script>

@@ -131,9 +131,9 @@
               <td class="fs-4">{{ item[i]['teamLeader'] }}</td>
               <td>
                 <div v-for="(jtem, j) in item" :key="'2_Q_007_11_1_0' + i + j">
-                  <templae v-if="jtem.inspectionTime">
+                  <template v-if="jtem.inspectionTime">
                     {{ jtem.inspectionTime.slice(0,5) }}
-                  </templae>
+                  </template>
                   {{ jtem.testResult }}
                 </div>
               </td>
@@ -163,9 +163,9 @@
               <td class="fs-3">
                 {{ clientStore.shiftName[item.shift] }}
                 <div>{{ item.productionDate }}</div>
-                <templae v-if="item.inspectionTime">
+                <template v-if="item.inspectionTime">
                   {{ item.inspectionTime.slice(0,5) }}
-                </templae>
+                </template>
               </td>
               <td>
                 <div>印字正常: {{ item.normalPrint }}</div>
@@ -319,7 +319,7 @@ function changeWork() {
 
 // 撈取SF170成型日報表部分項目
 async function get2_M_011_13_1_4_SF_170List(param) {
-  const path = api.fmoldingMachine.getInspectionSF170MoldingMachineProductions;
+  const path = VITE_API_DOMAIN + api.fmoldingMachine.getInspectionSF170MoldingMachineProductions;
   const result = await ajax.post(path, param)
   if (ajax.checkErrorCode(result.errorCode)) {
     if (result.data.length) {

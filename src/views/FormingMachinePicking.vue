@@ -23,54 +23,143 @@
         <label class="form-label col-4">杯身紙台車編號 <br>xe giấy thân cốc</label>
         <div class="col-8">
           <InputScanBarcode 
-            :scanCallback="(val) => { test1 = val }"/>
+            :scanCallback="(val) => { dataModel.cupPaperCartNumber = val }"/>
         </div>
       </div>
       <div class="mb-4 row">
         <label class="form-label col-4">杯底紙編號 <br>giấy đế cốc</label>
         <div class="col-8">
           <InputScanBarcode 
-            :scanCallback="(val) => { test2 = val }"/>
+            :scanCallback="(val) => {  dataModel.bottomPaperNumber = val }"/>
         </div>
       </div>
       <div class="mb-4 row">
         <label class="form-label col-4">矽利康 <br>keo dính silicon</label>
         <div class="col-7">
-          <input class="form-control" type="text" />
+          <input class="form-control" type="text" v-model="dataModel.siliconeLubricant"/>
         </div>
         <div class="col-1 fs-3">公升</div>
       </div>
       <div class="mb-4 row">
         <label class="form-label col-4">白油 <br>dầu trắng</label>
         <div class="col-7">
-          <input class="form-control" type="text" />
+          <input class="form-control" type="text" v-model="dataModel.whiteOil"/>
         </div>
         <div class="col-1 fs-3">公升</div>
       </div>
-      <button class="btn btn-primary w-100 mt-4" @click="popMsg('TODO... 領料完成 / hoàn thành nhận nguyên liệu')">送出</button>
+
+      <div class="mb-4 row">
+        <lable class="form-label col-4">原紙種類</lable>
+        <div class="form-check col-2">
+          <input class="form-check-input" 
+            v-model="dataModel.paperType"
+            type="radio" 
+            name="paperType" 
+            id="paperType1"
+            value="GENERAL">
+          <label class="form-check-label" for="paperType1">一般原紙</label>
+        </div>
+        <div class="form-check col-2">
+          <input class="form-check-input" 
+            v-model="dataModel.paperType"
+            type="radio" 
+            name="paperType" 
+            id="paperType2"
+            value="FSC">
+          <label class="form-check-label" for="paperType2">FSC</label>
+        </div>
+      </div>
+
+      <button class="btn btn-primary w-100 mt-4" :disabled="!canSave"
+        @click="saveMoldingMachineMaterialRecord()">送出</button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, inject, computed } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { ajax } from '@/common/ajax'
+import { api } from '@/common/api'
 import { useClientStore } from '@/stores/ClientStore'
 import RouterBackBtn from '@/components/RouterBackBtn.vue'
 import InputScanBarcode from '@/components/InputScanBarcode.vue'
+import { popMsg } from '@/common/alert';
+import moment from 'moment';
 
-const popMsg = inject('popMsg')
 const route = useRoute()
 const clientStore = useClientStore()
+const VITE_API_DOMAIN = import.meta.env.VITE_API_DOMAIN
 
 const nowMachineId = ref(null)
 const nowFormingMachineInfo = computed(() => clientStore.getNowFormingMachineInfo); // 當前成型機資料
 
+const dataModel = ref({
+  machineId: null,
+  shift: clientStore.nowShift,
+  productionDate: null,
+  materialCollectionTime: null,
+  paperType: null,
+  cupPaperCartNumber: null, // 杯身紙台車編號
+  bottomPaperNumber: null, // 杯底紙編號
+  siliconeLubricant: null, // 矽利康
+  whiteOil: null, // 白油
+});
+
+const canSave = computed(() => {
+  if (
+    !dataModel.value.paperType && 
+    !dataModel.value.cupPaperCartNumber && 
+    !dataModel.value.bottomPaperNumber && 
+    !dataModel.value.siliconeLubricant && 
+    !dataModel.value.whiteOil
+  ) {
+    return false
+  }
+  return true
+});
+
+async function saveMoldingMachineMaterialRecord() {
+  dataModel.value.productionDate = moment().format('YYYY-MM-DD');
+  dataModel.value.materialCollectionTime = moment().format('HH:mm:ss');
+
+  // 空字串轉null
+  dataModel.value.paperType = (dataModel.value.paperType) ? dataModel.value.paperType : null;
+  dataModel.value.cupPaperCartNumber = (dataModel.value.cupPaperCartNumber) ? dataModel.value.cupPaperCartNumber : null;
+  dataModel.value.bottomPaperNumber = (dataModel.value.bottomPaperNumber) ? dataModel.value.bottomPaperNumber : null;
+  dataModel.value.siliconeLubricant = (dataModel.value.siliconeLubricant) ? dataModel.value.siliconeLubricant : null;
+  dataModel.value.whiteOil = (dataModel.value.whiteOil) ? dataModel.value.whiteOil : null;
+
+  const path = VITE_API_DOMAIN + api.fmoldingMachine.saveMoldingMachineMaterialRecord;
+  const param = dataModel.value;
+  const result = await ajax.post(path, param)
+  if (ajax.checkErrorCode(result.errorCode)) {
+    popMsg('領料完成 / hoàn thành nhận nguyên liệu')
+    // 恢復預設值
+    dataModel.value.paperType = null;
+    dataModel.value.cupPaperCartNumber = null; 
+    dataModel.value.bottomPaperNumber = null;
+    dataModel.value.siliconeLubricant = null;
+    dataModel.value.whiteOil = null;
+
+    // 更新機器狀態
+    const param = {
+      id: nowMachineId.value, 
+      buttonType: 'ENABLE', 
+      message: '生產中', 
+      provisionStatus: 'IN_PRODUCTION'
+    };
+    clientStore.launchProduction(param, () => {
+      clientStore.getFormingMachineInfo(route.query.machineId);
+    });
+
+  } else {
+    popMsg('領料失敗')
+  }
+}
+
 onMounted(() => {
   nowMachineId.value = route.query.machineId;
+  dataModel.value.machineId = route.query.machineId;
 })
-
-const test1 = ref('')
-const test2 = ref('')
-
 </script>

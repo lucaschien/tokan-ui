@@ -20,7 +20,7 @@ export const api = {
     getBasicInfos: '/tokan/api/v1/moldingMachine/getProductionBasicInfos/{0}', // 取得已建立基本資料 {0}機器id
     getLastMaterial: '/tokan/api/v1/moldingMachine/getLastMaterial/{0}', // 查詢當日最後一筆領料資料 {0}機器id
 
-    
+    // 機器狀態相關
     launchProduction: '/tokan/api/v1/plc/launchProduction', // ● 生產啟動 (紫色功能全開)
     setHumanMachineStatusDisplay: '/tokan/api/v1/plc/setHumanMachineStatusDisplay', // ● 設定人機螢幕顯示 (黃色)
     lockAndUnlockButton: '/tokan/api/v1/plc/lockAndUnlockButton', // ● 解除啟動鍵限制 or 啟動鍵無功能 or 功能全開 (黃色+紫色)
@@ -33,7 +33,7 @@ export const api = {
     updateInspectionMoldingMachineProduction: '/tokan/api/v1/moldingMachine/updateInspectionMoldingMachineProduction', // 巡查- 一般成型機日報表部分項目-儲存
 
     getInspectionSF170MoldingMachineProductions: '/tokan/api/v1/moldingMachine/getInspectionSF170MoldingMachineProductions', // 巡查- SF170成型機日報表部分項目-列表
-    // 巡查- SF170成型機日報表部分項目-詳細資料
+    getInspectionSF170MoldingMachineProduction: '/tokan/api/v1/moldingMachine/getInspectionSF170MoldingMachineProduction', // 巡查- SF170成型機日報表部分項目-詳細資料
     updateInspectionSF170MoldingMachineProduction: '/tokan/api/v1/moldingMachine/updateInspectionSF170MoldingMachineProduction', // 巡查- SF170成型機日報表部分項目-儲存
 
     getPackagingBagInspections: '/tokan/api/v1/moldingMachine/getPackagingBagInspections', // 巡查-包裝膜檢查-列表
@@ -41,7 +41,9 @@ export const api = {
     updatePackagingBagInspection: '/tokan/api/v1/moldingMachine/updatePackagingBagInspection', // 巡查-包裝膜檢查-儲存 (2-Q-007-01-2.6生產品質檢驗表)
 
     getCupDestructionTestInspections: '/tokan/api/v1/moldingMachine/getCupDestructionTestInspections', // 巡查- 紙杯破壞試驗檢查表-列表
-    // 巡查- 紙杯破壞試驗檢查表-詳細資料
     updateCupDestructionTestInspection: '/tokan/api/v1/moldingMachine/updateCupDestructionTestInspection', // 巡查-紙杯破壞試驗檢查表-儲存 (2-Q-007-11-1.0紙杯破壞試驗檢查表)
+
+    // 功能: ● 領料 相關
+    saveMoldingMachineMaterialRecord: '/tokan/api/v1/moldingMachine/saveMoldingMachineMaterialRecord', // 領料-儲存領料紀錄
   },
 };
