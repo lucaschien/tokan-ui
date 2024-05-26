@@ -14,20 +14,34 @@ export const api = {
   fmoldingMachine: { // 成型機相關
     formingMachineList: '/tokan/api/v1/provision', // 取得成型機列表
     formingMachineInfo: '/tokan/api/v1/provision/{0}', // 取得單一成型機資訊 {0}機器id
-    changeStatus: '/tokan/api/v1/provision/changeStatus', // 更新機器狀態
+    changeStatus: '/tokan/api/v1/provision/changeStatus', // 更新機器狀態 TOOD... 暫時不使用
     shiftUserList: '/tokan/api/v1/users/shiftType/{0}', // 班別下使用者的名單 {0} 班別
     saveBasicInfo: '/tokan/api/v1/moldingMachine/saveProductionBasicInfo', // 儲存基本資料
-    getBasicInfo: '/tokan/api/v1/moldingMachine/getProductionBasicInfos', // 取得已建立基本資料
+    getBasicInfos: '/tokan/api/v1/moldingMachine/getProductionBasicInfos/{0}', // 取得已建立基本資料 {0}機器id
+    getLastMaterial: '/tokan/api/v1/moldingMachine/getLastMaterial/{0}', // 查詢當日最後一筆領料資料 {0}機器id
 
-    launchProduction: '/tokan/api/v1/plc/launchProduction', // ●生產啟動
-    setHumanMachineStatusDisplay: '/tokan/api/v1/plc/setHumanMachineStatusDisplay', // ●設定人機螢幕顯示
-    lockAndUnlockButton: '/tokan/api/v1/plc/lockAndUnlockButton', // ●解除啟動鍵限制 or 啟動鍵無功能 or 功能全開
+    
+    launchProduction: '/tokan/api/v1/plc/launchProduction', // ● 生產啟動 (紫色功能全開)
+    setHumanMachineStatusDisplay: '/tokan/api/v1/plc/setHumanMachineStatusDisplay', // ● 設定人機螢幕顯示 (黃色)
+    lockAndUnlockButton: '/tokan/api/v1/plc/lockAndUnlockButton', // ● 解除啟動鍵限制 or 啟動鍵無功能 or 功能全開 (黃色+紫色)
+    lockProduction: '/tokan/api/v1/plc/lockProduction', // ● 人機顯示+良杯撥桿繼電器無功能+送杯身紙電眼啟動計數量(ENABLE) (漏水調機,故障排除用) (黃色+紫色)
+    startAndStopMachine: '/tokan/api/v1/plc/startAndStopMachine', // ● 關機
 
-    // 功能: 巡查 相關
-    getPackagingBagInspections: '/tokan/api/v1/moldingMachine/getPackagingBagInspections', // 包裝膜檢查列表
-    getPackagingBagInspectionDetail: '/tokan/api/v1/moldingMachine/getPackagingBagInspectionDetail', // 包裝膜檢查-詳細資料
-    updatePackagingBagInspection: '/tokan/api/v1/moldingMachine/updatePackagingBagInspection', // 儲存 包裝膜檢查 (2-Q-007-01-2.6生產品質檢驗表)
+    // 功能: ● 巡查 相關
+    getInspectionMoldingMachineProductions: '/tokan/api/v1/moldingMachine/getInspectionMoldingMachineProductions', // 巡查- 一般成型機日報表部分項目-列表
+    getInspectionMoldingMachineProduction: '/tokan/api/v1/moldingMachine/getInspectionMoldingMachineProduction', // 巡查- 一般成型機日報表部分項目-詳細資料
+    updateInspectionMoldingMachineProduction: '/tokan/api/v1/moldingMachine/updateInspectionMoldingMachineProduction', // 巡查- 一般成型機日報表部分項目-儲存
 
-    updateCupDestructionTestInspection: '/tokan/api/v1/moldingMachine/updateCupDestructionTestInspection', // 儲存 巡查-紙杯破壞試驗檢查表 (2-Q-007-11-1.0紙杯破壞試驗檢查表)
+    getInspectionSF170MoldingMachineProductions: '/tokan/api/v1/moldingMachine/getInspectionSF170MoldingMachineProductions', // 巡查- SF170成型機日報表部分項目-列表
+    // 巡查- SF170成型機日報表部分項目-詳細資料
+    updateInspectionSF170MoldingMachineProduction: '/tokan/api/v1/moldingMachine/updateInspectionSF170MoldingMachineProduction', // 巡查- SF170成型機日報表部分項目-儲存
+
+    getPackagingBagInspections: '/tokan/api/v1/moldingMachine/getPackagingBagInspections', // 巡查-包裝膜檢查-列表
+    getPackagingBagInspectionDetail: '/tokan/api/v1/moldingMachine/getPackagingBagInspectionDetail', // 巡查-包裝膜檢查-詳細資料
+    updatePackagingBagInspection: '/tokan/api/v1/moldingMachine/updatePackagingBagInspection', // 巡查-包裝膜檢查-儲存 (2-Q-007-01-2.6生產品質檢驗表)
+
+    getCupDestructionTestInspections: '/tokan/api/v1/moldingMachine/getCupDestructionTestInspections', // 巡查- 紙杯破壞試驗檢查表-列表
+    // 巡查- 紙杯破壞試驗檢查表-詳細資料
+    updateCupDestructionTestInspection: '/tokan/api/v1/moldingMachine/updateCupDestructionTestInspection', // 巡查-紙杯破壞試驗檢查表-儲存 (2-Q-007-11-1.0紙杯破壞試驗檢查表)
   },
 };

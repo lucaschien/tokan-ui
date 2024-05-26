@@ -9,10 +9,11 @@
       </RouterLink>
       
       <div class="main-nav-box">
-        <button :class="['btn btn-outline-primary menu-btn', { active: showMenu }]"
+        <button :class="['btn btn-outline-primary menu-btn me-3', { active: showMenu }]"
           @click="showMenu = !showMenu">
           <i class="fa fa-bars" aria-hidden="true"></i>
         </button>
+        <span>當前時段: {{ clientStore.shiftName[clientStore.nowShift] }}</span>
         <nav :class="[{ show: showMenu }]">
           <a class="me-1 logout-btn"
             @click="rootStore.logout()"><i class="fa fa-sign-out" aria-hidden="true"></i>登出</a>
@@ -37,10 +38,11 @@
             @click="showMenu = false">保修人員作業</RouterLink>
         </nav>
       </div>
-
+      
     </div>
 
     <h5>
+      <span class="me-3" v-if="clientStore.nowFormingMachineInfo">{{ clientStore.nowFormingMachineInfo.name }}</span>
       <template v-for="(item, i) in route.meta.breadcrumb" :key="'breadcrumb'+i">
         {{ item }}
         <i class="fa fa-angle-right" aria-hidden="true" 
@@ -55,9 +57,11 @@
 import { ref } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { useRootStore } from '@/stores/root'
+import { useClientStore } from '@/stores/ClientStore'
 
 const route = useRoute()
 const rootStore = useRootStore()
+const clientStore = useClientStore()
 
 const showMenu = ref(false)
 

@@ -32,6 +32,10 @@ function AjaxDefine() {
           //localStorage.removeItem('CDPWeb');
           router.push({ name: 'ErrorPage' });
         }
+        if (res.data.errorCode === '999910001') {
+          cookies.remove('taiwantokan');
+          router.push({ name: 'Login' });
+        }
         return res.data;
       } catch (error) {
         this.ErrorHandle(error);

@@ -5,9 +5,13 @@
       <h4 class="mt-3">選擇成型機機號</h4>
       <div class="machine-list-box">
         <div v-for="item in formingMachineList" :key="'machine'+item.id"
-          class="card m-2 p-3 align-items-center"
+          :class="['card m-2 p-3 align-items-center', {
+            'MACHINE_CLOSED': item.status === 'MACHINE_CLOSED',
+            'IN_PRODUCTION': item.status === 'IN_PRODUCTION',
+            'RESTING': item.status === 'RESTING',
+          }]" 
           @click="choiceMachine(item, true)"
-        >{{ item.name }}</div>
+        >{{ item.name }}<div class="fs-5">{{ clientStore.statusName[item.status] }}</div></div>
       </div>
     </div>
 
@@ -41,9 +45,9 @@
             </select>
           </div>
           <div class="col-6" v-if="basicInfo.shift">
-            <!-- 將最後的基本資料快速的帶入到畫面中 -->
+            <!-- 將最後的領料資料快速的帶入到畫面中 -->
             <burron class="btn btn-outline-primary"
-              @click="clickReUseBasicInfo()">
+              @click="clickReUseMaterialsInfo()">
               <i class="fa fa-repeat" aria-hidden="true"></i>
             </burron>
           </div>
@@ -52,8 +56,7 @@
           <div class="row mb-2">
             <div class="col-6">
               <lable class="form-label">組長</lable>
-              <select class="form-select" v-model="basicInfo.teamLeader"
-                @change="changeTeamLeader()">
+              <select class="form-select" v-model="basicInfo.teamLeader">
                 <option value="">請選擇</option>
                 <option v-for="item in teamLeader" 
                   :key="'teamLeader'+item.id"
@@ -128,10 +131,10 @@
 </template>
 
 <script setup>
-import { ref, inject, onMounted, computed, watch } from 'vue'
+import { ref, inject, onMounted, computed } from 'vue'
 import { storeToRefs } from 'pinia'
 import { ajax } from '@/common/ajax'
-import { api, formatPath } from '@/common/api'
+import { api } from '@/common/api'
 import { useRoute, useRouter } from 'vue-router'
 import { useRootStore } from '@/stores/root'
 import { useClientStore } from '@/stores/ClientStore'
@@ -147,22 +150,20 @@ const VITE_API_DOMAIN = import.meta.env.VITE_API_DOMAIN
 // 當前時段所屬班別
 //const nowTimeShift = computed(() => clientStore.nowShift)
 const formingMachineList = computed(() => clientStore.getFormingMachineList)
-const { formingMachineLastBasicInfo } = storeToRefs(clientStore)
+const { allFormingMachineBasicInfo } = storeToRefs(clientStore)
 
 // 界面切換步驟
 const step = ref(1)
 
 // 選擇哪台機器
 const nowMachine = ref(null)
-function choiceMachine(item, gotNextCall = true) {
+async function choiceMachine(item, gotNextCall = true) {
   nowMachine.value = item
   basicInfo.value.machineId = item.id
   // basicInfo.value.shift = nowTimeShift.value // 班別
   step.value = 2
-  // F5重整 gotNextCall 才會是 false  
+  // F5重整 gotNextCall 才會是 false (代表是在step3狀態下F5重整)
   if (!gotNextCall) {
-    // 將 formingMachineLastBasicInfo 整理到 basicInfo
-    lastBasicInfoToBasicInfo();
     step.value = 3
   }
   // 透過UI選擇進來的
@@ -174,23 +175,20 @@ function choiceMachine(item, gotNextCall = true) {
         machineId: item.id 
       }
     })
-    // 撈取機器詳細資料
-    clientStore.getFormingMachineInfo(item.id, () => {
-      setTimeout(() => { 
-        // 如果機器狀態是 INITIAL 才要進入 step 3
-        if (nowMachine.value.status === 'INITIAL') {
-          step.value = 3
-        } else { // 其他狀態直接進入成型機功能頁
-          router.push({ 
-            name: 'FormingMachineFnEnter',
-            query: {
-              machineId: nowMachine.value.id
-            } 
-          })
-        }
-      }, 1000)
-    });
-    clientStore.getFormingMachineBasicInfo(item.id)
+    await clientStore.getFormingMachineBasicInfo(item.id)
+    // 判斷已建立的基本資料中是否有當前時段的班別, 如果沒有才要進入 step 3, 有就直接進入成型機功能頁
+    const isHaveShift = allFormingMachineBasicInfo.value.filter(item => item.shift === clientStore.nowShift);
+    if (!isHaveShift.length) {
+      step.value = 3
+    } else {
+      // 直接進入功能頁
+      router.push({ 
+        name: 'FormingMachineFnEnter',
+        query: {
+          machineId: nowMachine.value.id
+        } 
+      })
+    }
   }
 }
 
@@ -243,28 +241,24 @@ async function snedProductionInfo() {
     // 如果機器狀態是 INITIAL 才要進入 步驟4
     // 如果曾經有該班別的基本資料就不要進入步驟4而是直接進入成型機功能頁 <-- 這個需求邏輯有問題因此應該用,機器狀態是 INITIAL才要進入 步驟4
     //if (!clientStore.formingMachineLastBasicInfo) {
-    if (clientStore.oneFormingMachineInfo.status === 'INITIAL') {
+    if (!clientStore.nowFormingMachineInfo || clientStore.nowFormingMachineInfo.status === 'INITIAL') {
       step.value = 4
       clientStore.getFormingMachineBasicInfo(nowMachine.value.id) // 更新store的資料
+      // 變更狀態為啟用
+      const param = {
+        id: basicInfo.value.machineId, 
+        buttonType: 'ENABLE', 
+        message: '生產中', 
+        provisionStatus: 'IN_PRODUCTION'
+      };
+      clientStore.launchProduction(param, () => {
+        clientStore.getFormingMachineInfo(route.query.machineId);
+      });
     } else {
       router.push({ name: 'FormingMachineFnEnter', query: { machineId: nowMachine.value.id } })
     }
   } else {
     popMsg('新增基本資料失敗')
-  }
-}
-
-// 將 formingMachineLastBasicInfo 資料整理到 basicInfo
-function lastBasicInfoToBasicInfo () {
-  if (formingMachineLastBasicInfo.value) {
-    const temp = formingMachineLastBasicInfo.value;
-    //basicInfo.value.machineId = temp.id;
-    basicInfo.value.shift = temp.shift;
-    basicInfo.value.teamLeader = temp.teamLeader;
-    basicInfo.value.productionPersonnel = temp.productionPersonnel;
-    basicInfo.value.cupPaperCartNumber = temp.cupPaperCartNumber;
-    basicInfo.value.bottomPaperNumber = temp.bottomPaperNumber;
-    basicInfo.value.paperType = temp.paperType;
   }
 }
 
@@ -281,67 +275,61 @@ async function changeShift(shift) {
   if (!shift) {
     return 
   }
-  // 撈取班別下使用者的名單
-  const path = VITE_API_DOMAIN + formatPath(api.fmoldingMachine.shiftUserList, shift);
-  const result = await ajax.get(path);
-  if (ajax.checkErrorCode(result.errorCode)) {
-    teamLeader.value = result.data
-  } else {
-    popMsg(result.errorCode)
-  }
+  const data = await clientStore.getShiftUserList(shift);
+  teamLeader.value = data;
+
+  // 撈取班別下組長的名單
+  // const path = VITE_API_DOMAIN + formatPath(api.fmoldingMachine.shiftUserList, shift);
+  // const result = await ajax.get(path);
+  // if (ajax.checkErrorCode(result.errorCode)) {
+  //   teamLeader.value = result.data
+  // } else {
+  //   popMsg(result.errorCode)
+  // }
 }
 
 // 重新帶入最後基本資料
-const reUseBasicInfo = ref(false)
-// 點擊重新帶入最後基本資料按鈕
-function clickReUseBasicInfo() {  
-  reUseBasicInfo.value = true;
+const isReUseMaterialsInfo = ref(false)
+// 點擊按鈕重新帶入最後的領料資料
+function clickReUseMaterialsInfo() {  
+  isReUseMaterialsInfo.value = true;
   
-  //basicInfo.value.teamLeader = ''
-  //basicInfo.value.productionPersonnel = rootStore.loginUserInfo.name
   basicInfo.value.cupPaperCartNumber = ''
   basicInfo.value.bottomPaperNumber = ''
   basicInfo.value.paperType = ''
 
-  clientStore.getFormingMachineBasicInfo(nowMachine.value.id, basicInfo.value.shift)
-  setTimeout(() => {
-    reUseBasicInfo.value = false;
-  }, 1000)
+  // 拿取最後的領料資料
+  clientStore.getLastMaterial(basicInfo.value.machineId, (lastMaterialInfo) => {
+    console.log('lastMaterialInfo', lastMaterialInfo);
+    // TODO... 還要看後端的資料是否有 2個編號跟紙張類型
+    //...
+    isReUseMaterialsInfo.value = false;
+  })
 }
-
-// 切換組長
-function changeTeamLeader () {
-  // TODO... 不知道是否要做什麼處理
-} 
-
-watch(formingMachineLastBasicInfo, () => {
-  lastBasicInfoToBasicInfo(); // 將 formingMachineLastBasicInfo 整理到 basicInfo
-})
 
 // 送出生產啟動
 async function sendProductionStartUp() {
-  const path = VITE_API_DOMAIN + api.fmoldingMachine.launchProduction
   const param = {
-    provisionId: nowMachine.value.id
-  }
-  const result = await ajax.post(path, param);
-  if (ajax.checkErrorCode(result.errorCode)) {
+    id: nowMachine.value.id, 
+    buttonType: 'ENABLE', 
+    message: '生產中', 
+    provisionStatus: 'IN_PRODUCTION'
+  };
+  clientStore.launchProduction(param, () => {
     router.push({ 
       name: 'FormingMachineFnEnter',
       query: {
         machineId: nowMachine.value.id
       } 
     })
-  } else {
-    popMsg(result.errorCode)
-  }
+  })
 }
-
 
 clientStore.getFormingMachinList() // 成型機列表
 changeShift(clientStore.nowShift)
 
 onMounted(() => {
+  clientStore.nowFormingMachineInfo = null;
   if (route.query.machineId) {
     const nowForminMachine = clientStore.formingMachineList.filter(item => item.id === route.query.machineId)
     choiceMachine(nowForminMachine[0], false)

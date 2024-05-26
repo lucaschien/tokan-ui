@@ -122,14 +122,14 @@ $baseFontSize: 2rem;
   }
 }
 
-// 通用樣式: 選擇機器號碼
+// 通用樣式: 選擇機器號碼那種
 $machineCardSize: 160px;
 .machine-list-box {
   padding: 20px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   > div {
     display: flex;
     align-items: center;

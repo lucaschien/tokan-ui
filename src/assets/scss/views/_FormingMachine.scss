@@ -13,6 +13,20 @@
   // 選擇成型機機號
   .choice-machine-box {
     text-align: center;
+    .machine-list-box {
+      > div {
+        font-size: 4rem;
+        &.MACHINE_CLOSED {
+          background-color: $red;
+        }
+        &.IN_PRODUCTION {
+          background-color: $green;
+        }
+        &.RESTING {
+          background-color: $grey1;
+        }
+      }
+    }
   }
 
   .start-btn {

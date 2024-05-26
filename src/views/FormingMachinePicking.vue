@@ -1,7 +1,7 @@
 <template>
   <div class="FormingMachinePicking p-3">
     <div class="d-flex align-items-center mb-3" v-if="nowMachineId">
-      <h1 class="me-5 mb-0">{{ oneFormingMachineInfo.name }}</h1>
+      <h1 class="me-5 mb-0">{{ nowFormingMachineInfo.name }}</h1>
       <RouterBackBtn 
         :btn-text="'選擇其它機號'"
         :router-name="'FormingMachine'"
@@ -64,7 +64,7 @@ const route = useRoute()
 const clientStore = useClientStore()
 
 const nowMachineId = ref(null)
-const oneFormingMachineInfo = computed(() => clientStore.getOneFormingMachineInfo); // 當前成型機資料
+const nowFormingMachineInfo = computed(() => clientStore.getNowFormingMachineInfo); // 當前成型機資料
 
 onMounted(() => {
   nowMachineId.value = route.query.machineId;

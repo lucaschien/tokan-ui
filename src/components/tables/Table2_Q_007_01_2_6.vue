@@ -2,30 +2,28 @@
   <!-- 2-Q-007-01-2.6生產品質檢驗表 -->
   <div class="custom-tables-box Table2_Q_007_01_2_6">
     <p>2-Q-007-01-2.6生產品質檢驗表</p>
-
     <div class="mb-3">
       <label class="form-label">班別</label>
-      <!-- 新增 -->
-      <div class="fs-1" v-if="!props.detailItem">
-        <template v-if="props.createShift === 'MORNING'">早班</template>
-        <template v-if="props.createShift === 'AFTERNOON'">午班</template>
-        <template v-if="props.createShift === 'NIGHT'">晚班</template>
-      </div>
-      <div class="fs-1" v-if="props.detailItem">
-        <template v-if="dataModel.shift === 'MORNING'">早班</template>
-        <template v-if="dataModel.shift === 'AFTERNOON'">午班</template>
-        <template v-if="dataModel.shift === 'NIGHT'">晚班</template>
+      <div class="fs-1">
+        <template v-if="!props.detailItem">{{ clientStore.shiftName[props.createShift] }}</template>
+        <template v-if="props.detailItem">{{ clientStore.shiftName[dataModel.shift] }}</template>
       </div>
     </div>
 
-    <div  class="mb-5">
+    <div class="mb-5">
+      <label class="form-label">檢查日期</label>
+      <input type="date" class="form-control"
+        v-model="dataModel.productionDate">
+    </div>
+
+    <div class="mb-5">
       <label class="form-label">檢查時間<span class="fs-4 ms-2">(請輸入24小時制格式)</span></label>
       <div class="d-flex align-items-center">
         <input type="text" class="form-control me-2" style="width:200px" 
-          v-model="timeH" placeholder="時: 範例 00"> 
+          v-model.trim="timeH" placeholder="時: 範例 00"> 
         <span class="fs-3" >:</span>
         <input type="text" class="form-control ms-2" style="width:200px" 
-          v-model="timeM" placeholder="分: 範例 00">  
+          v-model.trim="timeM" placeholder="分: 範例 00">  
       </div>
     </div>
     
@@ -64,18 +62,15 @@
       </div>
     </div>
 
-    <!-- 新增按鈕 -->
-    <button class="btn btn-primary w-100 mt-4" 
-      @click="updatePackagingBagInspection()" v-if="!props.detailItem">送出</button>
-    <!-- 修改按鈕 -->
-    <button class="btn btn-primary w-100 mt-4"
-      @click="updatePackagingBagInspection()" v-if="props.detailItem">修改</button>
+    <!-- 新增,修改按鈕 -->
+    <button class="btn btn-primary w-100 mt-4" :disabled="!canSaveBtn"
+      @click="updatePackagingBagInspection()">儲存</button>
 
   </div>
 </template>
 
 <script setup>
-import { ref, inject } from 'vue'
+import { ref, computed, inject } from 'vue'
 import { ajax } from '@/common/ajax'
 import { api } from '@/common/api'
 import { useRoute } from 'vue-router'
@@ -95,12 +90,12 @@ const props = defineProps({
   seccessCallback: Function
 })
 
-// const oneFormingMachineInfo = computed(() => clientStore.getOneFormingMachineInfo); // 當前成型機資料
+// const nowFormingMachineInfo = computed(() => clientStore.getNowFormingMachineInfo); // 當前成型機資料
 
 const dataModel = ref({
   machineId: route.query.machineId,
   shift: props.createShift,
-  productionDate: moment().format('YYYY-MM-DD'),
+  productionDate: '',
   inspectionTime: '',
   operatorName: rootStore.loginUserInfo.name, // 操作員姓名
   normalPrint: false, // 印字正常
@@ -113,16 +108,30 @@ const dataModel = ref({
 const timeH = ref(''); // 小時
 const timeM = ref(''); // 分鐘
 
+const canSaveBtn = computed(() => {
+  if (
+    !dataModel.value.productionDate ||
+    !timeH.value ||
+    !timeM.value
+  ) {
+    return false;
+  } else {
+    return true;
+  }
+})
+
+
 // 儲存包裝膜檢查 (新增與修改)
 async function updatePackagingBagInspection() {
   const path = VITE_API_DOMAIN + api.fmoldingMachine.updatePackagingBagInspection;
   let temp = dataModel.value;
+  temp.productionDate = moment(temp.productionDate).format('YYYY-MM-DD') // 避免不同瀏覽器或裝置日期格式不同
   temp.inspectionTime = timeH.value + ':' + timeM.value + ':00'; // 將秒數加回去
 
   const param = {
     "machineId": route.query.machineId,
     "shift": temp.shift,
-    "productionDate": temp.productionDate,
+    "productionDate": moment(temp.productionDate).format('YYYY-MM-DD'),
     "inspectionTime": temp.inspectionTime,
     "operatorName": rootStore.loginUserInfo.name,
     "normalPrint": (temp.normalPrint) ? 'Y': 'N',
@@ -132,6 +141,7 @@ async function updatePackagingBagInspection() {
     "goodPackagingLowerSeal": (temp.goodPackagingLowerSeal) ? 'Y': 'N',
     "normalPackagingBagWidth": (temp.normalPackagingBagWidth) ? 'Y': 'N',
   };
+
   const result = await ajax.post(path, param)
   if (ajax.checkErrorCode(result.errorCode)) {
     popMsg('資料已送出')
@@ -140,9 +150,6 @@ async function updatePackagingBagInspection() {
     popMsg(result.errorCode)
   }
 }
-
-// 更新前端判斷當前時段的班別
-clientStore.checkNowShift()
 
 // 撈取詳細資料
 async function getDetail() {
@@ -175,7 +182,6 @@ async function getDetail() {
 }
 
 if (props.detailItem) {
-  console.log('props.detailItem', props.detailItem)
   getDetail()
 }
 </script>
