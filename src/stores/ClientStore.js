@@ -150,7 +150,10 @@ export const useClientStore = defineStore('ClientStore', {
     // 取得成型機列表
     async getFormingMachinList() {
       const path = VITE_API_DOMAIN + api.fmoldingMachine.formingMachineList
-      const result = await ajax.get(path)
+      const param = {
+        provisionTypes: ['FORMING', 'FORMING_SF170']
+      };
+      const result = await ajax.post(path, param)
       if (ajax.checkErrorCode(result.errorCode)) {
         this.formingMachineList = result.data
       } else {

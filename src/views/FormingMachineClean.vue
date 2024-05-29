@@ -32,16 +32,18 @@
       <table class="table">
         <thead>
           <tr>
-            <th>#</th>
-            <th>日期</th>
+            <th width="100">#</th>
+            <th width="240">日期</th>
+            <th>(清潔)項目/簽名欄位</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(item, i) in listData" :key="'list' + i">
             <td>{{(i + 1)}}</td>
             <td>{{ item.inspectionDate }}</td>
+            <td v-html="displayContent(item)"></td>
           </tr>
-          <tr v-if="listIsempty"><td class="pt-5 pb-5 text-center text-secondary" colspan="2">查無資料</td></tr>
+          <tr v-if="listIsempty"><td class="pt-5 pb-5 text-center text-secondary" colspan="3">查無資料</td></tr>
         </tbody>
       </table>
     </div>
@@ -113,6 +115,54 @@ async function getList() {
   } else {
     popMsg('查詢失敗')
   }
+}
+
+const displayKey = {
+  cupBottomPrefolderCleaning: '杯底預折器', // 
+  cupBottomPressCleaning: '杯底旋壓器', // 
+  cupBottomRingCleaning: '杯底環', // 
+  moldCleaning: '公模', // 單週 
+  cupBottomPrefolderBiweeklyCleaning: '杯底預折器', // 單週 
+  cupBottomPressBiweeklyCleaning: '杯底旋壓器', // 單週 
+  cupEdgeRollerCleaning: '杯口捲邊模具', // 單週 
+  siliconeSlotCleaning: '矽力康槽', // 單週 
+  motherMoldCleaning: '母模', // 單週 
+  cupBottomPunchCleaning: '杯底沖刀', // 單週 
+  machineProductOutletRackCleaning: '機台成品出口籠架', // 單週 
+  rollHeaterCleaning: '捲邊加熱器', // 單週 
+  moldingMachineTableCleaning: '成型機檯面', // 單週 
+  siliconeBrushCleaning: '矽力康毛刷', // 單週 
+  cupTransferTubeAirNozzleCleaning: '輸杯管輸杯管Air噴頭', // 每兩周 
+  cupBottomRingNozzleCleaning: '杯底環', // 每兩周 
+
+  cupBottomPrefolderDaily1: '12:50 杯底預折器',  // 
+  cupBottomPrefolderDaily2: '16:30 杯底預折器',  // 
+  cupBottomPrefolderDaily3: '20:00 杯底預折器',  // 
+  cupBottomPressDaily: '12:50 杯底旋壓器',       // 
+  //moldCleaning: '公模',              // 
+  cupBottomPrefolder: '杯底預折器',        // 
+  cupBottomPress: '杯底旋壓器', // 
+  //cupEdgeRollerCleaning: '杯口捲邊模具', // 
+  //siliconeSlotCleaning: '矽力康槽', // 
+  //motherMoldCleaning: '母模', // 
+  //machineProductOutletRackCleaning: '機台成品出口籠架', //
+  //: '成型機檯面', // 
+  plasticCupTransferPipeCleaning: '塑膠輸杯管' // 
+}
+
+function displayContent (rowData) {
+  console.log('rowData', rowData)
+  let re = '';
+  for (let item in rowData) {
+    // 是否在要呈現的欄位中
+    if (displayKey[item]) {
+      /// 是否有簽名
+      if (rowData[item]) {
+        re = re + '<div>' + displayKey[item] + ' / ' + rowData[item] + '</div>';
+      }
+    }
+  }
+  return re
 }
 
 onMounted(() => {

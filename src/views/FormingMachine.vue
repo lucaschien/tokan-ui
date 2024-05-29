@@ -127,8 +127,8 @@
       </div>
     </div>
 
-    <!-- 休息中介面 -->
-    <RestingView  v-if="enterRestingView"
+    <!-- 停止作業中的介面 -->
+    <StopWorkView
       :nowMachineId="route.query.machineId"
       :closeCall="backChoiceMachine"/>
 
@@ -144,7 +144,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useRootStore } from '@/stores/root'
 import { useClientStore } from '@/stores/ClientStore'
 import InputScanBarcode from '@/components/InputScanBarcode.vue'
-import RestingView from '@/components/Client/RestingView.vue'
+import StopWorkView from '@/components/Client/StopWorkView.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -330,15 +330,6 @@ async function sendProductionStartUp() {
     })
   })
 }
-
-// 是否進入休息中畫面
-const enterRestingView = computed(() => {
-  if (!route.query.machineId) {
-    return false;
-  }
-  const temp = clientStore.formingMachineList.filter(item => item.id === route.query.machineId);
-  return (temp[0].status === 'RESTING') ? true : false;
-});
 
 clientStore.getFormingMachinList() // 成型機列表
 changeShift(clientStore.nowShift)

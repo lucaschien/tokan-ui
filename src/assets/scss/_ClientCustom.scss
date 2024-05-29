@@ -188,19 +188,20 @@ $machineCardSize: 160px;
   background-color: #fff;
 }
 
-// 休息中介面
-.resting-view {
+// 停止作業中的介面
+.StopWorkView {
   position: fixed;
-  left: 40px;
-  right: 40px;
-  top: 80px;
-  height: calc(100vh - 130px);
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   color: #fff;
   background-color: $main-blue;
-  border-radius: 20px;
+  z-index: 1;
+  
   span {
     font-size: 17vw;
     margin: -50px 0 0 0;
@@ -208,12 +209,12 @@ $machineCardSize: 160px;
   .choice-other-btn,
   .start-work-btn {
     position: absolute;
-    left: -30px;
-    bottom: -20px;
+    left: 0px;
+    bottom: 0px;
     padding: 30px 0;
     width: 40%;
     min-width: 320px;
-    z-index: 1;
+    z-index: 3;
     background-color: #fff;
     border: 8px solid $main-blue;
     color: $main-blue;
@@ -223,6 +224,6 @@ $machineCardSize: 160px;
   }
   .start-work-btn {
     left: auto;
-    right: -30px;
+    right: 00px;
   }
 }

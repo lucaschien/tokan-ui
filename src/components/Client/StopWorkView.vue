@@ -1,6 +1,6 @@
 <template>
-  <div class="resting-view">
-    <span>休息中</span>
+  <div class="StopWorkView" v-if="haveStopWords">
+    <span>{{ haveStopWords }}</span>
     <button class="choice-other-btn" 
       @click="props.closeCall(); router.push({name:'FormingMachine'})">選擇其它機號</button> 
     <button class="start-work-btn"
@@ -9,8 +9,7 @@
 </template>
 
 <script setup>
-
-import { inject } from 'vue'
+import { computed, inject } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useClientStore } from '@/stores/ClientStore'
 
@@ -22,7 +21,6 @@ const clientStore = useClientStore()
 const props = defineProps({
   nowMachineId: {
     type: String,
-    required: true,
   },
   closeCall: {
     type: Function,
@@ -44,4 +42,26 @@ function reStartWork() {
     });
   });
 }
+
+// 是否進入停止作業中的介面
+const haveStopWords = computed(() => {
+  if (!props.nowMachineId) {
+    return false;
+  }
+  let temp = null;
+  if (clientStore.nowFormingMachineInfo) {
+    temp = clientStore.nowFormingMachineInfo; // 在成型機功能頁
+  } else {
+    temp = clientStore.formingMachineList.filter(item => item.id === props.nowMachineId)[0]; // 在選擇機器頁
+  }
+  // 休息中, 模具更換, 停機待修  需要出現停止作業中的介面
+  if (
+    temp.status === 'RESTING' || 
+    temp.status === 'MOLD_CHANGE' || 
+    temp.status === 'MACHINE_STOPPED_FOR_REPAIR'
+  ) {
+    return clientStore.statusName[temp.status]; // 狀態文字
+  }
+  return false;
+});
 </script>

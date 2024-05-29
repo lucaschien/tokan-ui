@@ -1,79 +1,77 @@
 <template>
   <div class="FormingMachineFnEnter p-3">
     <!-- 功能介面 -->
-    <template v-if="!enterRestingView">
-      <div class="d-flex align-items-center mb-3" v-if="nowFormingMachineInfo">
-        <h1 class="me-5 mb-0">{{ nowFormingMachineInfo.name }}</h1>
-        <RouterBackBtn 
-          :btn-text="'選擇其它機號'"
-          :router-name="'FormingMachine'"
-        />
+    <div class="d-flex align-items-center mb-3" v-if="nowFormingMachineInfo">
+      <h1 class="me-5 mb-0">{{ nowFormingMachineInfo.name }}</h1>
+      <RouterBackBtn 
+        :btn-text="'選擇其它機號'"
+        :router-name="'FormingMachine'"
+      />
+    </div>
+    <div class="card-box">
+      <div :class="['card m-2 align-items-center', { disabled: false }]">
+        <a href="javascript:;"
+          @click="gotoFormingMachinePatrol()">巡查</a>
       </div>
-      <div class="card-box">
-        <div :class="['card m-2 align-items-center', { disabled: false }]">
-          <a href="javascript:;"
-            @click="gotoFormingMachinePatrol()">巡查</a>
-        </div>
-        <div :class="['card m-2 align-items-center', { disabled: false }]">
-          <a href="javascript:;"
-            @click="gotoFormingMachineHandover()">工作交接</a>
-        </div>
-        <div :class="['card m-2 align-items-center', { disabled: false }]">
-          <a href="javascript:;" class="flex-column"
-            @click="gotoFormingMachinePicking()">領料<span class="fs-3">nhận nguyên liệu</span></a>
-        </div>
-        <div :class="['card m-2 align-items-center', { disabled: false }]">
-          <a href="javascript:;"
-            @click="gotoFormingMachineWaterLeakageAdjustment()">漏水調機</a>
-        </div>
-        <div :class="['card m-2 align-items-center', { disabled: false }]">
-          <a href="javascript:;"
-            @click="gotoFormingMachineTroubleshooting()">故障排除</a>
-        </div>
-        <div :class="['card m-2 align-items-center', { disabled: false }]">
-          <a href="javascript:;"
-            @click="gotoFormingMachineReplaceProduct()">更換產品</a>
-        </div>
-        <div :class="['card m-2 align-items-center', { disabled: false }]">
-          <a href="javascript:;"
-            @click="confirmToBreak()">休息中</a>
-        </div>
-        <div :class="['card m-2 align-items-center', { disabled: false }]">
-          <a href="javascript:;"
-            @click="gotoFormingMachineClean()">機台清潔</a>
-        </div>
-        <div :class="['card m-2 align-items-center', { disabled: false }]">
-          <a href="javascript:;"
-            @click="moldReplacement()">模具更換</a>
-        </div>
-        <div :class="['card m-2 align-items-center', { disabled: false }]">
-          <a href="javascript:;"
-            @click="shutdownAndRepair()">停機待修</a>
-        </div>
-        <div :class="['card m-2 align-items-center', { disabled: false }]">
-          <a href="javascript:;"
-            @click="gotoFormingMachineProductionInterruption()">生產中斷</a>
-        </div>
-        <div :class="['card m-2 align-items-center', { disabled: false }]">
-          <a href="javascript:;"
-            @click="shutDown()">關機</a>
-        </div>
+      <div :class="['card m-2 align-items-center', { disabled: false }]">
+        <a href="javascript:;"
+          @click="gotoFormingMachineHandover()">工作交接</a>
       </div>
-    </template>
-    <!-- 休息中介面 -->
-    <RestingView  v-if="enterRestingView"
+      <div :class="['card m-2 align-items-center', { disabled: false }]">
+        <a href="javascript:;" class="flex-column"
+          @click="gotoFormingMachinePicking()">領料<span class="fs-3">nhận nguyên liệu</span></a>
+      </div>
+      <div :class="['card m-2 align-items-center', { disabled: false }]">
+        <a href="javascript:;"
+          @click="gotoFormingMachineWaterLeakageAdjustment()">漏水調機</a>
+      </div>
+      <div :class="['card m-2 align-items-center', { disabled: false }]">
+        <a href="javascript:;"
+          @click="gotoFormingMachineTroubleshooting()">故障排除</a>
+      </div>
+      <div :class="['card m-2 align-items-center', { disabled: false }]">
+        <a href="javascript:;"
+          @click="gotoFormingMachineReplaceProduct()">更換產品</a>
+      </div>
+      <div :class="['card m-2 align-items-center', { disabled: false }]">
+        <a href="javascript:;"
+          @click="confirmToBreak()">休息中</a>
+      </div>
+      <div :class="['card m-2 align-items-center', { disabled: false }]">
+        <a href="javascript:;"
+          @click="gotoFormingMachineClean()">機台清潔</a>
+      </div>
+      <div :class="['card m-2 align-items-center', { disabled: false }]">
+        <a href="javascript:;"
+          @click="moldReplacement()">模具更換</a>
+      </div>
+      <div :class="['card m-2 align-items-center', { disabled: false }]">
+        <a href="javascript:;"
+          @click="shutdownAndRepair()">停機待修</a>
+      </div>
+      <div :class="['card m-2 align-items-center', { disabled: false }]">
+        <a href="javascript:;"
+          @click="gotoFormingMachineProductionInterruption()">生產中斷</a>
+      </div>
+      <div :class="['card m-2 align-items-center', { disabled: false }]">
+        <a href="javascript:;"
+          @click="shutDown()">關機</a>
+      </div>
+    </div>
+    <!-- 停止作業中的介面 -->
+    <StopWorkView
       :nowMachineId="nowMachineId"/>
   </div>
 </template>
 
 <script setup>
-import { ref, watch, onMounted, inject, computed } from 'vue'
+import { ref, onMounted, inject, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useClientStore } from '@/stores/ClientStore'
 import { ajax } from '@/common/ajax'
 import { api } from '@/common/api'
 import RouterBackBtn from '@/components/RouterBackBtn.vue'
-import RestingView from '@/components/Client/RestingView.vue'
+import StopWorkView from '@/components/Client/StopWorkView.vue'
 import { popMsg } from '@/common/alert';
 
 const openConfirm = inject('openConfirm')
@@ -84,8 +82,6 @@ const VITE_API_DOMAIN = import.meta.env.VITE_API_DOMAIN
 
 const nowMachineId = ref(null)
 const nowFormingMachineInfo = computed(() => clientStore.getNowFormingMachineInfo); // 當前成型機資料
-const enterRestingView = ref(false) // 進入休息中的介面
-
 
 // 巡查
 function gotoFormingMachinePatrol() {
@@ -268,26 +264,9 @@ function shutDown() {
   })
 }
 
-
-// watch
-watch(() => nowFormingMachineInfo.value, (newVal) => {
-  // 是休息中進入休息中的介面
-  if (newVal.status === 'RESTING') {
-    enterRestingView.value = true;
-  } else {
-    enterRestingView.value = false;
-  }
-});
-
-
 onMounted(async () => {
   nowMachineId.value = route.query.machineId;
   await clientStore.getFormingMachineInfo(nowMachineId.value);
   await clientStore.getLastMaterial(nowMachineId.value);
-
-  // IN_PRODUCTION  RESTING
-  if (nowFormingMachineInfo.value.status === 'RESTING') {
-    enterRestingView.value = true;
-  }
 })
 </script>

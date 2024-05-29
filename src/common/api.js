@@ -12,7 +12,7 @@ export const api = {
     loginUserInfo: '/tokan/api/v1/auth/me', // 登入者資訊
   },
   fmoldingMachine: { // 成型機相關
-    formingMachineList: '/tokan/api/v1/provision', // 取得成型機列表
+    formingMachineList: '/tokan/api/v1/provision/getProvisionsByProvisionType', // 取得成型機列表
     formingMachineInfo: '/tokan/api/v1/provision/{0}', // 取得單一成型機資訊 {0}機器id
     changeStatus: '/tokan/api/v1/provision/changeStatus', // 更新機器狀態 TOOD... 暫時不使用
     shiftUserList: '/tokan/api/v1/users/shiftType/{0}', // 班別下使用者的名單 {0} 班別
