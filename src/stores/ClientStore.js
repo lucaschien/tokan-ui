@@ -75,7 +75,7 @@ export const useClientStore = defineStore('ClientStore', {
     lastMaterial: null,
     // 所有成型機列表
     formingMachineList: [],
-    // 單一台成型機詳細資訊
+    // 目前選擇的成型機詳細資訊
     nowFormingMachineInfo: null,
   }),
   getters: {

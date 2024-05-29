@@ -2,7 +2,6 @@
   <div class="ClientFull">
     <ClientHeader/>
     <div class="wrapper" v-if="init">
-      {{ clientStore.lastMaterial  }}
       <template v-if="isFormingMachine && !formingMachineList.length">
         <div class="fs-1 text-center pt-5">無任何成型機資料</div>
       </template>

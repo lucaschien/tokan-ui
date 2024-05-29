@@ -14,7 +14,6 @@
     </div>
 
     <h4 class="text-center mt-4 mb-4">機台清潔</h4>
-    nowFormingMachineInfo: {{ nowFormingMachineInfo }}
 
     <!-- 列表頁 -->
     <div v-if="!lookDetail">

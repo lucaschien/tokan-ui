@@ -42,7 +42,8 @@
     </div>
 
     <h5>
-      <span class="me-3" v-if="clientStore.nowFormingMachineInfo">{{ clientStore.nowFormingMachineInfo.name }}</span>
+      <span class="me-3" @dblclick="test()"
+         v-if="clientStore.nowFormingMachineInfo">{{ clientStore.nowFormingMachineInfo.name }}</span>
       <template v-for="(item, i) in route.meta.breadcrumb" :key="'breadcrumb'+i">
         {{ item }}
         <i class="fa fa-angle-right" aria-hidden="true" 
@@ -64,5 +65,11 @@ const rootStore = useRootStore()
 const clientStore = useClientStore()
 
 const showMenu = ref(false)
+
+function test() {
+  console.log('當日最後一筆領料資料::', clientStore.lastMaterial);
+  console.log('目前選擇的成型機詳細資訊::', clientStore.nowFormingMachineInfo);
+  console.log('-------------------------');
+}
 
 </script>

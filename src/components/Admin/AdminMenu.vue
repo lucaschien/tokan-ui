@@ -8,6 +8,11 @@
         :to="{ name: 'AdminFormingMachineFailureHistory' }">成型機故障履歷的統計</RouterLink>
       <RouterLink :class="[{active: route.name === 'AdminReport'}]"
         :to="{ name: 'AdminReport' }">報表下載</RouterLink>
+      <RouterLink :class="[{
+        active: route.name === 'AdminReplacementProductForm' || route.name === 'AdminReplacementProductFormDetail', 
+      }]"
+        :to="{ name: 'AdminReplacementProductForm' }">更換產品確認單</RouterLink>
+      
     </div>
   </div>
 </template>

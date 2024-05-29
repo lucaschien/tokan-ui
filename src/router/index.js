@@ -121,6 +121,7 @@ const router = createRouter({
         },
       ]
     },
+
     // B端
     {
       path: '/Admin',
@@ -152,9 +153,25 @@ const router = createRouter({
             breadcrumb: ['報表下載']
           }
         },
-
+        {
+          path: 'AdminReplacementProductForm',
+          name: 'AdminReplacementProductForm',
+          component: () => import('../views/Admin/AdminReplacementProductForm.vue'),
+          meta: {
+            breadcrumb: ['更換產品確認單']
+          }
+        },
+        {
+          path: 'AdminReplacementProductFormDetail',
+          name: 'AdminReplacementProductFormDetail',
+          component: () => import('../views/Admin/AdminReplacementProductFormDetail.vue'),
+          meta: {
+            breadcrumb: ['更換產品確認單']
+          }
+        },
       ]
     },
+
     // other
     {
       path: '/ClientGUI',
