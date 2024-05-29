@@ -6,6 +6,22 @@ import moment from 'moment'
 
 const VITE_API_DOMAIN = import.meta.env.VITE_API_DOMAIN
 
+/*
+  角色:
+    BOSS("老闆"),
+    PACKAGING_WORKER("包裝作業員"),
+    CUTTING_WORKER("裁切作業員"),
+    MOLDING_WORKER("成型作業員"),
+    ASSISTANT("助理"),
+    ACCOUNTANT("會計"),
+    TEAM_LEADER("組長"),
+    MAINTENANCE("保修"),
+    QUALITY_MANAGER("品管"),
+    QUALITY_INSPECTOR("品檢"),
+    DEPUTY_FACTORY_MANAGER("副廠長"),
+    FACTORY_MANAGER("廠長");
+*/
+
 /* 
   成型機機器狀態:
     INITIAL("初始狀態"),
@@ -55,6 +71,8 @@ export const useClientStore = defineStore('ClientStore', {
     nowShift: '',
     // 成型機已建立的基本資料
     allFormingMachineBasicInfo: [],
+    // 當日最後一筆領料資料
+    lastMaterial: null,
     // 所有成型機列表
     formingMachineList: [],
     // 單一台成型機詳細資訊
@@ -118,6 +136,17 @@ export const useClientStore = defineStore('ClientStore', {
       }
     },
 
+    // 依照角色撈取人員清單
+    async getRoleUserList(roleCode) {
+      const path = VITE_API_DOMAIN + formatPath(api.fmoldingMachine.roleUserList, roleCode);
+      const result = await ajax.get(path);
+      if (ajax.checkErrorCode(result.errorCode)) {
+        return result.data;
+      } else {
+        popMsg(result.errorCode)
+      }
+    },
+
     // 取得成型機列表
     async getFormingMachinList() {
       const path = VITE_API_DOMAIN + api.fmoldingMachine.formingMachineList
@@ -165,7 +194,7 @@ export const useClientStore = defineStore('ClientStore', {
 
     // 取得成型機已建立的基本資料
     async getFormingMachineBasicInfo(id) {
-      const path = VITE_API_DOMAIN + formatPath(api.fmoldingMachine.getBasicInfos, id) 
+      const path = VITE_API_DOMAIN + formatPath(api.fmoldingMachine.getBasicInfos, id)
       const result = await ajax.get(path);
       if (ajax.checkErrorCode(result.errorCode)) {
         this.allFormingMachineBasicInfo = result.data;
@@ -185,10 +214,11 @@ export const useClientStore = defineStore('ClientStore', {
     },
 
     // 查詢當日最後一筆領料資料
-    async getLastMaterial(id, callback) {
+    async getLastMaterial(id, callback = () => { }) {
       const path = VITE_API_DOMAIN + formatPath(api.fmoldingMachine.getLastMaterial, id)
       const result = await ajax.get(path);
       if (ajax.checkErrorCode(result.errorCode)) {
+        this.lastMaterial = result.data;
         callback(result.data);
       } else {
         popMsg(result.errorCode)
@@ -236,7 +266,7 @@ export const useClientStore = defineStore('ClientStore', {
     },
 
     // ● 人機顯示+良杯撥桿繼電器無功能+送杯身紙電眼啟動計數量(ENABLE) (漏水調機,故障排除用) (黃色+紫色)
-    async lockProduction(paramObj, callback = () => {}) {
+    async lockProduction(paramObj, callback = () => { }) {
       const path = VITE_API_DOMAIN + api.fmoldingMachine.lockProduction
       const param = {
         provisionId: paramObj.id,
@@ -259,7 +289,7 @@ export const useClientStore = defineStore('ClientStore', {
      * @param {*} paramObj.provisionStatus 成型機機器狀態,參數對應狀態在最上方有備註 
      * @param {*} callback 回呼函式
      */
-    async launchProduction(paramObj, callback = () => {}) {
+    async launchProduction(paramObj, callback = () => { }) {
       const path = VITE_API_DOMAIN + api.fmoldingMachine.launchProduction
       const param = {
         provisionId: paramObj.id,

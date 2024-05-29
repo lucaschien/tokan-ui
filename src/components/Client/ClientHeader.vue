@@ -13,7 +13,7 @@
           @click="showMenu = !showMenu">
           <i class="fa fa-bars" aria-hidden="true"></i>
         </button>
-        <span>當前時段: {{ clientStore.shiftName[clientStore.nowShift] }}</span>
+        <span>{{ rootStore.loginUserInfo.name }} {{ rootStore.loginUserInfo.roleName }}, {{ clientStore.shiftName[clientStore.nowShift] }}</span>
         <nav :class="[{ show: showMenu }]">
           <a class="me-1 logout-btn"
             @click="rootStore.logout()"><i class="fa fa-sign-out" aria-hidden="true"></i>登出</a>

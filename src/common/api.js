@@ -16,6 +16,7 @@ export const api = {
     formingMachineInfo: '/tokan/api/v1/provision/{0}', // 取得單一成型機資訊 {0}機器id
     changeStatus: '/tokan/api/v1/provision/changeStatus', // 更新機器狀態 TOOD... 暫時不使用
     shiftUserList: '/tokan/api/v1/users/shiftType/{0}', // 班別下使用者的名單 {0} 班別
+    roleUserList: '/tokan/api/v1/users/roleCode/{0}', // 依照角色撈取人員清單 {0} roleCode
     saveBasicInfo: '/tokan/api/v1/moldingMachine/saveProductionBasicInfo', // 儲存基本資料
     getBasicInfos: '/tokan/api/v1/moldingMachine/getProductionBasicInfos/{0}', // 取得已建立基本資料 {0}機器id
     getLastMaterial: '/tokan/api/v1/moldingMachine/getLastMaterial/{0}', // 查詢當日最後一筆領料資料 {0}機器id
@@ -45,5 +46,13 @@ export const api = {
 
     // 功能: ● 領料 相關
     saveMoldingMachineMaterialRecord: '/tokan/api/v1/moldingMachine/saveMoldingMachineMaterialRecord', // 領料-儲存領料紀錄
+
+    // 功能: ● 機台清潔 相關
+    getMoldingMachineCleaningInspections: '/tokan/api/v1/moldingMachine/getMoldingMachineCleaningInspections/{0}', // 一般機器清潔檢查列表 {0} cycleType: DAILY, WEEKLY, BI_WEEKLY
+    updateMoldingMachineCleaningInspection: '/tokan/api/v1/moldingMachine/updateMoldingMachineCleaningInspection/{0}', // 儲存一般機器清潔檢查 {0} cycleType: DAILY, WEEKLY, BI_WEEKLY
+
+    getSF170MoldingMachineCleaningInspections: '/tokan/api/v1/moldingMachine/getSF170MoldingMachineCleaningInspections/{0}', // SF170機器清潔檢查列表 {0} cycleType: DAILY, WEEKLY, BI_WEEKLY
+    updateSF170MoldingMachineCleaningInspection: '/tokan/api/v1/moldingMachine/updateSF170MoldingMachineCleaningInspection/{0}', // 儲存SF170機器清潔檢查 {0} cycleType: DAILY, WEEKLY, BI_WEEKLY
+
   },
 };

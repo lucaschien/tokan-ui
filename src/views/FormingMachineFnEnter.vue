@@ -61,13 +61,8 @@
       </div>
     </template>
     <!-- 休息中介面 -->
-    <div class="resting-view" v-if="enterRestingView">
-      <span>休息中</span>
-      <button class="choice-other-btn" 
-        @click="router.push({name:'FormingMachine'})">選擇其它機號</button> 
-      <button class="start-work-btn"
-        @click="reStartWork()">恢復生產</button> 
-    </div>
+    <RestingView  v-if="enterRestingView"
+      :nowMachineId="nowMachineId"/>
   </div>
 </template>
 
@@ -78,6 +73,7 @@ import { useClientStore } from '@/stores/ClientStore'
 import { ajax } from '@/common/ajax'
 import { api } from '@/common/api'
 import RouterBackBtn from '@/components/RouterBackBtn.vue'
+import RestingView from '@/components/Client/RestingView.vue'
 import { popMsg } from '@/common/alert';
 
 const openConfirm = inject('openConfirm')
@@ -89,22 +85,6 @@ const VITE_API_DOMAIN = import.meta.env.VITE_API_DOMAIN
 const nowMachineId = ref(null)
 const nowFormingMachineInfo = computed(() => clientStore.getNowFormingMachineInfo); // 當前成型機資料
 const enterRestingView = ref(false) // 進入休息中的介面
-
-
-// 恢復生產
-function reStartWork() {
-  openConfirm('確認恢復生產?', () => {
-    const param = {
-      id: nowMachineId.value, 
-      buttonType: 'ENABLE', 
-      message: '生產中', 
-      provisionStatus: 'IN_PRODUCTION'
-    };
-    clientStore.launchProduction(param, () => {
-      clientStore.getFormingMachineInfo(route.query.machineId);
-    });
-  });
-}
 
 
 // 巡查
@@ -303,6 +283,7 @@ watch(() => nowFormingMachineInfo.value, (newVal) => {
 onMounted(async () => {
   nowMachineId.value = route.query.machineId;
   await clientStore.getFormingMachineInfo(nowMachineId.value);
+  await clientStore.getLastMaterial(nowMachineId.value);
 
   // IN_PRODUCTION  RESTING
   if (nowFormingMachineInfo.value.status === 'RESTING') {

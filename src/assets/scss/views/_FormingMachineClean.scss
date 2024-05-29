@@ -1,3 +1,10 @@
 .FormingMachineClean {
   background-color: #fff;
+
+  table {
+    border: 1px solid $main-grey;
+    td {
+      vertical-align: middle;
+    }
+  }
 }

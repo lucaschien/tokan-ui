@@ -43,6 +43,19 @@ lucas_M
 \_N 晚班
 \_A 午班
 
+各種登入帳號的角色
+保修,MAINTENANCE
+副廠長,DEPUTY_FACTORY_MANAGER
+助理,ASSISTANT
+包裝作業員,PACKAGING_WORKER
+品檢,QUALITY_INSPECTOR
+品管,QUALITY_MANAGER
+廠長,FACTORY_MANAGER
+成型作業員,MOLDING_WORKER
+會計,ACCOUNTANT
+組長,TEAM_LEADER
+裁切作業員,CUTTING_WORKER
+
 ```
 1.領料 / nhận nguyên liệu
 2.領料選項 / mục lựa chọn nhận nguyên liệu

@@ -13,7 +13,10 @@
     <div class="mb-3 row">
       <label class="form-label col-4">原紙種類: </label>
       <div class="col-8">
-        <input class="form-control" type="text" v-model="dataModel.paperType" disabled>
+        <select class="form-select" v-model="dataModel.paperType" disabled>
+          <option value="GENERAL">一般原紙</option>
+          <option value="FSC">FSC</option>
+        </select>
       </div>
     </div>
     <div class="mb-3 row">
@@ -184,7 +187,7 @@ const dataModel = ref({
   machineId: route.query.machineId,
   shift: props.createShift, // 班別
   productionDate: '', // 生產日期
-  paperType: "FSC", // 原紙種類
+  paperType: clientStore.lastMaterial.paperType, // 原紙種類
   productionTimeStart: '', // 生產時間 起
   productionTimeEnd: '', // 生產時間 迄
   //formingSpeed: 0, // 成型速度 TODO... 前端不用帶
