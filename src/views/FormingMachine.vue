@@ -2,7 +2,11 @@
   <div class="FormingMachine p-3">
     <!-- 選擇成型機機號 -->
     <div class="choice-machine-box" v-if="step === 1">
-      <h4 class="mt-3">選擇成型機機號</h4>
+      <div class="text-end">
+        <button type="button" class="btn btn-outline-secondary fs-5"
+          @click="clientStore.getFormingMachinList()"><span class="fs-4 me-2">更新狀態</span><i class="fa fa-undo fs-4" aria-hidden="true"></i></button>
+      </div>
+      <h3 class="mt-3">選擇成型機機號</h3>
       <div class="machine-list-box">
         <div v-for="item in formingMachineList" :key="'machine'+item.id"
           :class="['card m-2 p-3 align-items-center', {
@@ -164,6 +168,10 @@ const step = ref(1)
 // 選擇哪台機器
 const nowMachine = ref(null)
 async function choiceMachine(item, gotNextCall = true) {
+  // 如果是關機就不做處理
+  if (item.status === "MACHINE_CLOSED") {
+    return false;
+  }
   nowMachine.value = item
   basicInfo.value.machineId = item.id
   // basicInfo.value.shift = nowTimeShift.value // 班別

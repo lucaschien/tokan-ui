@@ -47,7 +47,7 @@
         </div>
         <div class="col-1 fs-3">公升</div>
       </div>
-
+      <!-- TODO... 使用當前最後領料記錄中的紙張類型,所以不提供界面設定
       <div class="mb-4 row">
         <lable class="form-label col-4">原紙種類</lable>
         <div class="form-check col-2">
@@ -68,7 +68,7 @@
             value="FSC">
           <label class="form-check-label" for="paperType2">FSC</label>
         </div>
-      </div>
+      </div> -->
 
       <button class="btn btn-primary w-100 mt-4" :disabled="!canSave"
         @click="saveMoldingMachineMaterialRecord()">送出</button>
@@ -78,7 +78,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { ajax } from '@/common/ajax'
 import { api } from '@/common/api'
 import { useClientStore } from '@/stores/ClientStore'
@@ -88,6 +88,7 @@ import { popMsg } from '@/common/alert';
 import moment from 'moment';
 
 const route = useRoute()
+const router = useRouter()
 const clientStore = useClientStore()
 const VITE_API_DOMAIN = import.meta.env.VITE_API_DOMAIN
 
@@ -99,7 +100,7 @@ const dataModel = ref({
   shift: clientStore.nowShift,
   productionDate: null,
   materialCollectionTime: null,
-  paperType: null,
+  paperType: clientStore.lastMaterial.paperType, // 使用當日最後一筆領料資料內的紙張類型
   cupPaperCartNumber: null, // 杯身紙台車編號
   bottomPaperNumber: null, // 杯底紙編號
   siliconeLubricant: null, // 矽利康
@@ -108,7 +109,6 @@ const dataModel = ref({
 
 const canSave = computed(() => {
   if (
-    !dataModel.value.paperType && 
     !dataModel.value.cupPaperCartNumber && 
     !dataModel.value.bottomPaperNumber && 
     !dataModel.value.siliconeLubricant && 
@@ -124,7 +124,6 @@ async function saveMoldingMachineMaterialRecord() {
   dataModel.value.materialCollectionTime = moment().format('HH:mm:ss');
 
   // 空字串轉null
-  dataModel.value.paperType = (dataModel.value.paperType) ? dataModel.value.paperType : null;
   dataModel.value.cupPaperCartNumber = (dataModel.value.cupPaperCartNumber) ? dataModel.value.cupPaperCartNumber : null;
   dataModel.value.bottomPaperNumber = (dataModel.value.bottomPaperNumber) ? dataModel.value.bottomPaperNumber : null;
   dataModel.value.siliconeLubricant = (dataModel.value.siliconeLubricant) ? dataModel.value.siliconeLubricant : null;
@@ -136,7 +135,6 @@ async function saveMoldingMachineMaterialRecord() {
   if (ajax.checkErrorCode(result.errorCode)) {
     popMsg('領料完成 / hoàn thành nhận nguyên liệu')
     // 恢復預設值
-    dataModel.value.paperType = null;
     dataModel.value.cupPaperCartNumber = null; 
     dataModel.value.bottomPaperNumber = null;
     dataModel.value.siliconeLubricant = null;
@@ -150,7 +148,9 @@ async function saveMoldingMachineMaterialRecord() {
       provisionStatus: 'IN_PRODUCTION'
     };
     clientStore.launchProduction(param, () => {
-      clientStore.getFormingMachineInfo(route.query.machineId);
+      clientStore.getFormingMachineInfo(route.query.machineId, () => {
+        router.push({ name: 'FormingMachineFnEnter', query: { machineId: nowMachineId.value } });
+      });
     });
 
   } else {
