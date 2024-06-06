@@ -30,7 +30,7 @@
             <td>2024-05-29</td>
             <td>55555</td>
             <td>
-              <button class="btn btn-outline-secondary" @click="gotoDetail()">
+              <button class="btn btn-outline-secondary" @click="gotoDetail(123)">
                 <i class="fa fa-pencil" aria-hidden="true"></i>
               </button>
             </td>
@@ -54,8 +54,8 @@ const searchModel = ref({
   date: ''
 })
 
-function gotoDetail() {
-  router.push({ name: 'AdminReplacementProductFormDetail', query: { id: '123' }});
+function gotoDetail(item) {
+  router.push({ name: 'AdminReplacementProductFormDetail', query: { id: item }});
 }
 
 function gotoCreate() {

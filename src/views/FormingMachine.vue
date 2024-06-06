@@ -168,6 +168,19 @@ const step = ref(1)
 // 選擇哪台機器
 const nowMachine = ref(null)
 async function choiceMachine(item, gotNextCall = true) {
+  // if (item.name === '#1') {
+  //   const param = {
+  //     id: item.id, 
+  //     buttonType: 'ENABLE', 
+  //     message: '生產中', 
+  //     provisionStatus: 'IN_PRODUCTION'
+  //   };
+  //   clientStore.launchProduction(param, () => {
+  //     clientStore.getFormingMachineInfo(route.query.machineId);
+  //   });
+  //   return false;
+  // }
+
   // 如果是關機就不做處理
   if (item.status === "MACHINE_CLOSED") {
     return false;

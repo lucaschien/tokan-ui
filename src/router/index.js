@@ -169,6 +169,22 @@ const router = createRouter({
             breadcrumb: ['更換產品確認單']
           }
         },
+        {
+          path: 'AdminProductManagement',
+          name: 'AdminProductManagement',
+          component: () => import('../views/Admin/AdminProductManagement.vue'),
+          meta: {
+            breadcrumb: ['產品管理']
+          }
+        },
+        {
+          path: 'AdminProductManagementDetail',
+          name: 'AdminProductManagementDetail',
+          component: () => import('../views/Admin/AdminProductManagementDetail.vue'),
+          meta: {
+            breadcrumb: ['產品管理']
+          }
+        },
       ]
     },
 

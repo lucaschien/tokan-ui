@@ -9,10 +9,12 @@
       <RouterLink :class="[{active: route.name === 'AdminReport'}]"
         :to="{ name: 'AdminReport' }">報表下載</RouterLink>
       <RouterLink :class="[{
-        active: route.name === 'AdminReplacementProductForm' || route.name === 'AdminReplacementProductFormDetail', 
-      }]"
+          active: route.name === 'AdminReplacementProductForm' || route.name === 'AdminReplacementProductFormDetail', 
+        }]"
         :to="{ name: 'AdminReplacementProductForm' }">更換產品確認單</RouterLink>
-      
+      <RouterLink :class="[{active: route.name === 'AdminProductManagement'}]"
+        :to="{ name: 'AdminProductManagement' }">產品管理</RouterLink>
+
     </div>
   </div>
 </template>

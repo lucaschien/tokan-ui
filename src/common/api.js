@@ -54,5 +54,18 @@ export const api = {
     getSF170MoldingMachineCleaningInspections: '/tokan/api/v1/moldingMachine/getSF170MoldingMachineCleaningInspections/{0}', // SF170機器清潔檢查列表 {0} cycleType: DAILY, WEEKLY, BI_WEEKLY
     updateSF170MoldingMachineCleaningInspection: '/tokan/api/v1/moldingMachine/updateSF170MoldingMachineCleaningInspection/{0}', // 儲存SF170機器清潔檢查 {0} cycleType: DAILY, WEEKLY, BI_WEEKLY
 
+    // 功能: ● 故障排除 相關
+    getList: '/tokan/api/v1/moldingMachine/{0}', // 撈取列表(同巡查的成型機日報表部分項目) {0} 機器類型對應的api path 'getInspectionMoldingMachineProductions', 'getInspectionSF170MoldingMachineProductions'
+    updateFaultResolution: '/tokan/api/v1/moldingMachine/updateFaultResolution', // 儲存 故障排除
+    updateSF170FaultResolution: '/tokan/api/v1/moldingMachine/updateSF170FaultResolution', // 儲存 SF170 故障排除
   },
+
+  // B端平台用
+  Admin: {
+    // 產品管理相關
+    productList: '/tokan/api/v1/product/list',
+    updateProduct: '/tokan/api/v1/product', // 新增與修改共用
+    deleteProduct: '/tokan/api/v1/product/{0}', // 刪除
+
+  }
 };

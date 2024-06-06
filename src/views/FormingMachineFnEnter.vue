@@ -72,8 +72,8 @@ import { ajax } from '@/common/ajax'
 import { api } from '@/common/api'
 import RouterBackBtn from '@/components/RouterBackBtn.vue'
 import StopWorkView from '@/components/Client/StopWorkView.vue'
-import { popMsg } from '@/common/alert';
 
+const popMsg = inject('popMsg')
 const openConfirm = inject('openConfirm')
 const route = useRoute()
 const router = useRouter()

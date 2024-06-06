@@ -16,13 +16,10 @@
     <h4 class="text-center mt-4 mb-4">生產中斷</h4>
 
     <div class="custom-tables-box text-center">
-      <h5 class="mb-4">當前狀態: 
-        <template v-if="status === 'WORDKING'">生產中</template>
-        <template v-if="status === 'INTERRUPTION'">待料中</template>
-      </h5>
+      <h5 class="mb-4">當前狀態: {{ clientStore.statusName[nowFormingMachineInfo.status] }}</h5>
 
       <!-- 生產中畫面 -->
-      <div class="row text-start mt-5" v-if="status === 'WORDKING'">
+      <div class="row text-start mt-5">
         <label class="form-label col-2">中斷原因</label>
         <div class="row col-8 mb-4">
           <div class="form-check col-3">
@@ -39,14 +36,9 @@
           </div>
         </div>
         <button class="btn btn-primary w-100 mt-5" 
-          @click="interruptionFn()">送出</button>
+          @click="send()">送出</button>
       </div>
 
-      <!-- 中斷畫面 -->
-      <div class="text-center" v-if="status === 'INTERRUPTION'">
-        <button class="btn btn-success change-status-btn"
-          @click="resumeWork()">恢復生產</button>
-      </div>
     </div>
 
   </div>
@@ -56,12 +48,15 @@
 import { ref, onMounted, inject, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useClientStore } from '@/stores/ClientStore'
+import { ajax } from '@/common/ajax'
+import { api } from '@/common/api'
 import RouterBackBtn from '@/components/RouterBackBtn.vue'
 
 const popMsg = inject('popMsg')
 const route = useRoute()
 const router = useRouter();
 const clientStore = useClientStore()
+const VITE_API_DOMAIN = import.meta.env.VITE_API_DOMAIN
 
 const nowMachineId = ref(null)
 const nowFormingMachineInfo = computed(() => clientStore.getNowFormingMachineInfo); // 當前成型機資料
@@ -70,32 +65,51 @@ onMounted(() => {
   nowMachineId.value = route.query.machineId;
 })
 
-const status = ref('WORDKING')
-
+// 中斷原因
 const stopReason = ref(null)
 
 // 送出
-function interruptionFn() {
+function send() {
   if (stopReason.value === 'noSchedule') { 
-    popMsg('執行關機程序', () => {
-      // 返回選擇成型機單元
-      router.push({ name: 'FormingMachine' })
-    })
+    popMsg('執行關機程序...');
+    shutDown();
   }
 
   if (stopReason.value === 'noMaterials') {
-    popMsg('資料已送出', () => {
-      status.value = 'INTERRUPTION'
-      stopReason.value = null
-    })
+    // 只切換黃色人機介面文字
+    clientStore.setHumanMachineStatusDisplay('待料中', 'DISABLE', nowMachineId.value, () => {
+      const param = {
+        id: nowMachineId.value, 
+        buttonType: 'DISABLE', 
+        message: '待料中', 
+        provisionStatus: 'AWAITING_MATERIAL'
+      }
+      clientStore.lockProduction(param, () => {
+        router.push({ name: 'FormingMachine' });
+      });
+      // clientStore.lockAndUnlockButton('待料中', 'DISABLE', nowMachineId.value, () => {
+      //   router.push({ name: 'FormingMachine' });
+      // });
+    });
   }
 }
 
-// 恢復生產
-function resumeWork() {
-  popMsg('已恢復生產作業', () => {
-    status.value = 'WORDKING'
-  })
+// 關機
+async function shutDown() {
+  const path = VITE_API_DOMAIN + api.fmoldingMachine.startAndStopMachine
+  const param = {
+    provisionId: nowMachineId.value,
+    buttonType: "DISABLE",
+    message: "關機中",
+    provisionStatus: "MACHINE_CLOSED"
+  };
+  const result = await ajax.post(path, param);
+  if (ajax.checkErrorCode(result.errorCode)) {
+    popMsg('執行關機成功')
+    router.push({ name: 'FormingMachine' });
+  } else {
+    popMsg('執行關機失敗')
+  }
 }
 
 </script>

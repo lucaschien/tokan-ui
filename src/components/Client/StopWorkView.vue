@@ -58,7 +58,8 @@ const haveStopWords = computed(() => {
   if (
     temp.status === 'RESTING' || 
     temp.status === 'MOLD_CHANGE' || 
-    temp.status === 'MACHINE_STOPPED_FOR_REPAIR'
+    temp.status === 'MACHINE_STOPPED_FOR_REPAIR' ||
+    temp.status === 'AWAITING_MATERIAL'
   ) {
     return clientStore.statusName[temp.status]; // 狀態文字
   }

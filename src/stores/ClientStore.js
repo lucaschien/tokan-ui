@@ -6,8 +6,7 @@ import moment from 'moment'
 
 const VITE_API_DOMAIN = import.meta.env.VITE_API_DOMAIN
 
-/*
-  角色:
+/* 角色:
     BOSS("老闆"),
     PACKAGING_WORKER("包裝作業員"),
     CUTTING_WORKER("裁切作業員"),
@@ -22,8 +21,7 @@ const VITE_API_DOMAIN = import.meta.env.VITE_API_DOMAIN
     FACTORY_MANAGER("廠長");
 */
 
-/* 
-  成型機機器狀態:
+/* 成型機機器狀態:
     INITIAL("初始狀態"),
     MAINTENANCE("保養中"),
     PRODUCTION_INTERRUPTED("生產中斷中"),
@@ -40,6 +38,13 @@ const VITE_API_DOMAIN = import.meta.env.VITE_API_DOMAIN
     MACHINE_LOCKED("機器鎖定中"),
     MACHINE_CLOSED("關機中");
     PRODUCT_CHANGE("更換產品中"),
+*/
+
+/* 機器類型:
+  FORMING ("成型機")
+  FORMING_SF170 ("成型機-SF-170")
+  PACKAGING ("包裝機")
+  CUTTING ("裁切機")
 */
 
 export const useClientStore = defineStore('ClientStore', {
