@@ -79,7 +79,7 @@
           <label class="form-label">日期區間</label> 
           <VueDatePicker v-model="date2" :enable-time-picker="false" range text-input :format="searchDate2Foramt"/>
           <label class="form-label">錯誤碼</label> 
-          <input class="form-control me-4" list="searchListOptions" id="exampleDataList" placeholder="請輸入錯誤碼...">
+          <input class="form-control me-4" list="searchListOptions" placeholder="請輸入錯誤碼...">
           <datalist id="searchListOptions">
             <option>錯誤碼1</option>
             <option>錯誤碼2</option>

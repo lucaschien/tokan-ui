@@ -63,9 +63,14 @@ export const api = {
   // B端平台用
   Admin: {
     // 產品管理相關
-    productList: '/tokan/api/v1/product/list',
+    productList: '/tokan/api/v1/product/list', // 產品列表
     updateProduct: '/tokan/api/v1/product', // 新增與修改共用
     deleteProduct: '/tokan/api/v1/product/{0}', // 刪除
 
+    // 更換產品確認單相關
+    getPackagingList: '/tokan/api/v1/provision/getProvisionsByProvisionType', // 取得包裝機清單
+    getProductChangeCheckList :'/tokan/api/v1/product/productChangeCheck/list', // 更換產品確認單列表
+    updateProductChangeCheck: '/tokan/api/v1/product/productChangeCheck', // 新增與修改共用
+    
   }
 };
