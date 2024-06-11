@@ -3,7 +3,6 @@
     <RouterLink class="active"
       :to="{ name: 'AdminReplacementProductForm' }">回列表</RouterLink>
 
-    {{ dataModel }}
     <div class="p-4 mt-3 card">
       <table class="table">
         <tbody>
@@ -105,17 +104,17 @@
           <tr>
             <th>生產餘數領用確認</th>
             <td>
-              <div>
+              <div class=mb-1>
                 更換產品前次紙杯餘料
                 <input type="text" class="form-control d-inline-flex" style="width: 200px"
                   v-model="dataModel.paperCupRemaining"/> pcs
               </div>
-              <div class="mt-1 mb-1">  
+              <!-- <div class="mt-1 mb-1">  
                 需於本次生產進行重包，數量確認:
                 <input type="text" class="form-control d-inline-flex" style="width: 200px"
                   v-model="dataModel.repackageQty"/> pcs
-              </div>
-              <div>更換產品前次包裝膜餘料
+              </div> -->
+              <div class="mt-1">更換產品前次包裝膜餘料
                 <input type="text" class="form-control d-inline-flex" style="width: 200px"
                   v-model="dataModel.filmRemaining"/> 捲，需於本次生產使用
               </div>
@@ -146,8 +145,10 @@
             <td>
               <VueDatePicker v-model="dataModel.planChangeTime" 
                 text-input 
-                :format="'yyyy-MM-dd'" 
-                :enable-time-picker="false"/>
+                :format="'yyyy-MM-dd HH:mm'"
+                locale="tw" 
+                utc
+              />
             </td>
           </tr>
           <!-- <tr>
@@ -175,6 +176,7 @@ import { ref, inject } from 'vue';
 import { ajax } from '@/common/ajax'
 import { api } from '@/common/api'
 import { useRoute, useRouter } from 'vue-router';
+import moment from 'moment';
 
 const route = useRoute();
 const router = useRouter();
@@ -200,32 +202,36 @@ const dataModel = ref({
 
   // 生產餘數領用確認
   paperCupRemaining: null, // 更換產品前次紙杯餘料(pcs)
-  repackageQty: null, // 數量確認(pcs)
+  // repackageQty: null, // 數量確認(pcs)
   filmRemaining: null, // 更換產品前次包裝膜餘料(捲)
 
   // 產品更換清空項目
-  cupClear: false, // 原線上產品的紙杯是否清空
-  filmClear: false, // 原線上產品的包裝膜是否清空
-  accessoryClear: false, // 原線上產品的紙箱、隔板是否清空
-  clearChecker: null, // 產品更換清空項目-確認人
+  // cupClear: false, // 原線上產品的紙杯是否清空
+  // filmClear: false, // 原線上產品的包裝膜是否清空
+  // accessoryClear: false, // 原線上產品的紙箱、隔板是否清空
+  // clearChecker: null, // 產品更換清空項目-確認人
 
   // 產品更換後檢查項目
-  specConfirm: false, // 包裝規格書是否正確
-  systemConfirm: false, // 系統產品編號、成型機生產機台是否正確
-  positionConfirm: false, // 備料紙箱放置位置是否正確
-  firstItemConfirm: false, // 首件檢查，確認紙杯、包裝膜、紙箱確認符合規格書
-  labelConfirm: false, // 首件檢查，確認標籤確認符合規格書
-  lastConfirmChecker: null, // 產品更換後檢查項目-確認人
+  // specConfirm: false, // 包裝規格書是否正確
+  // systemConfirm: false, // 系統產品編號、成型機生產機台是否正確
+  // positionConfirm: false, // 備料紙箱放置位置是否正確
+  // firstItemConfirm: false, // 首件檢查，確認紙杯、包裝膜、紙箱確認符合規格書
+  // labelConfirm: false, // 首件檢查，確認標籤確認符合規格書
+  // lastConfirmChecker: null, // 產品更換後檢查項目-確認人
 
   planChangeTime: null, // 預計更換時間
-  actualChangeTime: null, // 實際更換時間
-  managerConfirm: null, // 組長確認
+  //actualChangeTime: null, // 實際更換時間
+  //managerConfirm: null, // 組長確認
 });
 
 // 新增或修改 更換產品確認單
 async function updateProductChangeCheck() {
   const path = VITE_API_DOMAIN + api.Admin.updateProductChangeCheck;
-  const result = await ajax.post(path, dataModel.value)
+  const param = JSON.parse(JSON.stringify(dataModel.value));
+  param.orderDate = moment(param.orderDate).format('YYYY-MM-DD')
+  param.planChangeTime = moment(param.planChangeTime).format('YYYY-MM-DDTHH:mm:ss');
+
+  const result = await ajax.post(path, param)
   if (ajax.checkErrorCode(result.errorCode)) {
     const msg = (dataModel.value.id) ? '修改成功' : '新增成功';
     popMsg(msg);

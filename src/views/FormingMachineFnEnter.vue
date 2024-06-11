@@ -21,7 +21,7 @@
         <a href="javascript:;" class="flex-column"
           @click="gotoFormingMachinePicking()">領料<span class="fs-3">nhận nguyên liệu</span></a>
       </div>
-      <div :class="['card m-2 align-items-center', { disabled: false }]">
+      <div :class="['card m-2 align-items-center', { disabled: true }]">
         <a href="javascript:;"
           @click="gotoFormingMachineWaterLeakageAdjustment()">漏水調機</a>
       </div>
@@ -127,17 +127,18 @@ function gotoFormingMachinePicking() {
 
 // 漏水調機 注意呼叫的 函式 不同
 function gotoFormingMachineWaterLeakageAdjustment() {
-  const param = {
-    id: nowMachineId.value, 
-    buttonType: 'ENABLE', 
-    message: '漏水調機中', 
-    provisionStatus: 'MACHINE_CALIBRATION'
-  };
-  // 注意呼叫的 函式 不同
-  clientStore.lockProduction(param, () => {
-    clientStore.getFormingMachineInfo(route.query.machineId);
-    router.push({ name: 'FormingMachineWaterLeakageAdjustment', query: { machineId: nowMachineId.value } });
-  });
+  return false;
+  // const param = {
+  //   id: nowMachineId.value, 
+  //   buttonType: 'ENABLE', 
+  //   message: '漏水調機中', 
+  //   provisionStatus: 'MACHINE_CALIBRATION'
+  // };
+  // // 注意呼叫的 函式 不同
+  // clientStore.lockProduction(param, () => {
+  //   clientStore.getFormingMachineInfo(route.query.machineId);
+  //   router.push({ name: 'FormingMachineWaterLeakageAdjustment', query: { machineId: nowMachineId.value } });
+  // });
 }
 
 // 故障排除 注意呼叫的 函式 不同

@@ -11,6 +11,7 @@ export const api = {
     login: '/tokan/api/v1/auth/token',
     loginUserInfo: '/tokan/api/v1/auth/me', // 登入者資訊
   },
+  // Ｃ端產品
   fmoldingMachine: { // 成型機相關
     formingMachineList: '/tokan/api/v1/provision/getProvisionsByProvisionType', // 取得成型機列表
     formingMachineInfo: '/tokan/api/v1/provision/{0}', // 取得單一成型機資訊 {0}機器id
@@ -58,6 +59,9 @@ export const api = {
     getList: '/tokan/api/v1/moldingMachine/{0}', // 撈取列表(同巡查的成型機日報表部分項目) {0} 機器類型對應的api path 'getInspectionMoldingMachineProductions', 'getInspectionSF170MoldingMachineProductions'
     updateFaultResolution: '/tokan/api/v1/moldingMachine/updateFaultResolution', // 儲存 故障排除
     updateSF170FaultResolution: '/tokan/api/v1/moldingMachine/updateSF170FaultResolution', // 儲存 SF170 故障排除
+
+    // 功能: ● 更換產品 相關
+    getProductChangeCheck: '/tokan/api/v1/product/un-conforming/productChangeCheck', // 撈取未完成更換產品確認單
   },
 
   // B端平台用
@@ -69,8 +73,11 @@ export const api = {
 
     // 更換產品確認單相關
     getPackagingList: '/tokan/api/v1/provision/getProvisionsByProvisionType', // 取得包裝機清單
-    getProductChangeCheckList :'/tokan/api/v1/product/productChangeCheck/list', // 更換產品確認單列表
+    getProductChangeCheckList: '/tokan/api/v1/product/productChangeCheck/list', // 更換產品確認單列表
     updateProductChangeCheck: '/tokan/api/v1/product/productChangeCheck', // 新增與修改共用
-    
+    deleteProductChangeCheck: '/tokan/api/v1/product/productChangeCheck/{0}', // 刪除 {0} id
+
+    // 
+
   }
 };

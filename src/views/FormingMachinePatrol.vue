@@ -17,7 +17,6 @@
       <select class="form-select mb-4" v-if="!lookDetail"
         v-model="choiceTable"
         @change="changeWork()">
-        <option :value="null">巡查已完成</option>
         <!-- SF170的成型機日報表使用: 2-M-011-13-1.4 SF-170成型機生產報表  -->
         <option v-if="nowFormingMachineInfo.provisionType === 'FORMING_SF170'" 
           value="2_M_011_13_1_4_SF_170">巡查未完成 - SF170成型日報表部分項目</option>
@@ -28,6 +27,7 @@
 
         <option value="2_Q_007_11_1_0">巡查未完成 - 紙杯破壞試驗檢查表</option>
         <option value="2_Q_007_01_2_6">巡查未完成 - 包裝膜檢查</option>
+        <option :value="null">巡查已完成</option>
       </select>
 
       <div class="mb-3">

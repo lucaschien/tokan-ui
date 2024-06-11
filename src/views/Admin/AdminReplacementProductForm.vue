@@ -63,7 +63,7 @@
 <script setup>
 import { ref, inject, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router';
-import { api } from '@/common/api';
+import { api, formatPath } from '@/common/api';
 import { ajax } from '@/common/ajax';
 import PaginationBox from '@/components/PaginationBox.vue';
 import moment from 'moment';
@@ -71,6 +71,7 @@ import moment from 'moment';
 const route = useRoute();
 const router = useRouter();
 const popMsg = inject('popMsg')
+const openConfirm = inject('openConfirm')
 const VITE_API_DOMAIN = import.meta.env.VITE_API_DOMAIN
 
 const listData = ref([]);
@@ -81,7 +82,7 @@ const searchModel = ref({
   endDateTime: '',
   paging: {
     pageNo: 1,
-    numberOfRowsPerPage: 3,
+    numberOfRowsPerPage: 10,
     dir: "DESC",
     sort: "orderDate",
     totalRows: 0
@@ -90,8 +91,8 @@ const searchModel = ref({
 
 watch(() => searchDate.value, (newVal) => {
   if (newVal) {
-    let startDateTime = moment(newVal[0]).format('YYYY-MM-DD');
-    let endDateTime = moment(newVal[1]).format('YYYY-MM-DD');
+    let startDateTime = moment(newVal[0]).format('yyyy-MM-DD');
+    let endDateTime = moment(newVal[1]).format('yyyy-MM-DD');
     searchModel.value.startDateTime = startDateTime;
     searchModel.value.endDateTime = endDateTime;
   } else {
@@ -118,8 +119,19 @@ async function sendSearch(pageNo) {
   }
 }
 
-function deleteProductChangeCheck(item) {
-  console.log('delete', item)
+async function deleteProductChangeCheck(item) {
+  openConfirm('確認刪除?', async () => {
+    const path = VITE_API_DOMAIN + formatPath(api.Admin.deleteProductChangeCheck, item.id);
+    const result = await ajax.delete(path);
+    if (ajax.checkErrorCode(result.errorCode)) {
+      if (searchModel.value.paging.pageNo > 1 && listData.value.length === 1) {
+        searchModel.value.paging.pageNo = searchModel.value.paging.pageNo - 1;
+      }
+      sendSearch();
+    } else {
+      popMsg(result.errorCode)
+    }
+  });
 }
 
 function changePage(pageNo, numberOfRowsPerPage) {
@@ -153,7 +165,7 @@ const changeMethod = {
   FOUR: '4號', 
   FIVE: '5號', 
   ELEVEN: '11號'
-}
+};
 
 
 sendSearch();
