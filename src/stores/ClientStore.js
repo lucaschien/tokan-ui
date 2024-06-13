@@ -226,6 +226,7 @@ export const useClientStore = defineStore('ClientStore', {
       const path = VITE_API_DOMAIN + formatPath(api.fmoldingMachine.getLastMaterial, id)
       const result = await ajax.get(path);
       if (ajax.checkErrorCode(result.errorCode)) {
+        console.log('查詢當日最後一筆領料資料', result.data)
         this.lastMaterial = result.data;
         callback(result.data);
       } else {

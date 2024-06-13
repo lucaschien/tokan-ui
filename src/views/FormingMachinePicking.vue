@@ -105,6 +105,7 @@ const dataModel = ref({
   bottomPaperNumber: null, // 杯底紙編號
   siliconeLubricant: null, // 矽利康
   whiteOil: null, // 白油
+  changeType: 'ALONG_TAKE',
 });
 
 const canSave = computed(() => {

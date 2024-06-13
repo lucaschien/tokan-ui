@@ -62,6 +62,8 @@ export const api = {
 
     // 功能: ● 更換產品 相關
     getProductChangeCheck: '/tokan/api/v1/product/un-conforming/productChangeCheck', // 撈取未完成更換產品確認單
+    checkerProductChangeCheck: '/tokan/api/v1/product/checkerProductChangeCheck', // 儲存檢查更換產品確認單
+    saveModifyFROM: '/tokan/api/v1/moldingMachine/saveMoldingMachineMaterialRecord', // 儲存更換產品選項
   },
 
   // B端平台用

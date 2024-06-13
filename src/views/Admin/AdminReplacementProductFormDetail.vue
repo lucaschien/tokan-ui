@@ -28,7 +28,8 @@
           <tr>
             <th>包裝機編號</th>
             <td>
-              <select class="form-select" v-model="dataModel.changeProvisionNo">
+              <select class="form-select" v-model="dataModel.changeProvisionNo"
+                @change="changeProvisionNoFn($event)">
                 <option value="">請選擇</option>
                 <option v-for="item in changeProvisionNoList" :key="'packagingList' + item.id"
                   :value="item.id">{{ item.name }}</option>
@@ -190,6 +191,7 @@ const dataModel = ref({
   paperType: '', // 紙張類型
   orderDate: '', // 開單日期
   changeProvisionNo: '', // 包裝機編號(不在excel中)
+  changeProvisionName: '', // 包裝機名稱(不在excel中)
   changeMethod: '', // 更換包裝機編號(在excel中)
 
   // 原線上產品
@@ -223,6 +225,12 @@ const dataModel = ref({
   //actualChangeTime: null, // 實際更換時間
   //managerConfirm: null, // 組長確認
 });
+
+// 切換 包裝機編號
+function changeProvisionNoFn(event) {
+  const temp = changeProvisionNoList.value.filter(item => item.id === event.target.value)
+  dataModel.value.changeProvisionName = (temp.length) ? temp[0].name : '';
+}
 
 // 新增或修改 更換產品確認單
 async function updateProductChangeCheck() {
