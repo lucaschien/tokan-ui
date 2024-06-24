@@ -92,11 +92,11 @@ function AjaxDefine() {
           callback();
         }
       } */
-      // 注意: 302 這個是for第一次 POC 階段先這樣做,之後後端改變作法這邊再拿掉.
-      if (error.response && error.response.status === 401 && error.response.status === 302) {
+      if (error.response && error.response.status === 401) {
         const text = '尚未授權或已登出，請重新登入';
         const callback = () => {
           //cookies.remove('taiwantokan', { domain: '.justka.ai' });
+          cookies.remove('taiwantokan');
           router.push({ name: 'Login' });
         }
         alert(text);

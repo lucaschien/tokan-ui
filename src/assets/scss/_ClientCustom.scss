@@ -107,6 +107,9 @@ $baseFontSize: 2rem;
   .form-select {
     font-size: 1.5rem;
   }
+  .form-select {
+    font-size: 1.5rem;
+  }
   .form-check {
     margin-left: $baseFontSize;
   }
@@ -201,7 +204,7 @@ $machineCardSize: 160px;
   color: #fff;
   background-color: $main-blue;
   z-index: 1;
-  
+
   span {
     font-size: 17vw;
     margin: -50px 0 0 0;

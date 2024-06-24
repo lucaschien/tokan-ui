@@ -15,195 +15,213 @@
 
     <h4 class="text-center mt-4 mb-4">更換產品</h4>
     
-    <select class="form-select mb-3" v-model="choiceProductChangeCheck">
-      <option value="">請選擇更換單</option>
-      <option v-for="item in productChangeCheckList" :key="'list' + item.id"
-        :value="item">[{{ item.orderDate }}] - [{{ changeMethodMap[item.changeMethod] }}] - [{{ item.changeProductNo }}]</option>
-    </select>
-
-    <template v-if="choiceProductChangeCheck">
-      <select class="form-select mb-3" v-model="displayView">
-        <option value="">請選擇</option>
-        <option value="FROM">更換產品選項</option>
-        <option value="REPLACE">檢查更換產品確認單</option>
-        <option value="COMPLATE">更換產品已完成</option>
+    <div class="fs-4 text-center pt-4" v-if="isNoProductChangeCheckList">
+      <p class="fs-1">查無任何更換單</p>
+      <button class="btn btn-primary p-5 fs-1 mb-5" 
+        @click="reWorking()">恢復生產</button>
+    </div>
+    <template v-if="!isNoProductChangeCheckList">
+      <select class="form-select mb-3" v-model="choiceProductChangeCheck">
+        <option value="">請選擇更換單</option>
+        <option v-for="item in productChangeCheckList" :key="'list' + item.id"
+          :value="item">[{{ item.orderDate }}] - [{{ changeMethodMap[item.changeMethod] }}] - [{{ item.changeProductNo }}]</option>
       </select>
-
-      <div class="pt-3 text-center" v-if="displayView === 'COMPLATE'">
-        <p class="fs-4">更換產品已填寫完畢點擊切換機器狀態</p>
-        <button class="btn btn-primary p-5 fs-1 mb-5"
-          @click="triggerCompleted()">更換產品完成</button>
-      </div>
-
-      <!-- 更換產品選項 -->
-      <div class="custom-tables-box" v-if="displayView === 'FROM'">
-        <div class="mb-3 row">
-          <label class="form-label col-4">品名</label>
-          <div class="col-8">
-            <!-- <select class="form-select">
-              <option>請選擇</option>
-            </select> -->
-            <input type="text" class="form-control" v-model.trim="modifyFROM.productName">
-          </div>
-        </div>
-        <div class="mb-3 row">
-          <label class="form-label col-4">成品規格</label>
-          <div class="col-8">
-            <!-- <select class="form-select">
-              <option>請選擇</option>
-            </select> -->
-            <input type="text" class="form-control" v-model.trim="modifyFROM.specification">
-          </div>
-        </div>
-        <div class="mb-3 row">
-          <label class="form-label col-4">原紙種類</label>
-          <div class="col-8">
-            <select class="form-select" v-model="modifyFROM.paperType">
-              <option value="">請選擇</option>
-              <option value="GENERAL">一般原紙</option>
-              <option value="FSC">FSC</option>
-            </select>
-          </div>
-        </div>
-        <div class="mb-3 row">
-          <label class="form-label col-4">杯身紙台車編號 xe giấy thân cốc</label>
-          <div class="col-8">
-            <InputScanBarcode 
-              :scanCallback="(val) => { modifyFROM.cupPaperCartNumber = val }"/>
-          </div>
-        </div>
-        <div class="mb-3 row">
-          <label class="form-label col-4">杯底紙編號 giấy đế cốc</label>
-          <div class="col-8">
-            <InputScanBarcode 
-              :scanCallback="(val) => { modifyFROM.bottomPaperNumber = val }"/>
-          </div>
+      <template v-if="choiceProductChangeCheck">
+        <div class="step-box mb-4 mt-5">
+          <div :class="[{'active': displayStep >= 1 }]">1</div>
+          <div :class="[{'active': displayStep >= 2 }]">2</div>
+          <div :class="[{'active': displayStep >= 3 }]">3</div>
         </div>
 
-        <button class="btn btn-primary w-100 mt-4" 
-          @click="saveModifyFROM()">送出</button>
-      </div>
+        <!-- 更換產品選項 -->
+        <div class="custom-tables-box" v-if="displayStep === 1">
+          <div class="mb-3 row">
+            <label class="form-label col-4">品名</label>
+            <div class="col-8">
+              <input type="text" class="form-control" v-model.trim="modifyFROM.productName">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="form-label col-4">成品規格</label>
+            <div class="col-8">
+              <input type="text" class="form-control" v-model.trim="modifyFROM.specification">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="form-label col-4">原紙種類</label>
+            <div class="col-8">
+              <select class="form-select" v-model="modifyFROM.paperType">
+                <option value="">請選擇</option>
+                <option value="GENERAL">一般原紙</option>
+                <option value="FSC">FSC</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="form-label col-4">杯身紙台車編號 xe giấy thân cốc</label>
+            <div class="col-8">
+              <InputScanBarcode 
+                :scanCallback="(val) => { modifyFROM.cupPaperCartNumber = val }"/>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="form-label col-4">杯底紙編號 giấy đế cốc</label>
+            <div class="col-8">
+              <InputScanBarcode 
+                :scanCallback="(val) => { modifyFROM.bottomPaperNumber = val }"/>
+            </div>
+          </div>
 
-      <!-- 檢查更換產品確認單 -->
-      <div class="custom-tables-box" v-if="displayView === 'REPLACE'">
-        <div class="mb-3 row">
-          <lable class="form-label col-4">紙張類型</lable>
-          <div class="col-8 fs-3">
-            {{ paperTypeMap[choiceProductChangeCheck.paperType] }}
-          </div>
-        </div>
-        <div class="mb-3 row">
-          <lable class="form-label col-4">開單日期</lable>
-          <div class="col-8 fs-3">
-            {{ choiceProductChangeCheck.orderDate }}
-          </div>
-        </div>
-        <div class="mb-3 row">
-          <label class="form-label col-4">包裝機編號</label>
-          <div class="col-8 fs-3">
-            <template v-if="choiceProductChangeCheck.changeProvisionName">
-              {{ choiceProductChangeCheck.changeProvisionName }}
-            </template>
-            <template v-else>
-              {{ choiceProductChangeCheck.changeProvisionNo }}
-            </template>
-          </div>
-        </div>
-        <div class="mb-3 row">
-          <label class="form-label col-4">更換包裝機編號</label>
-          <div class="col-8 fs-3">
-            {{ changeMethodMap[choiceProductChangeCheck.changeMethod] }}
-          </div>
-        </div>
-        <div class="mb-3 row">
-          <label class="form-label col-4">原線上產品</label>
-          <div class="col-8">
-            <div class="fs-3">產品編號: 
-              {{ choiceProductChangeCheck.originalProductNo }}
-            </div>
-            <div class="mt-2 fs-3">包裝數: 
-              {{ choiceProductChangeCheck.originalPackageQty }}
-            </div>
-          </div>
-        </div>
-        <div class="mb-3 row">
-          <label class="form-label col-4">更換產品</label>
-          <div class="col-8 fs-3">
-            <div>產品編號: 
-              {{ choiceProductChangeCheck.changeProductNo }}
-            </div>
-            <div class="mt-2 fs-3">包裝數: 
-              {{ choiceProductChangeCheck.changePackageQty }}
-            </div>
-          </div>
-        </div>
-        <div class="mb-3 row">
-          <label class="form-label col-4">生產餘數領用確認</label>
-          <div class="col-8 fs-3">
-            <div class="form-check mb-1 ms-3">
-              <input type="checkbox" class="form-check-input" v-model="modifyREPLACE.remainingConfirm" />
-              <label class="form-check-label">更換產品前次紙杯餘料
-                {{ choiceProductChangeCheck.paperCupRemaining }} pcs
-                需於本次生產進行重包，數量確認:
-                <input type="text" class="form-control d-inline-flex" style="width: 200px"
-                  v-model="modifyREPLACE.repackageQty"/> pcs
-              </label>
-              
-            </div>
-            <div class="form-check mt-1 ms-3">
-              <input type="checkbox" class="form-check-input" v-model="modifyREPLACE.receiveConfirm" />
-              <label class="form-check-label">更換產品前次包裝膜餘料
-                {{ choiceProductChangeCheck.filmRemaining }} 捲，需於本次生產使用
-              </label>
-            </div>
-          </div>
-        </div>
-        <div class="mb-3 row">
-          <label class="form-label col-4">產品更換清空項目</label>
-          <div class="col-8">
-            <div class="form-check"><input type="checkbox" class="form-check-input" v-model="modifyREPLACE.cupClear" /><label class="form-check-label">原線上產品的紙杯是否清空</label></div>
-            <div class="form-check"><input type="checkbox" class="form-check-input" v-model="modifyREPLACE.filmClear" /><label class="form-check-label">原線上產品的包裝膜是否清空</label></div>
-            <div class="form-check"><input type="checkbox" class="form-check-input" v-model="modifyREPLACE.accessoryClear" /><label class="form-check-label">原線上產品的紙箱、隔板是否清空</label></div>
-            <div class="fs-3">確認人 <input type="text" class="form-control" v-model.trim="modifyREPLACE.clearChecker" placeholder="請輸入"/></div>
-          </div>
-        </div>
-        <div class="mb-3 row">
-          <label class="form-label col-4">產品更換後檢查項目</label>
-          <div class="col-8">
-            <div class="form-check"><input type="checkbox" class="form-check-input" v-model="modifyREPLACE.specConfirm" /><label class="form-check-label">包裝規格書是否正確</label></div>
-            <div class="form-check"><input type="checkbox" class="form-check-input" v-model="modifyREPLACE.systemConfirm" /><label class="form-check-label">系統產品編號、成型機生產機台是否正確</label></div>
-            <div class="form-check"><input type="checkbox" class="form-check-input" v-model="modifyREPLACE.positionConfirm" /><label class="form-check-label">備料紙箱放置位置是否正確</label></div>
-            <div class="form-check"><input type="checkbox" class="form-check-input" v-model="modifyREPLACE.firstItemConfirm" /><label class="form-check-label">首件檢查，確認紙杯、包裝膜、紙箱確認符合規格書</label></div>
-            <div class="form-check"><input type="checkbox" class="form-check-input" v-model="modifyREPLACE.labelConfirm" /><label class="form-check-label">首件檢查，確認標籤確認符合規格書</label></div>
-            <div class="fs-3">確認人 <input type="text" class="form-control" v-model="modifyREPLACE.lastConfirmChecker" placeholder="請輸入"/></div>
-          </div>
-        </div>
-        <div class="mb-3 row">
-          <label class="form-label col-4">預計更換時間</label>
-          <div class="col-8 fs-3">
-            {{ moment(choiceProductChangeCheck.planChangeTime).format('yyyy-MM-DD HH:mm') }}
-          </div>
-        </div>
-        <div class="mb-3 row">
-          <label class="form-label col-4">實際更換時間</label>
-          <div class="col-8">
-            <input class="form-control" type="date" v-model.trim="modifyREPLACE.actualChangeTime" />
-            <input class="form-control mt-2" type="text" placeholder="範例 00:00" v-model.trim="modifyREPLACE.actualChangeTime_Hm">
-          </div>
-        </div>
-        <div class="mb-3 row">
-          <label class="form-label col-4">組長確認</label>
-          <div class="col-8">
-            <input type="text" class="form-control" v-model.trim="modifyREPLACE.managerConfirm" placeholder="請輸入"/>
-          </div>
+          <button class="btn btn-primary w-100 mt-4" 
+            :disabled="!modifyFROM.productName || !modifyFROM.specification || !modifyFROM.paperType || !modifyFROM.cupPaperCartNumber || !modifyFROM.bottomPaperNumber"
+            @click="saveModifyFROM()">送出</button>
         </div>
 
-        <button class="btn btn-primary w-100 mt-4" 
-          @click="sendCheckerProductChangeCheck()">送出</button>
+        <!-- 檢查更換產品確認單 -->
+        <div class="custom-tables-box" v-if="displayStep === 2">
+          <div class="mb-3 row">
+            <lable class="form-label col-4">產品類型</lable>
+            <div class="col-8 fs-3">
+              {{ productTypeMap[choiceProductChangeCheck.productType] }}
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <lable class="form-label col-4">開單日期</lable>
+            <div class="col-8 fs-3">
+              {{ choiceProductChangeCheck.orderDate }}
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="form-label col-4">包裝機編號</label>
+            <div class="col-8 fs-3">
+              <template v-if="choiceProductChangeCheck.changeProvisionName">
+                {{ choiceProductChangeCheck.changeProvisionName }}
+              </template>
+              <template v-else>
+                {{ choiceProductChangeCheck.changeProvisionNo }}
+              </template>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="form-label col-4">更換包裝機編號</label>
+            <div class="col-8 fs-3">
+              {{ changeMethodMap[choiceProductChangeCheck.changeMethod] }}
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="form-label col-4">原線上產品</label>
+            <div class="col-8">
+              <div class="fs-3">產品編號: 
+                {{ choiceProductChangeCheck.originalProductNo }}
+              </div>
+              <div class="mt-2 fs-3">包裝數: 
+                {{ choiceProductChangeCheck.originalPackageQty }}
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="form-label col-4">更換產品</label>
+            <div class="col-8 fs-3">
+              <div>產品編號: 
+                {{ choiceProductChangeCheck.changeProductNo }}
+              </div>
+              <div class="mt-2 fs-3">包裝數: 
+                {{ choiceProductChangeCheck.changePackageQty }}
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="form-label col-4">生產餘數領用確認</label>
+            <div class="col-8 fs-3">
+              <div class="form-check mb-1 ms-3">
+                <input type="checkbox" class="form-check-input" v-model="modifyREPLACE.remainingConfirm" />
+                <label class="form-check-label">更換產品前次紙杯餘料
+                  {{ choiceProductChangeCheck.paperCupRemaining }} pcs
+                  需於本次生產進行重包，數量確認:
+                  <input type="text" class="form-control d-inline-flex" style="width: 200px"
+                    v-model="modifyREPLACE.repackageQty"/> pcs
+                </label>
+                
+              </div>
+              <div class="form-check mt-1 ms-3">
+                <input type="checkbox" class="form-check-input" v-model="modifyREPLACE.receiveConfirm" />
+                <label class="form-check-label">更換產品前次包裝膜餘料
+                  {{ choiceProductChangeCheck.filmRemaining }} 捲，需於本次生產使用
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="form-label col-4">產品更換清空項目</label>
+            <div class="col-8">
+              <div class="form-check"><input type="checkbox" class="form-check-input" v-model="modifyREPLACE.cupClear" /><label class="form-check-label">原線上產品的紙杯是否清空</label></div>
+              <div class="form-check"><input type="checkbox" class="form-check-input" v-model="modifyREPLACE.filmClear" /><label class="form-check-label">原線上產品的包裝膜是否清空</label></div>
+              <div class="form-check"><input type="checkbox" class="form-check-input" v-model="modifyREPLACE.accessoryClear" /><label class="form-check-label">原線上產品的紙箱、隔板是否清空</label></div>
+              <div class="fs-3">確認人 <input type="text" class="form-control" v-model.trim="modifyREPLACE.clearChecker" placeholder="請輸入"/></div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="form-label col-4">產品更換後檢查項目</label>
+            <div class="col-8">
+              <div class="form-check"><input type="checkbox" class="form-check-input" v-model="modifyREPLACE.specConfirm" /><label class="form-check-label">包裝規格書是否正確</label></div>
+              <div class="form-check"><input type="checkbox" class="form-check-input" v-model="modifyREPLACE.systemConfirm" /><label class="form-check-label">系統產品編號、成型機生產機台是否正確</label></div>
+              <div class="form-check"><input type="checkbox" class="form-check-input" v-model="modifyREPLACE.positionConfirm" /><label class="form-check-label">備料紙箱放置位置是否正確</label></div>
+              <div class="form-check"><input type="checkbox" class="form-check-input" v-model="modifyREPLACE.firstItemConfirm" /><label class="form-check-label">首件檢查，確認紙杯、包裝膜、紙箱確認符合規格書</label></div>
+              <div class="form-check"><input type="checkbox" class="form-check-input" v-model="modifyREPLACE.labelConfirm" /><label class="form-check-label">首件檢查，確認標籤確認符合規格書</label></div>
+              <div class="fs-3">確認人 <input type="text" class="form-control" v-model="modifyREPLACE.lastConfirmChecker" placeholder="請輸入"/></div>
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="form-label col-4">預計更換時間</label>
+            <div class="col-8 fs-3">
+              {{ moment(choiceProductChangeCheck.planChangeTime).format('yyyy-MM-DD HH:mm') }}
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="form-label col-4">實際更換時間</label>
+            <div class="col-8">
+              <input class="form-control" type="date" v-model.trim="modifyREPLACE.actualChangeTime" />
+              <input class="form-control mt-2" type="text" placeholder="範例 00:00" v-model.trim="modifyREPLACE.actualChangeTime_Hm">
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label class="form-label col-4">組長確認</label>
+            <div class="col-8">
+              <input type="text" class="form-control" v-model.trim="modifyREPLACE.managerConfirm" placeholder="請輸入"/>
+            </div>
+          </div>
 
-      </div>
+          <button class="btn btn-primary w-100 mt-4"
+            :disabled="
+              !modifyREPLACE.repackageQty || 
+              !modifyREPLACE.remainingConfirm || 
+              !modifyREPLACE.receiveConfirm || 
+              !modifyREPLACE.cupClear || 
+              !modifyREPLACE.filmClear || 
+              !modifyREPLACE.accessoryClear || 
+              !modifyREPLACE.clearChecker || 
+              !modifyREPLACE.specConfirm || 
+              !modifyREPLACE.systemConfirm || 
+              !modifyREPLACE.positionConfirm || 
+              !modifyREPLACE.firstItemConfirm || 
+              !modifyREPLACE.labelConfirm || 
+              !modifyREPLACE.lastConfirmChecker || 
+              !modifyREPLACE.actualChangeTime || 
+              !modifyREPLACE.actualChangeTime_Hm || 
+              !modifyREPLACE.managerConfirm
+            "
+            @click="sendCheckerProductChangeCheck()">送出</button>
+        </div>
+
+        <!-- 完成更換產品 -->
+        <div class="pt-3 text-center" v-if="displayStep === 3">
+          <p class="fs-4">更換產品已填寫完畢點擊切換機器狀態</p>
+          <button class="btn btn-primary p-5 fs-1 mb-5"
+            @click="triggerCompleted()">更換產品完成</button>
+        </div>
+
+      </template>
     </template>
-
 
   </div>
 </template>
@@ -228,11 +246,13 @@ const VITE_API_DOMAIN = import.meta.env.VITE_API_DOMAIN
 const nowMachineId = ref(null)
 const nowFormingMachineInfo = computed(() => clientStore.getNowFormingMachineInfo); // 當前成型機資料
 
-const displayView = ref('')
+const isNoProductChangeCheckList = ref(false);
 
-const paperTypeMap = {
-  GENERAL: '一般產品',
-  FSC: 'FSC產品'
+const displayStep = ref(1)
+
+const productTypeMap = {
+  GENERAL_PRODUCT: '一般產品',
+  FSC_PRODUCT: 'FSC產品'
 }
 
 const changeMethodMap = {
@@ -247,6 +267,22 @@ const changeMethodMap = {
   FIVE: '5號', 
   ELEVEN: '11號'
 };
+
+// 取得更換產品確認單列表
+const choiceProductChangeCheck = ref('');
+const productChangeCheckList = ref([]);
+async function getProductChangeCheckList() {
+  const path = VITE_API_DOMAIN + api.fmoldingMachine.getProductChangeCheck;
+  const result = await ajax.get(path);
+  if (ajax.checkErrorCode(result.errorCode)) {
+    productChangeCheckList.value = result.data;
+    if (!result.data.length) {
+      isNoProductChangeCheckList.value = true;
+    }
+  } else {
+    popMsg(result.errorCode)
+  }
+}
 
 // 編輯 for 更換產品選項
 const modifyFROM = ref({
@@ -268,21 +304,9 @@ async function saveModifyFROM() {
   const result = await ajax.post(path, modifyFROM.value)
   if (ajax.checkErrorCode(result.errorCode)) {
     popMsg('資料已送出');
+    displayStep.value = 2;
   } else {
     popMsg(result.errorCode);
-  }
-}
-
-// 更換產品確認單
-const choiceProductChangeCheck = ref('');
-const productChangeCheckList = ref([]);
-async function getProductChangeCheckList() {
-  const path = VITE_API_DOMAIN + api.fmoldingMachine.getProductChangeCheck;
-  const result = await ajax.get(path);
-  if (ajax.checkErrorCode(result.errorCode)) {
-    productChangeCheckList.value = result.data;
-  } else {
-    popMsg(result.errorCode)
   }
 }
 
@@ -318,6 +342,7 @@ async function sendCheckerProductChangeCheck() {
   const result = await ajax.post(path, param)
   if (ajax.checkErrorCode(result.errorCode)) {
     popMsg('資料已送出');
+    displayStep.value = 3;
   } else {
     popMsg(result.errorCode);
   }
@@ -341,6 +366,23 @@ function triggerCompleted() {
         } 
       })
     });
+  });
+}
+
+function reWorking() {
+  const param = {
+    id: nowMachineId.value, 
+    buttonType: 'ENABLE', 
+    message: '生產中', 
+    provisionStatus: 'IN_PRODUCTION'
+  };
+  clientStore.launchProduction(param, () => {
+    router.push({ 
+      name: 'FormingMachineFnEnter',
+      query: {
+        machineId: nowMachineId.value
+      } 
+    })
   });
 }
 

@@ -14,6 +14,11 @@
         :to="{ name: 'AdminReplacementProductForm' }">更換產品確認單</RouterLink>
       <RouterLink :class="[{active: route.name === 'AdminProductManagement'}]"
         :to="{ name: 'AdminProductManagement' }">產品管理</RouterLink>
+      <RouterLink :class="[{active: route.name === 'AdminFormingMachineMonitoringItemList'}]"
+        :to="{ name: 'AdminFormingMachineMonitoringItemList' }">監控項目</RouterLink>
+
+
+        
 
     </div>
   </div>

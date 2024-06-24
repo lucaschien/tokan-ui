@@ -62,8 +62,15 @@ export const api = {
 
     // 功能: ● 更換產品 相關
     getProductChangeCheck: '/tokan/api/v1/product/un-conforming/productChangeCheck', // 撈取未完成更換產品確認單
-    checkerProductChangeCheck: '/tokan/api/v1/product/checkerProductChangeCheck', // 儲存檢查更換產品確認單
     saveModifyFROM: '/tokan/api/v1/moldingMachine/saveMoldingMachineMaterialRecord', // 儲存更換產品選項
+    checkerProductChangeCheck: '/tokan/api/v1/product/checkerProductChangeCheck', // 儲存檢查更換產品確認單
+
+    // 功能: ● 工作交接 相關
+    getHandoverList: '/tokan/api/v1/moldingMachine/{0}', // 撈取列表(同巡查的成型機日報表部分項目) {0} 機器類型對應的api path 'getInspectionMoldingMachineProductions', 'getInspectionSF170MoldingMachineProductions'
+    searchMonitoringItems: '/tokan/api/v1/mgt/monitoringItem/{0}', // 取得監控項目列表資料 {0} 成型機類型
+    saveMonitorItem: '/tokan/api/v1/moldingMachine/{0}', // 儲存監控項目 {0} 機器類型對應的 api path 'updateMonitorItem', 'updateSF170MonitorItem'
+    teamLeaderList: '/tokan/api/v1/moldingMachine/getHandOverMemos/{0}', // 組長工作交接列表 {0} machineId 
+    saveTeamLeaderHandover: '/tokan/api/v1/moldingMachine/saveHandOverMemo', // 儲存 組長工作交接
   },
 
   // B端平台用
@@ -79,7 +86,10 @@ export const api = {
     updateProductChangeCheck: '/tokan/api/v1/product/productChangeCheck', // 新增與修改共用
     deleteProductChangeCheck: '/tokan/api/v1/product/productChangeCheck/{0}', // 刪除 {0} id
 
-    // 
+    // 監控項目
+    searchMonitoringItems: '/tokan/api/v1/mgt/monitoringItem/{0}', // 取得監控項目列表資料 {0} 成型機類型
+    createMonitoring: '/tokan/api/v1/mgt/monitoringItem/save', // 新增,儲存 監控項目
+    deleteMonitoringItem: '/tokan/api/v1/mgt/monitoringItem/{0}', // 刪除 監控項目
 
   }
 };

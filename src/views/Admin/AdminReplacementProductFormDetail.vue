@@ -7,12 +7,12 @@
       <table class="table">
         <tbody>
           <tr>
-            <th>紙張類型</th>
+            <th>產品類型</th>
             <td>
-              <select class="form-select" v-model="dataModel.paperType">
+              <select class="form-select" v-model="dataModel.productType">
                 <option value="">請選擇</option>
-                <option value="GENERAL">一般產品</option>
-                <option value="FSC">FSC產品</option>
+                <option value="GENERAL_PRODUCT">一般產品</option>
+                <option value="FSC_PRODUCT">FSC產品</option>
               </select>
             </td>
           </tr>
@@ -188,7 +188,7 @@ const VITE_API_DOMAIN = import.meta.env.VITE_API_DOMAIN
 const dataModel = ref({
   id: (route.query.id) ? route.query.id : null,
 
-  paperType: '', // 紙張類型
+  productType: '', // 紙張類型
   orderDate: '', // 開單日期
   changeProvisionNo: '', // 包裝機編號(不在excel中)
   changeProvisionName: '', // 包裝機名稱(不在excel中)

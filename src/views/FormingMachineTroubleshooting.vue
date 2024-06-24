@@ -60,7 +60,7 @@
               </button>
             </td>
           </tr>
-          <tr v-if="listIsempty"><td class="pt-5 pb-5 text-center text-secondary" colspan="5">查無資料</td></tr>
+          <tr v-if="listIsempty"><td class="pt-5 pb-5 text-center text-secondary" colspan="6">查無資料</td></tr>
         </tbody>
       </table>
     </template>

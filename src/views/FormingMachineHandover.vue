@@ -14,8 +14,28 @@
     </div>
 
     <h4 class="text-center mt-4 mb-4">工作交接</h4>
+    
+    <div>
+      <select class="form-select mb-4" v-model="workingType">
+        <option :value="'MonitoringItems'"><template v-if="nowFormingMachineInfo.provisionType === 'FORMING_SF170'">SF170成型</template>監控項目確認</option>
+        <option :value="'TeamLeaderWorkHandover'">組長工作交接事項</option>
+        <option :value="null">工作交接完成</option>
+      </select>
+    </div>
 
-    <div class="custom-tables-box">
+    <!-- 監控項目確認 -->
+    <MonitoringItems v-if="workingType === 'MonitoringItems'"/>
+    <!-- 組長工作交接事項 -->
+    <TeamLeaderWorkHandover v-if="workingType === 'TeamLeaderWorkHandover'"/>
+    <!-- 工作交接完成 -->
+    <div class="pt-3 text-center" v-if="!workingType">
+      <p class="fs-4">工作交接均已填寫完畢點擊切換機器狀態</p>
+      <button class="btn btn-primary p-5 fs-1 mb-5" 
+        @click="triggerCompleted()">工作交接完成</button>
+    </div>
+
+
+    <div class="custom-tables-box" v-if="false">
       <div class="h3 mb-3">監控項目確認</div>
       <div class="mb-5">
         <div class="mb-3 row">
@@ -68,21 +88,42 @@
 </template>
 
 <script setup>
-import { ref, onMounted, inject, computed } from 'vue'
-import { useRoute } from 'vue-router'
+import { ref, onMounted, computed, inject } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useClientStore } from '@/stores/ClientStore'
 import RouterBackBtn from '@/components/RouterBackBtn.vue'
+import MonitoringItems from '@/components/Client/FormingMachineHandover/MonitoringItems.vue'
+import TeamLeaderWorkHandover from '@/components/Client/FormingMachineHandover/TeamLeaderWorkHandover.vue'
 
-const popMsg = inject('popMsg')
 const route = useRoute()
+const router = useRouter()
 const clientStore = useClientStore()
+const popMsg = inject('popMsg')
 
-const nowMachineId = ref(null)
+const nowMachineId = ref(null);
 const nowFormingMachineInfo = computed(() => clientStore.getNowFormingMachineInfo); // 當前成型機資料
+
+const workingType = ref(null);
+
+function triggerCompleted() {
+  const param = {
+    id: nowMachineId.value, 
+    buttonType: 'ENABLE', 
+    message: '生產中', 
+    provisionStatus: 'IN_PRODUCTION'
+  };
+  clientStore.launchProduction(param, () => {
+    popMsg('工作交接完成');
+    router.push({ 
+      name: 'FormingMachineFnEnter',
+      query: {
+        machineId: nowMachineId.value
+      } 
+    })
+  });
+}
 
 onMounted(() => {
   nowMachineId.value = route.query.machineId;
 })
-
-
 </script>

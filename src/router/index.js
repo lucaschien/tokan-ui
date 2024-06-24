@@ -185,6 +185,14 @@ const router = createRouter({
             breadcrumb: ['產品管理']
           }
         },
+        {
+          path: 'AdminFormingMachineMonitoringItemList',
+          name: 'AdminFormingMachineMonitoringItemList',
+          component: () => import('../views/Admin/AdminFormingMachineMonitoringItemList.vue'),
+          meta: {
+            breadcrumb: ['監控項目']
+          }
+        },
       ]
     },
 

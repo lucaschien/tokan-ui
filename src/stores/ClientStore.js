@@ -98,8 +98,6 @@ export const useClientStore = defineStore('ClientStore', {
     checkNowShift() {
       const nowHourse = new Number(moment().format('HH'), 10);
       const nowMinute = new Number(moment().format('mm'), 10);
-      // console.log('nowHourse', nowHourse);
-      // console.log('nowMinute', nowMinute);
 
       // 轉換為毫秒 8小時 * 60分 * 60秒 * 1000毫秒
       const nowM = (nowHourse * 60 + nowMinute) * 60 * 1000;
@@ -107,18 +105,11 @@ export const useClientStore = defineStore('ClientStore', {
       const M08 = 8 * 60 * 60 * 1000; // 08:00 毫秒
       const M16 = 16 * 60 * 60 * 1000; // 08:00 毫秒
       const M24 = 24 * 60 * 60 * 1000; // 08:00 毫秒
-      // console.log('nowM', nowM)
-      // console.log('M00', M00)
-      // console.log('M08', M08)
-      // console.log('M16', M16)
 
       const isMORNING = (nowM >= M08) && (nowM <= M16)
       const isAFTERNOON = (nowM >= M16) && (nowM <= M24)
       const isNIGHT = (nowM >= M00) && (nowM <= M08)
-      // console.log('isMORNING', isMORNING)
-      // console.log('isAFTERNOON', isAFTERNOON)
-      // console.log('isNIGHT', isNIGHT)
-      // console.log('------------------')
+
       if (isMORNING) {
         this.nowShift = 'MORNING'
       }
