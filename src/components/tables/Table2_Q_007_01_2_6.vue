@@ -12,18 +12,14 @@
 
     <div class="mb-5">
       <label class="form-label">檢查日期</label>
-      <input type="date" class="form-control"
+      <input type="date" class="form-control" style="width: 200px;"
         v-model="dataModel.productionDate">
     </div>
 
     <div class="mb-5">
       <label class="form-label">檢查時間<span class="fs-4 ms-2">(請輸入24小時制格式)</span></label>
       <div class="d-flex align-items-center">
-        <input type="text" class="form-control me-2" style="width:200px" 
-          v-model.trim="timeH" placeholder="時: 範例 00"> 
-        <span class="fs-3" >:</span>
-        <input type="text" class="form-control ms-2" style="width:200px" 
-          v-model.trim="timeM" placeholder="分: 範例 00">  
+        <TimesHHMM v-model="timeHM" style="width: 200px;"/>
       </div>
     </div>
     
@@ -76,6 +72,7 @@ import { api } from '@/common/api'
 import { useRoute } from 'vue-router'
 import { useRootStore } from '@/stores/root'
 import { useClientStore } from '@/stores/ClientStore'
+import TimesHHMM from '@/components/Client/TimesHHMM.vue'
 import moment from 'moment'
 
 const route = useRoute()
@@ -105,14 +102,12 @@ const dataModel = ref({
   goodPackagingLowerSeal: false, // 包裝下封口良好
   normalPackagingBagWidth: false, // 包裝袋寬幅正常
 });
-const timeH = ref(''); // 小時
-const timeM = ref(''); // 分鐘
+const timeHM = ref('');
 
 const canSaveBtn = computed(() => {
   if (
     !dataModel.value.productionDate ||
-    !timeH.value ||
-    !timeM.value
+    !timeHM.value
   ) {
     return false;
   } else {
@@ -126,7 +121,7 @@ async function updatePackagingBagInspection() {
   const path = VITE_API_DOMAIN + api.fmoldingMachine.updatePackagingBagInspection;
   let temp = dataModel.value;
   temp.productionDate = moment(temp.productionDate).format('YYYY-MM-DD') // 避免不同瀏覽器或裝置日期格式不同
-  temp.inspectionTime = timeH.value + ':' + timeM.value + ':00'; // 將秒數加回去
+  temp.inspectionTime = timeHM.value + ':00'; // 將秒數加回去
 
   const param = {
     "machineId": route.query.machineId,
@@ -163,8 +158,9 @@ async function getDetail() {
   const result = await ajax.post(path, param)
   if (ajax.checkErrorCode(result.errorCode)) {
     
-    timeH.value = result.data.inspectionTime.slice(0,2);
-    timeM.value = result.data.inspectionTime.slice(3,5);
+    const HH = result.data.inspectionTime.slice(0,2);
+    const MM = result.data.inspectionTime.slice(3,5);
+    timeHM.value = HH + ':' + MM;
 
     dataModel.value.shift = result.data.shift;
     dataModel.value.productionDate = result.data.productionDate;

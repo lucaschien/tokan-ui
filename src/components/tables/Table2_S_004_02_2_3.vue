@@ -1,7 +1,7 @@
 <template>
   <!-- 2-S-004-02-2.3成型機清潔檢查表 -->
   <div class="custom-tables-box Table2_S_004_02_2_3">
-    <p>2-S-004-02-2.3成型機清潔檢查表</p>
+    <p class="fs-3">2-S-004-02-2.3成型機清潔檢查表 <br><span >Bảng kiểm tra vệ sinh máy định hình</span></p>
     
     <div class="mb-3 row">
       <label class="form-label col-4">身份別:</label>

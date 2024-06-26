@@ -6,7 +6,7 @@
         <button type="button" class="btn btn-outline-secondary fs-5"
           @click="clientStore.getFormingMachinList()"><span class="fs-4 me-2">更新狀態</span><i class="fa fa-undo fs-4" aria-hidden="true"></i></button>
       </div>
-      <h3 class="mt-3">選擇成型機機號</h3>
+      <h3 class="mt-3">選擇成型機機號 <br><span>Chọn số hiệu máy định hình</span></h3>
       <div class="machine-list-box">
         <div v-for="item in formingMachineList" :key="'machine'+item.id"
           :class="['card m-2 p-3 align-items-center', {
@@ -35,7 +35,7 @@
         <button class="btn btn-outline-primary"
           @click="backChoiceMachine()">選擇其它機號</button>
       </div>
-      <h4 class="text-center mt-4 mb-4">輸入生產基本資料</h4>
+      <h4 class="text-center mt-4 mb-4">輸入生產基本資料 <br><span>Nhập thông tin sản xuất cơ bản</span></h4>
       <div class="container">
         <div class="row align-items-end mb-2">
           <div class="col-6">
@@ -59,7 +59,7 @@
         <template v-if="basicInfo.shift && !reUseBasicInfo">
           <div class="row mb-2">
             <div class="col-6">
-              <lable class="form-label">組長</lable>
+              <lable class="form-label">組長 <br><span>Tổ trưởng</span></lable>
               <select class="form-select" v-model="basicInfo.teamLeader">
                 <option value="">請選擇</option>
                 <option v-for="item in teamLeader" 
@@ -68,19 +68,19 @@
               </select>
             </div>
             <div class="col-6">
-              <lable class="form-label">生產人員</lable>
+              <lable class="form-label">生產人員 <br><sapn>Nhân viên làm việc</sapn></lable>
               <input class="form-control" type="text" v-model="basicInfo.productionPersonnel" disabled>
             </div>
           </div>
           <div class="row mb-2">
             <div class="col-6">
-              <lable class="form-label">杯身紙台車編號 xe giấy thân cốc</lable>
+              <lable class="form-label">杯身紙台車編號 <br>Số hiệu xe giấy thân cốc</lable>
               <InputScanBarcode
                 :code="basicInfo.cupPaperCartNumber"
                 :scanCallback="(val) => { basicInfo.cupPaperCartNumber = val }"/>
             </div>
             <div class="col-6">
-              <lable class="form-label">杯底紙編號 giấy đế cốc</lable>
+              <lable class="form-label">杯底紙編號 <br>Số hiệu giấy đế cốc</lable>
               <InputScanBarcode 
                 :code="basicInfo.bottomPaperNumber"
                 :scanCallback="(val) => { basicInfo.bottomPaperNumber = val }"/>
@@ -88,7 +88,7 @@
           </div>
           <div class="row mb-2">
             <div class="col-12">
-              <lable class="form-label">原紙種類</lable>
+              <lable class="form-label">原紙種類 <br><span>giấy thông thường / FSC</span></lable>
               <div class="row ps-1">
                 <div class="form-check col-2">
                   <input class="form-check-input" 

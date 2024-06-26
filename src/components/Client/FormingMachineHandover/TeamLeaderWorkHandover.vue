@@ -15,6 +15,7 @@
             <th>#</th>
             <th>班別</th>
             <th>生產日期</th>
+            <th>說明</th>
             <th width="100">操作</th>
           </tr>
         </thead>
@@ -23,13 +24,14 @@
             <td class="fs-1">{{index + 1}}</td>
             <td class="fs-3">{{ clientStore.shiftName[item.shift] }}</td>
             <td class="fs-3">{{ item.productionDate }}</td>
+            <td v-html="displayMemo(item.memo)"></td>
             <td>
               <button class="btn btn-outline-primary" @click="enterDetail(item)">
                 <i class="fa fa-pencil fs-2" aria-hidden="true"></i>
               </button>
             </td>
           </tr>
-          <tr v-if="listIsempty"><td class="pt-5 pb-5 text-center text-secondary" colspan="3">查無資料</td></tr>
+          <tr v-if="listIsempty"><td class="pt-5 pb-5 text-center text-secondary" colspan="5">查無資料</td></tr>
         </tbody>
       </table>
     </template>
@@ -126,7 +128,7 @@ function enterDetail(deatailData) {
 
 // 內頁資料 model
 const detailItem = ref(null);
-
+// 儲存
 async function saveTeamLeaderHandover() {
   const path = VITE_API_DOMAIN + api.fmoldingMachine.saveTeamLeaderHandover;
   const param = {
@@ -144,7 +146,11 @@ async function saveTeamLeaderHandover() {
   }
 }
 
-
+function displayMemo(memo) {
+  let temp = memo.replace(/\n/g, '<br>');
+  temp = temp.replace(/\s/g, '&nbsp;');
+  return temp 
+}
 
 
 

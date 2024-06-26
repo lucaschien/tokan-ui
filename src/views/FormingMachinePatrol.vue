@@ -15,8 +15,7 @@
     <h4 class="text-center mt-4 mb-4">巡查</h4>
     <div>
       <select class="form-select mb-4" v-if="!lookDetail"
-        v-model="choiceTable"
-        @change="changeWork()">
+        @change="changeWork($event)">
         <!-- SF170的成型機日報表使用: 2-M-011-13-1.4 SF-170成型機生產報表  -->
         <option v-if="nowFormingMachineInfo.provisionType === 'FORMING_SF170'" 
           value="2_M_011_13_1_4_SF_170">巡查未完成 - SF170成型日報表部分項目</option>
@@ -27,7 +26,7 @@
 
         <option value="2_Q_007_11_1_0">巡查未完成 - 紙杯破壞試驗檢查表</option>
         <option value="2_Q_007_01_2_6">巡查未完成 - 包裝膜檢查</option>
-        <option :value="null">巡查已完成</option>
+        <option :value="''" selected>巡查已完成</option>
       </select>
 
       <div class="mb-3">
@@ -111,7 +110,7 @@
           </tbody>
         </table>
 
-        <!-- 紙杯破壞試驗檢查表 列表 -->
+        <!-- 紙杯破壞試驗檢查表 列表 (注意陣列資料格式多包了一層陣列) -->
         <table class="table" v-if="choiceTable === '2_Q_007_11_1_0'">
           <thead>
             <tr>
@@ -124,25 +123,27 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item, i) in listData" :key="'2_Q_007_11_1_0' + i">
-              <td class="fs-1">1</td>
-              <td class="fs-3">{{ item[i]['productionDate'] }}</td>
-              <td class="fs-3">{{ clientStore.shiftName[item[i]['shift']] }}</td>
-              <td class="fs-4">{{ item[i]['teamLeader'] }}</td>
-              <td>
-                <div v-for="(jtem, j) in item" :key="'2_Q_007_11_1_0' + i + j">
-                  <template v-if="jtem.inspectionTime">
-                    {{ jtem.inspectionTime.slice(0,5) }}
-                  </template>
-                  {{ jtem.testResult }}
-                </div>
-              </td>
-              <td>
-                <button class="btn btn-outline-primary fs-2" @click="setDetailObj(item)">
-                  <i class="fa fa-pencil" aria-hidden="true"></i>
-                </button>
-              </td>
-            </tr>
+            <template v-if="listData.length">
+              <tr v-for="(item, i) in listData" :key="'2_Q_007_11_1_0' + i + item[i]['shift']">
+                <td class="fs-1">{{ i + 1 }}</td>
+                <td class="fs-3">{{ item[i]['productionDate'] }}</td>
+                <td class="fs-3">{{ clientStore.shiftName[item[i]['shift']] }}</td>
+                <td class="fs-4">{{ item[i]['teamLeader'] }}</td>
+                <td>
+                  <div v-for="(jtem, j) in item" :key="'2_Q_007_11_1_0' + i + j">
+                    <template v-if="jtem.inspectionTime">
+                      {{ jtem.inspectionTime.slice(0,5) }}
+                    </template>
+                    {{ jtem.testResult }}
+                  </div>
+                </td>
+                <td>
+                  <button class="btn btn-outline-primary fs-2" @click="setDetailObj(item)">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                  </button>
+                </td>
+              </tr>
+            </template>
             <tr v-if="listIsempty"><td class="pt-5 pb-5 text-center text-secondary" colspan="6">查無資料</td></tr>
           </tbody>
         </table>
@@ -252,7 +253,7 @@ const VITE_API_DOMAIN = import.meta.env.VITE_API_DOMAIN
 const nowMachineId = ref(null)
 const nowFormingMachineInfo = computed(() => clientStore.getNowFormingMachineInfo); // 當前成型機資料
 
-const choiceTable = ref(null)
+const choiceTable = ref('')
 const listData = ref([]) // 所有列表共用此變數
 const listIsempty = ref(false)
 const lookDetail = ref(false)
@@ -287,16 +288,18 @@ const canUseCreateBtn = computed(() => {
 });
 
 // 切換巡查下拉選單
-function changeWork() {
-  listData.value = []
+function changeWork(event) {
+  listData.value.splice(0)
   listIsempty.value = false
   lookDetail.value = false
   lookDetailItem.value = null
+  choiceTable.value = event.target.value;
 
   const param = {
     machineId: nowMachineId.value,
     productionDate: moment().format('YYYY-MM-DD'),
   }
+
   nextTick(() => {
     // 撈取SF170成型日報表部分項目
     if (choiceTable.value === '2_M_011_13_1_4_SF_170') {
@@ -319,6 +322,7 @@ function changeWork() {
 
 // 撈取SF170成型日報表部分項目
 async function get2_M_011_13_1_4_SF_170List(param) {
+  listData.value = []
   const path = VITE_API_DOMAIN + api.fmoldingMachine.getInspectionSF170MoldingMachineProductions;
   const result = await ajax.post(path, param)
   if (ajax.checkErrorCode(result.errorCode)) {

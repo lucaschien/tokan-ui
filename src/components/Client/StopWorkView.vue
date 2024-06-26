@@ -4,7 +4,7 @@
     <button class="choice-other-btn" 
       @click="props.closeCall(); router.push({name:'FormingMachine'})">選擇其它機號</button> 
     <button class="start-work-btn"
-      @click="reStartWork()">恢復生產</button> 
+      @click="reStartWork()">恢復生產 <span class="fs-4">Phục hồi sản xuất</span></button> 
   </div>
 </template>
 

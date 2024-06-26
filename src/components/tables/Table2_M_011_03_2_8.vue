@@ -29,15 +29,17 @@
       <label class="form-label col-4">生產時間:</label>
       <div class="col-8 d-flex align-items-center">
         <div>
-          <input class="form-control" type="text" v-model.trim="dataModel.productionTimeStart"
+          <TimesHHMM v-model="dataModel.productionTimeStart"/>
+          <!-- <input class="form-control" type="text" v-model.trim="dataModel.productionTimeStart"
             maxlength="5"
-            placeholder="範例:00:00">
+            placeholder="範例:00:00"> -->
         </div>
         <div class="ps-3 pe-3">~</div>
         <div>
-          <input class="form-control" type="text" v-model.trim="dataModel.productionTimeEnd"
+          <TimesHHMM v-model="dataModel.productionTimeEnd"/>
+          <!-- <input class="form-control" type="text" v-model.trim="dataModel.productionTimeEnd"
             maxlength="5"
-            placeholder="範例:00:00">
+            placeholder="範例:00:00"> -->
         </div>
       </div> 
     </div>
@@ -222,6 +224,7 @@ import { api } from '@/common/api'
 import { useRoute } from 'vue-router'
 import { useClientStore } from '@/stores/ClientStore'
 import moment from 'moment'
+import TimesHHMM from '@/components/Client/TimesHHMM.vue'
 
 const route = useRoute()
 const clientStore = useClientStore()
@@ -273,7 +276,7 @@ async function updateInspectionMoldingMachineProduction() {
   temp.productionDate = moment(temp.productionDate).format('YYYY-MM-DD') // 避免不同瀏覽器或裝置日期格式不同
   temp.productionTimeStart = temp.productionTimeStart + ':00'; // 將秒數加回去
   temp.productionTimeEnd = temp.productionTimeEnd + ':00'; // 將秒數加回去
-
+  console.log('temp >>> ', temp);
   const result = await ajax.post(path, temp)
   if (ajax.checkErrorCode(result.errorCode)) {
     popMsg('資料已送出')
@@ -296,8 +299,12 @@ async function getDetail() {
   if (ajax.checkErrorCode(result.errorCode)) {
     dataModel.value = result.data;
     // 將秒數長度截短程線
-    dataModel.value.productionTimeStart = dataModel.value.productionTimeStart.slice(0,5);
-    dataModel.value.productionTimeEnd = dataModel.value.productionTimeEnd.slice(0,5);
+    if (dataModel.value.productionTimeStart) {
+      dataModel.value.productionTimeStart = dataModel.value.productionTimeStart.slice(0,5);
+    }
+    if (dataModel.value.productionTimeEnd) {
+      dataModel.value.productionTimeEnd = dataModel.value.productionTimeEnd.slice(0,5);
+    }
   } else {
     popMsg(result.errorCode)
   }

@@ -1,7 +1,7 @@
 <template>
   <!-- 2-S-004-05-1.0 SF-170成型機清潔檢查表 -->
   <div class="custom-tables-box Table2_S_004_05_1_0_SF_170">
-    <p>2-S-004-05-1.0 SF-170成型機清潔檢查表</p>
+    <p class="fs-3">2-S-004-05-1.0 SF-170成型機清潔檢查表 <br><span>SF-170 bảng kiểm tra vệ sinh máy định hình</span></p>
 
     <div class="mb-3 row">
       <label class="form-label col-4">身份別:</label>

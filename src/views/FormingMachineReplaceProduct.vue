@@ -181,7 +181,8 @@
             <label class="form-label col-4">實際更換時間</label>
             <div class="col-8">
               <input class="form-control" type="date" v-model.trim="modifyREPLACE.actualChangeTime" />
-              <input class="form-control mt-2" type="text" placeholder="範例 00:00" v-model.trim="modifyREPLACE.actualChangeTime_Hm">
+              <TimesHHMM class="mt-2" v-model="modifyREPLACE.actualChangeTime_Hm"/>
+              <!-- <input class="form-control mt-2" type="text" placeholder="範例 00:00" v-model.trim="modifyREPLACE.actualChangeTime_Hm"> -->
             </div>
           </div>
           <div class="mb-3 row">
@@ -234,6 +235,7 @@ import { api } from '@/common/api'
 import { useClientStore } from '@/stores/ClientStore'
 import RouterBackBtn from '@/components/RouterBackBtn.vue'
 import InputScanBarcode from '@/components/InputScanBarcode.vue'
+import TimesHHMM from '@/components/Client/TimesHHMM.vue'
 import moment from 'moment';
 
 const popMsg = inject('popMsg')

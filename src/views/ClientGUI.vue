@@ -186,6 +186,14 @@
       </div>
     </div>
 
+    <div class="one-gui-box">
+      <h1 class="title">TimesHHMM.vue</h1>
+      <div>
+        <TimesHHMM 
+          v-model="testTimesHHMM"/>
+          testTimesHHMM:{{ testTimesHHMM }}
+      </div>
+    </div>
     
 
   </div>
@@ -195,6 +203,7 @@
 import { ref, inject } from 'vue'
 import { ajax } from '@/common/ajax'
 import InputScanBarcode from '@/components/InputScanBarcode.vue'
+import TimesHHMM from '@/components/Client/TimesHHMM.vue'
 
 // 測試環境變數
 const VITE_BACKEND_HOST = import.meta.env.VITE_BACKEND_HOST
@@ -221,6 +230,7 @@ const testAjax = async () => {
   console.log('result::', result);
 }
 
-
+// 測試 TimesHHMM.vue
+const testTimesHHMM = ref('12:00');
 
 </script>

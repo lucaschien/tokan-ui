@@ -189,7 +189,7 @@ const dataModel = ref({
   id: (route.query.id) ? route.query.id : null,
 
   productType: '', // 紙張類型
-  orderDate: '', // 開單日期
+  orderDate: moment().format('YYYY-MM-DD'), // 開單日期
   changeProvisionNo: '', // 包裝機編號(不在excel中)
   changeProvisionName: '', // 包裝機名稱(不在excel中)
   changeMethod: '', // 更換包裝機編號(在excel中)

@@ -22,8 +22,8 @@
           @click="gotoFormingMachinePicking()">領料<span class="fs-3">nhận nguyên liệu</span></a>
       </div>
       <div :class="['card m-2 align-items-center', { disabled: true }]">
-        <a href="javascript:;"
-          @click="gotoFormingMachineWaterLeakageAdjustment()">漏水調機</a>
+        <a href="javascript:;" class="flex-column"
+          @click="gotoFormingMachineWaterLeakageAdjustment()">漏水調機<span class="fs-3">Điều chỉnh máy khi rò nước</span></a>
       </div>
       <div :class="['card m-2 align-items-center', { disabled: false }]">
         <a href="javascript:;"
@@ -34,28 +34,28 @@
           @click="gotoFormingMachineReplaceProduct()">更換產品</a>
       </div>
       <div :class="['card m-2 align-items-center', { disabled: false }]">
-        <a href="javascript:;"
-          @click="confirmToBreak()">休息中</a>
+        <a href="javascript:;" class="flex-column"
+          @click="confirmToBreak()">休息中<span class="fs-3">Nghỉ giải lao</span></a>
       </div>
       <div :class="['card m-2 align-items-center', { disabled: false }]">
-        <a href="javascript:;"
-          @click="gotoFormingMachineClean()">機台清潔</a>
+        <a href="javascript:;" class="flex-column"
+          @click="gotoFormingMachineClean()">機台清潔<span class="fs-3">Vệ sinh máy</span></a>
       </div>
       <div :class="['card m-2 align-items-center', { disabled: false }]">
         <a href="javascript:;"
           @click="moldReplacement()">模具更換</a>
       </div>
       <div :class="['card m-2 align-items-center', { disabled: false }]">
-        <a href="javascript:;"
-          @click="shutdownAndRepair()">停機待修</a>
+        <a href="javascript:;" class="flex-column"
+          @click="shutdownAndRepair()">停機待修<span class="fs-3">Dừng máy chờ sửa chữa</span></a>
       </div>
       <div :class="['card m-2 align-items-center', { disabled: false }]">
-        <a href="javascript:;"
-          @click="gotoFormingMachineProductionInterruption()">生產中斷</a>
+        <a href="javascript:;" class="flex-column"
+          @click="gotoFormingMachineProductionInterruption()">生產中斷<span class="fs-3">Gián đoạn sản xuất</span></a>
       </div>
       <div :class="['card m-2 align-items-center', { disabled: false }]">
-        <a href="javascript:;"
-          @click="shutDown()">關機</a>
+        <a href="javascript:;" class="flex-column"
+          @click="shutDown()">關機<span class="fs-3">Tắt máy</span></a>
       </div>
     </div>
     <!-- 停止作業中的介面 -->

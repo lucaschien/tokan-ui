@@ -20,19 +20,21 @@
 
       <!-- 生產中畫面 -->
       <div class="row text-start mt-5">
-        <label class="form-label col-2">中斷原因</label>
-        <div class="row col-8 mb-4">
-          <div class="form-check col-3">
+        <label class="form-label col-12">中斷原因
+          <span class="fs-3">Lựa chọn hạng mục gián đoạn sản xuất</span>
+        </label>
+        <div class="row col-12 mb-4">
+          <div class="form-check col-12">
             <input class="form-check-input" type="radio" 
               name="reason" id="noSchedule" value="noSchedule"
               v-model="stopReason">
-            <label class="form-check-label" for="noSchedule">無排程</label>
+            <label class="form-check-label" for="noSchedule">無排程 <span class="fs-3">Không sắp xếp qui trình</span></label>
           </div>
-          <div class="form-check col-4">
+          <div class="form-check col-12">
             <input class="form-check-input" type="radio" 
               name="reason" id="noMaterials" value="noMaterials"
               v-model="stopReason">
-            <label class="form-check-label" for="noMaterials">原物料不足</label>
+            <label class="form-check-label" for="noMaterials">原物料不足 <span class="fs-3">Nguyên vật liệu không đủ</span></label>
           </div>
         </div>
         <button class="btn btn-primary w-100 mt-5" 
