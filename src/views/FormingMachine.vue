@@ -187,6 +187,7 @@ async function choiceMachine(item, gotNextCall = true) {
   }
   nowMachine.value = item
   basicInfo.value.machineId = item.id
+  basicInfo.value.provisionType = item.provisionType
   // basicInfo.value.shift = nowTimeShift.value // 班別
   step.value = 2
   // F5重整 gotNextCall 才會是 false (代表是在step3狀態下F5重整)
@@ -239,6 +240,7 @@ const basicInfo = ref({
   cupPaperCartNumber: '',  // 杯身紙台車編號
   bottomPaperNumber: '',   // 杯底紙編號
   paperType: '',           // FSC/一般原紙
+  provisionType: '',       // 機器類型
 })
 // 清除在此單元的基本資料
 function resetBasicInfo() {
@@ -250,6 +252,7 @@ function resetBasicInfo() {
   basicInfo.value.cupPaperCartNumber = ''
   basicInfo.value.bottomPaperNumber = ''
   basicInfo.value.paperType = ''
+  basicInfo.value.provisionType = ''
 }
 const canNotSnedProductionInfo = computed(() => {
   if (!basicInfo.value.shift) return false
@@ -258,6 +261,7 @@ const canNotSnedProductionInfo = computed(() => {
   if (!basicInfo.value.cupPaperCartNumber) return false
   if (!basicInfo.value.bottomPaperNumber) return false
   if (!basicInfo.value.paperType) return false
+  if (!basicInfo.value.provisionType) return false
   return true
 })
 // 新增一筆基本資料

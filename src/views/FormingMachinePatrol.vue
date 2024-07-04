@@ -14,7 +14,7 @@
     </div>
     <h4 class="text-center mt-4 mb-4">巡查</h4>
     <div>
-      <select class="form-select mb-4" v-if="!lookDetail"
+      <select class="form-select mb-4" v-show="!lookDetail"
         @change="changeWork($event)">
         <!-- SF170的成型機日報表使用: 2-M-011-13-1.4 SF-170成型機生產報表  -->
         <option v-if="nowFormingMachineInfo.provisionType === 'FORMING_SF170'" 
@@ -259,7 +259,7 @@ const listIsempty = ref(false)
 const lookDetail = ref(false)
 const lookDetailItem = ref(null)
 
-const createType = ref('MORNING') // 新增樣式下拉選單
+const createType = ref(clientStore.nowShift) // 新增樣式下拉選單
 
 // 是否可以使用新增按鈕
 const canUseCreateBtn = computed(() => {
@@ -293,19 +293,22 @@ function changeWork(event) {
   listIsempty.value = false
   lookDetail.value = false
   lookDetailItem.value = null
-  choiceTable.value = event.target.value;
+  if (event) {
+    choiceTable.value = event.target.value;
+  }
 
   const param = {
     machineId: nowMachineId.value,
     productionDate: moment().format('YYYY-MM-DD'),
   }
 
+  // 撈取列表資料 依照不同下拉呼叫不同的函式
   nextTick(() => {
     // 撈取SF170成型日報表部分項目
     if (choiceTable.value === '2_M_011_13_1_4_SF_170') {
       get2_M_011_13_1_4_SF_170List(param);
     }
-    // 撈取列表資料 依照不同下拉呼叫不同的函式
+    // 撈取一般的成型日報表部分項目
     if (choiceTable.value === '2_M_011_03_2_8') {
       get2_M_011_03_2_8List(param)
     }

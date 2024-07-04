@@ -54,7 +54,8 @@
           <div class="col-8 d-flex">
             <div class="form-check">
               <input class="form-check-input" v-model="item.status"
-                type="radio" :name="item.id" value="Y" :id="'Y'+item.id">
+                type="radio" :name="item.id" value="Y" :id="'Y'+item.id"
+                @change="item.data = ''">
               <label class="form-check-label" :for="'Y'+item.id">正常</label>
             </div>
             <input class="form-control ms-2 me-3" v-model="item.data"
@@ -62,12 +63,14 @@
               style="width: 25%;" type="text">
             <div class="form-check me-3">
               <input class="form-check-input" v-model="item.status"
-                type="radio" :name="item.id" value="N" :id="'N'+item.id">
+                type="radio" :name="item.id" value="N" :id="'N'+item.id"
+                @change="item.data = ''">
               <label class="form-check-label" :for="'N'+item.id">異常</label>
             </div>
             <div class="form-check">
               <input class="form-check-input" v-model="item.status"
-                type="radio" :name="item.id" value="NA" :id="'NA'+item.id">
+                type="radio" :name="item.id" value="NA" :id="'NA'+item.id"
+                @change="item.data = ''">
               <label class="form-check-label" :for="'NA'+item.id">NA</label>
             </div>
           </div>
@@ -100,7 +103,7 @@ const listData = ref([])
 const listIsempty = ref(false)
 const lookDetail = ref(false)
 
-const shiftType = ref('MORNING')
+const shiftType = ref(clientStore.nowShift)
 
 function backList() {
   detailItem.value = null;
@@ -141,7 +144,6 @@ function enterDetail(item) {
   detailItem.value = item;
   getMonitoringItems();
   lookDetail.value = true;
-  
 }
 
 // 取得監控項目清單
@@ -150,11 +152,23 @@ async function getMonitoringItems () {
   const path = VITE_API_DOMAIN + formatPath(api.fmoldingMachine.searchMonitoringItems, nowFormingMachineInfo.value.provisionType);
   const result = await ajax.get(path);
   if (ajax.checkErrorCode(result.errorCode)) {
+    const oldData = JSON.parse(detailItem.value.monitoringItems);
     monitoringItems.value = result.data;
     monitoringItems.value.forEach((item) => {
+      // 預設值
       item.status = 'NA';
       item.data = '';
+      // 在跟列表資料比對出上次修改的值
+      oldData.forEach((jtem) => {
+        if (item.itemName === jtem.itemName) {
+          item.status = jtem.status;
+          item.data = jtem.data;
+        }
+      });
     });
+    
+    
+    
   } else {
     popMsg('取得監控項目清單失敗');
   }

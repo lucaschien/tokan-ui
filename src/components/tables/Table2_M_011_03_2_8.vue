@@ -43,12 +43,12 @@
         </div>
       </div> 
     </div>
-    <!-- <div class="mb-3 row">
+    <div class="mb-3 row">
       <label class="form-label col-4">成型速度:</label>
       <div class="col-8">
-        <input class="form-control" type="number" disabled v-model.trim="dataModel.formingSpeed">
+        <input class="form-control" type="number" v-model.trim="dataModel.formingSpeed">
       </div>
-    </div> -->
+    </div>
 
     <div class="mb-3 row">
       <label class="form-label col-4">杯內檢查機電腦:</label>
@@ -272,11 +272,11 @@ const canSaveBtn = computed(() => {
 // 儲存一般成型機日報表部分項目 (新增與修改)
 async function updateInspectionMoldingMachineProduction() {
   const path = VITE_API_DOMAIN + api.fmoldingMachine.updateInspectionMoldingMachineProduction;
-  let temp = dataModel.value;
+  let temp = JSON.parse(JSON.stringify(dataModel.value));
   temp.productionDate = moment(temp.productionDate).format('YYYY-MM-DD') // 避免不同瀏覽器或裝置日期格式不同
   temp.productionTimeStart = temp.productionTimeStart + ':00'; // 將秒數加回去
   temp.productionTimeEnd = temp.productionTimeEnd + ':00'; // 將秒數加回去
-  console.log('temp >>> ', temp);
+
   const result = await ajax.post(path, temp)
   if (ajax.checkErrorCode(result.errorCode)) {
     popMsg('資料已送出')

@@ -29,59 +29,26 @@
     <TeamLeaderWorkHandover v-if="workingType === 'TeamLeaderWorkHandover'"/>
     <!-- 工作交接完成 -->
     <div class="pt-3 text-center" v-if="!workingType">
-      <p class="fs-4">工作交接均已填寫完畢點擊切換機器狀態</p>
-      <button class="btn btn-primary p-5 fs-1 mb-5" 
-        @click="triggerCompleted()">工作交接完成</button>
-    </div>
-
-
-    <div class="custom-tables-box" v-if="false">
-      <div class="h3 mb-3">監控項目確認</div>
-      <div class="mb-5">
-        <div class="mb-3 row">
-          <label class="form-label col-4">油視流器是否正常</label>
-          <div class="col-8 d-flex">
-            <div class="form-check me-3">
-              <input class="form-check-input" type="radio" name="sample1" id="test1">
-              <label class="form-check-label" for="test1">正常</label>
-            </div>
-            <div class="form-check me-3">
-              <input class="form-check-input" type="radio" name="sample1" id="test2">
-              <label class="form-check-label" for="test2">異常</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="sample1" id="test3">
-              <label class="form-check-label" for="test3">NA</label>
-            </div>
-          </div>
-        </div>
-        <div class="mb-3 row">
-          <label class="form-label col-4">油幫浦壓力是否正常</label>
-          <div class="col-8 d-flex">
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="sample2" id="test4">
-              <label class="form-check-label" for="test4">正常</label>
-            </div>
-            <input class="form-control ms-2 me-3" style="width: 25%;" type="text">
-            <div class="form-check me-3">
-              <input class="form-check-input" type="radio" name="sample2" id="test5">
-              <label class="form-check-label" for="test5">異常</label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="sample2" id="test6">
-              <label class="form-check-label" for="test6">NA</label>
-            </div>
-          </div>
+      <div class="row mb-3">
+        <label class="form-label col-4">生產日期</label>
+        <div class="col-8 d-flex">
+          <input class="form-control" type="date" v-model="complateModel.date"/>
         </div>
       </div>
-
-      <div class="h3 mb-3">組長工作交接事項</div>
-      <textarea class="form-control mb-3" 
-        rows="4"
-        placeholder="請輸入"></textarea>
-
-      <button class="btn btn-primary w-100 mt-4" 
-        @click="popMsg('資料已送出')">送出</button>
+      <div class="row mb-3">
+        <label class="form-label col-4">班別</label>
+        <div class="col-8 d-flex">
+          <select class="form-select" v-model="complateModel.shift">
+            <option value="">請選擇</option>
+            <option v-for="(value, key) in clientStore.shiftName"
+              :value="key" 
+              :key="'shift'+key">{{ value }}</option>
+          </select>
+        </div>
+      </div>
+      <p class="fs-4">工作交接均已填寫完畢點擊切換機器狀態</p>
+      <button class="btn btn-primary p-5 fs-1 mb-5" :disabled="!complateModel.date || !complateModel.shift"
+        @click="triggerCompleted()">工作交接完成</button>
     </div>
 
   </div>
@@ -94,33 +61,69 @@ import { useClientStore } from '@/stores/ClientStore'
 import RouterBackBtn from '@/components/RouterBackBtn.vue'
 import MonitoringItems from '@/components/Client/FormingMachineHandover/MonitoringItems.vue'
 import TeamLeaderWorkHandover from '@/components/Client/FormingMachineHandover/TeamLeaderWorkHandover.vue'
+import { ajax } from '@/common/ajax'
+import { api } from '@/common/api'
 
 const route = useRoute()
 const router = useRouter()
 const clientStore = useClientStore()
 const popMsg = inject('popMsg')
+const VITE_API_DOMAIN = import.meta.env.VITE_API_DOMAIN
 
 const nowMachineId = ref(null);
 const nowFormingMachineInfo = computed(() => clientStore.getNowFormingMachineInfo); // 當前成型機資料
 
 const workingType = ref(null);
+const complateModel = ref({
+  date: '',
+  shift: clientStore.nowShift
+})
 
-function triggerCompleted() {
+async function triggerCompleted() {
+  const path = VITE_API_DOMAIN + api.fmoldingMachine.completeHandOver;
   const param = {
-    id: nowMachineId.value, 
-    buttonType: 'ENABLE', 
-    message: '生產中', 
-    provisionStatus: 'IN_PRODUCTION'
+    machineId: nowMachineId.value,
+    shift: complateModel.value.shift,
+    productionDate: complateModel.value.date,
+    moldingMachineType: nowFormingMachineInfo.value.provisionType
   };
-  clientStore.launchProduction(param, () => {
-    popMsg('工作交接完成');
-    router.push({ 
-      name: 'FormingMachineFnEnter',
-      query: {
-        machineId: nowMachineId.value
-      } 
-    })
-  });
+  const result = await ajax.post(path, param)
+  if (ajax.checkErrorCode(result.errorCode)) {
+    // 做細部的錯誤呈現
+    if (!result.data.isValid) {
+      const errorMsg = [];
+      result.data.validateResults.forEach((item, i) => {
+        if (item.errorReason) {
+          errorMsg.push(`錯誤${i+1}: ${item.errorReason}<br>`);
+        }
+        if (item.errorColumns.length) {
+          let temp = `錯誤${i+1}請檢查這些欄位資料: ${item.errorColumns}<br>`;
+          errorMsg.push(temp)
+        }
+      });
+      popMsg(errorMsg.join(' '));
+      return
+    }
+
+    // 沒有錯走以下程序
+    const param = {
+      id: nowMachineId.value, 
+      buttonType: 'ENABLE', 
+      message: '生產中', 
+      provisionStatus: 'IN_PRODUCTION'
+    };
+    clientStore.launchProduction(param, () => {
+      popMsg('工作交接完成');
+      router.push({ 
+        name: 'FormingMachineFnEnter',
+        query: {
+          machineId: nowMachineId.value
+        } 
+      })
+    });
+  } else {
+    popMsg(result.errorCode)
+  }
 }
 
 onMounted(() => {

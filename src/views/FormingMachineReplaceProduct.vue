@@ -36,15 +36,17 @@
         <!-- 更換產品選項 -->
         <div class="custom-tables-box" v-if="displayStep === 1">
           <div class="mb-3 row">
-            <label class="form-label col-4">品名</label>
+            <label class="form-label col-4">產品編號</label>
             <div class="col-8">
-              <input type="text" class="form-control" v-model.trim="modifyFROM.productName">
+              <span class="fs-3">{{ choiceProductChangeCheck.changeProductNo }}</span>
             </div>
           </div>
           <div class="mb-3 row">
-            <label class="form-label col-4">成品規格</label>
+            <!-- <label class="form-label col-4">成品規格</label> -->
+            <label class="form-label col-4">包裝數</label>
             <div class="col-8">
-              <input type="text" class="form-control" v-model.trim="modifyFROM.specification">
+              <span class="fs-3">{{ choiceProductChangeCheck.changePackageQty }} P</span>
+              <!-- <input type="text" class="form-control" v-model.trim="modifyFROM.specification"> -->
             </div>
           </div>
           <div class="mb-3 row">
@@ -73,7 +75,7 @@
           </div>
 
           <button class="btn btn-primary w-100 mt-4" 
-            :disabled="!modifyFROM.productName || !modifyFROM.specification || !modifyFROM.paperType || !modifyFROM.cupPaperCartNumber || !modifyFROM.bottomPaperNumber"
+            :disabled="!modifyFROM.paperType || !modifyFROM.cupPaperCartNumber || !modifyFROM.bottomPaperNumber"
             @click="saveModifyFROM()">送出</button>
         </div>
 
@@ -292,17 +294,21 @@ const modifyFROM = ref({
   shift: clientStore.nowShift,
   productionDate: moment().format('YYYY-MM-DD'),
   materialCollectionTime: moment().format('HH:mm:ss'),
-  productName: '', // 品名
-  specification: '', // 成品規格
+  //productName: '', // 品名
+  //specification: '', // 成品規格
   paperType: '', // 原紙種類
   cupPaperCartNumber: '', // 杯身紙台車編號
   bottomPaperNumber: '', // 杯底紙編號
   changeType: 'CHANGE', 
+  provisionType: nowFormingMachineInfo.value.provisionType,
+  // siliconeLubricant: 0,
+  // whiteOil: 0,
 });
 
-// 儲存更換產品選項
+// 儲存更換產品選項 (步驟1)
 async function saveModifyFROM() {
   const path = VITE_API_DOMAIN + api.fmoldingMachine.saveModifyFROM;
+  modifyFROM.value.provisionType = nowFormingMachineInfo.value.provisionType;
   const result = await ajax.post(path, modifyFROM.value)
   if (ajax.checkErrorCode(result.errorCode)) {
     popMsg('資料已送出');
@@ -333,7 +339,7 @@ const modifyREPLACE = ref({
   managerConfirm: '',
 });
 
-// 送出 檢查更換產品確認單
+// 送出 檢查更換產品確認單 (步驟2)
 async function sendCheckerProductChangeCheck() {
   const path = VITE_API_DOMAIN + api.fmoldingMachine.checkerProductChangeCheck;
   const param = JSON.parse(JSON.stringify(modifyREPLACE.value));
@@ -350,7 +356,7 @@ async function sendCheckerProductChangeCheck() {
   }
 }
 
-// 完成
+// 完成 (步驟3)
 function triggerCompleted() {
   openConfirm('確定完成更換產品?', () => {
     const param = {

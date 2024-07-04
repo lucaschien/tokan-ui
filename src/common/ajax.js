@@ -1,6 +1,7 @@
 import axios from 'axios'
 import router from '@/router/index'
 import cookies from 'js-cookie'
+import { popMsg } from './alert';
 
 const CancelToken = axios.CancelToken;
 export let cancelAxios = [];
@@ -92,6 +93,9 @@ function AjaxDefine() {
           callback();
         }
       } */
+      if (error.response && error.response.status === 400) {
+        popMsg(error.response.data.errorDesc);
+      }
       if (error.response && error.response.status === 401) {
         const text = '尚未授權或已登出，請重新登入';
         const callback = () => {

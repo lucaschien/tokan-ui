@@ -119,7 +119,7 @@ const canSaveBtn = computed(() => {
 // 儲存包裝膜檢查 (新增與修改)
 async function updatePackagingBagInspection() {
   const path = VITE_API_DOMAIN + api.fmoldingMachine.updatePackagingBagInspection;
-  let temp = dataModel.value;
+  let temp = JSON.parse(JSON.stringify(dataModel.value));
   temp.productionDate = moment(temp.productionDate).format('YYYY-MM-DD') // 避免不同瀏覽器或裝置日期格式不同
   temp.inspectionTime = timeHM.value + ':00'; // 將秒數加回去
 

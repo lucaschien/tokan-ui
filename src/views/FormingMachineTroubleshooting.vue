@@ -171,7 +171,7 @@ const listData = ref([])
 const listIsempty = ref(false)
 const lookDetail = ref(false)
 
-const createType = ref('MORNING') // 新增樣式下拉選單
+const createType = ref(clientStore.nowShift) // 新增樣式下拉選單
 
 function backList() {
   dataModel.value = JSON.parse(JSON.stringify(defaultDataModel));

@@ -153,8 +153,6 @@ function displayMemo(memo) {
 }
 
 
-
-
 onMounted(() => {
   nowMachineId.value = route.query.machineId;
   searchTeamLeaderList();

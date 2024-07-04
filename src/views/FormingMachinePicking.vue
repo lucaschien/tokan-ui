@@ -106,6 +106,7 @@ const dataModel = ref({
   siliconeLubricant: null, // 矽利康
   whiteOil: null, // 白油
   changeType: 'ALONG_TAKE',
+  provisionType: nowFormingMachineInfo.value.provisionType,
 });
 
 const canSave = computed(() => {
@@ -129,6 +130,7 @@ async function saveMoldingMachineMaterialRecord() {
   dataModel.value.bottomPaperNumber = (dataModel.value.bottomPaperNumber) ? dataModel.value.bottomPaperNumber : null;
   dataModel.value.siliconeLubricant = (dataModel.value.siliconeLubricant) ? dataModel.value.siliconeLubricant : null;
   dataModel.value.whiteOil = (dataModel.value.whiteOil) ? dataModel.value.whiteOil : null;
+  dataModel.value.provisionType = nowFormingMachineInfo.value.provisionType;
 
   const path = VITE_API_DOMAIN + api.fmoldingMachine.saveMoldingMachineMaterialRecord;
   const param = dataModel.value;

@@ -72,6 +72,7 @@ export const api = {
     saveMonitorItem: '/tokan/api/v1/moldingMachine/{0}', // 儲存監控項目 {0} 機器類型對應的 api path 'updateMonitorItem', 'updateSF170MonitorItem'
     teamLeaderList: '/tokan/api/v1/moldingMachine/getHandOverMemos/{0}', // 組長工作交接列表 {0} machineId 
     saveTeamLeaderHandover: '/tokan/api/v1/moldingMachine/saveHandOverMemo', // 儲存 組長工作交接
+    completeHandOver: '/tokan/api/v1/moldingMachine/completeHandOver', // 工作交接完成
   },
 
   // B端平台用

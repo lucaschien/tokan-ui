@@ -1,6 +1,6 @@
 <template>
   <div class="InputScanBarcode">
-    <input type="text" class="form-control me-2" v-model="barcodeValue"
+    <input type="text" class="form-control me-2" v-model.trim="barcodeValue"
        @change="changeBarcodeValue()">
     <button class="btn btn-primary" 
       @click="startScan()">
@@ -48,8 +48,8 @@ const stopScan = () => {
 }
 // 掃描成功後的回呼函式
 const successCallback = (decodedText) => {
-  barcodeValue.value = decodedText
-  props.scanCallback(decodedText)
+  barcodeValue.value = decodedText.trim()
+  props.scanCallback(decodedText.trim())
   stopScan() // 停止相機
 }
 

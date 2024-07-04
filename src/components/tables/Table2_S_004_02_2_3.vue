@@ -311,6 +311,7 @@ function calcWeekRange() {
   const month = today.format('MM');
   const totalDay = moment().daysInMonth(); // 本月總共天數
   const weeks = Math.floor(totalDay / 7); // 完整週數
+  let firstDay = ''; // 該週第一天的日期
 
   // 將天數分成週
   const range = {
@@ -319,32 +320,40 @@ function calcWeekRange() {
   };
   // 處理單週
   for (let i = 1; i <= weeks; i++) {
+    firstDay = (i*7 - 6);
+    firstDay = (firstDay <= 9) ? `0${firstDay}` : firstDay; // 小於9補0
     range.WEEKLY.push({
       s: i*7 - 6,
       e: i*7,
-      firstDay: year + '-' + month + '-' + (i*7 - 6)
+      firstDay: year + '-' + month + '-' + firstDay
     })
   }
   // 單週 剩餘天數
+  firstDay = (weeks * 7 + 1);
+  firstDay = (firstDay <= 9) ? `0${firstDay}` : firstDay; // 小於9補0
   range.WEEKLY.push({
     s: weeks * 7 + 1,
     e: totalDay,
-    firstDay: year + '-' + month + '-' + (weeks * 7 + 1)
+    firstDay: year + '-' + month + '-' + firstDay
   });
 
   // 處理雙週
   for (let i = 1; i <= weeks/2; i++) {
+    firstDay = (i*14 - 13);
+    firstDay = (firstDay <= 9) ? `0${firstDay}` : firstDay; // 小於9補0
     range.BI_WEEKLY.push({
       s: i*14 - 13,
       e: i*14,
-      firstDay: year + '-' + month + '-' + (i*14 - 13)
+      firstDay: year + '-' + month + '-' + firstDay
     })
   }
   // 雙週 剩餘天數
+  firstDay = ((weeks/2) * 14 + 1);
+  firstDay = (firstDay <= 9) ? `0${firstDay}` : firstDay; // 小於9補0
   range.BI_WEEKLY.push({
     s: (weeks/2) * 14 + 1,
     e: totalDay,
-    firstDay: year + '-' + month + '-' + ((weeks/2) * 14 + 1)
+    firstDay: year + '-' + month + '-' + firstDay
   });
 
   return range;
