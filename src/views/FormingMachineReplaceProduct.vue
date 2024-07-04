@@ -139,9 +139,9 @@
                 <input type="checkbox" class="form-check-input" v-model="modifyREPLACE.remainingConfirm" />
                 <label class="form-check-label">更換產品前次紙杯餘料
                   {{ choiceProductChangeCheck.paperCupRemaining }} pcs
-                  需於本次生產進行重包，數量確認:
-                  <input type="text" class="form-control d-inline-flex" style="width: 200px"
-                    v-model="modifyREPLACE.repackageQty"/> pcs
+                  需於本次生產進行重包，數量確認:{{ choiceProductChangeCheck.repackageQty }} pcs
+                  <!-- <input type="text" class="form-control d-inline-flex" style="width: 200px"
+                    v-model="modifyREPLACE.repackageQty"/> pcs -->
                 </label>
                 
               </div>

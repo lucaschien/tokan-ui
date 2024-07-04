@@ -9,50 +9,67 @@
       />
     </div>
     <div class="card-box">
-      <div :class="['card m-2 align-items-center', { disabled: false }]">
+      <!-- 巡查 -->
+      <div :class="['card m-2 align-items-center', { disabled: false }]"
+        v-if="rootStore.loginUserInfo.roleCode !== 'MOLDING_WORKER'">
         <a href="javascript:;"
           @click="gotoFormingMachinePatrol()">巡查</a>
       </div>
-      <div :class="['card m-2 align-items-center', { disabled: false }]">
+      <!-- 工作交接 -->
+      <div :class="['card m-2 align-items-center', { disabled: false }]"
+        v-if="rootStore.loginUserInfo.roleCode !== 'MOLDING_WORKER'">
         <a href="javascript:;"
           @click="gotoFormingMachineHandover()">工作交接</a>
       </div>
+      <!-- 領料 -->
       <div :class="['card m-2 align-items-center', { disabled: false }]">
         <a href="javascript:;" class="flex-column"
           @click="gotoFormingMachinePicking()">領料<span class="fs-3">nhận nguyên liệu</span></a>
       </div>
+      <!-- 漏水調機 -->
       <div :class="['card m-2 align-items-center', { disabled: true }]">
         <a href="javascript:;" class="flex-column"
           @click="gotoFormingMachineWaterLeakageAdjustment()">漏水調機<span class="fs-3">Điều chỉnh máy khi rò nước</span></a>
       </div>
-      <div :class="['card m-2 align-items-center', { disabled: false }]">
+      <!-- 故障排除 -->
+      <div :class="['card m-2 align-items-center', { disabled: false }]"
+        v-if="rootStore.loginUserInfo.roleCode !== 'MOLDING_WORKER'">
         <a href="javascript:;"
           @click="gotoFormingMachineTroubleshooting()">故障排除</a>
       </div>
-      <div :class="['card m-2 align-items-center', { disabled: false }]">
+      <!-- 更換產品 -->
+      <div :class="['card m-2 align-items-center', { disabled: false }]"
+        v-if="rootStore.loginUserInfo.roleCode !== 'MOLDING_WORKER'">
         <a href="javascript:;"
           @click="gotoFormingMachineReplaceProduct()">更換產品</a>
       </div>
+      <!-- 休息中 -->
       <div :class="['card m-2 align-items-center', { disabled: false }]">
         <a href="javascript:;" class="flex-column"
           @click="confirmToBreak()">休息中<span class="fs-3">Nghỉ giải lao</span></a>
       </div>
+      <!-- 機台清潔 -->
       <div :class="['card m-2 align-items-center', { disabled: false }]">
         <a href="javascript:;" class="flex-column"
           @click="gotoFormingMachineClean()">機台清潔<span class="fs-3">Vệ sinh máy</span></a>
       </div>
-      <div :class="['card m-2 align-items-center', { disabled: false }]">
+      <!-- 模具更換 -->
+      <div :class="['card m-2 align-items-center', { disabled: false }]"
+        v-if="rootStore.loginUserInfo.roleCode !== 'MOLDING_WORKER'">
         <a href="javascript:;"
           @click="moldReplacement()">模具更換</a>
       </div>
+      <!-- 停機待修 -->
       <div :class="['card m-2 align-items-center', { disabled: false }]">
         <a href="javascript:;" class="flex-column"
           @click="shutdownAndRepair()">停機待修<span class="fs-3">Dừng máy chờ sửa chữa</span></a>
       </div>
+      <!-- 生產中斷 -->
       <div :class="['card m-2 align-items-center', { disabled: false }]">
         <a href="javascript:;" class="flex-column"
           @click="gotoFormingMachineProductionInterruption()">生產中斷<span class="fs-3">Gián đoạn sản xuất</span></a>
       </div>
+      <!-- 關機 -->
       <div :class="['card m-2 align-items-center', { disabled: false }]">
         <a href="javascript:;" class="flex-column"
           @click="shutDown()">關機<span class="fs-3">Tắt máy</span></a>
@@ -67,6 +84,7 @@
 <script setup>
 import { ref, onMounted, inject, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useRootStore } from '@/stores/root'
 import { useClientStore } from '@/stores/ClientStore'
 import { ajax } from '@/common/ajax'
 import { api } from '@/common/api'
@@ -77,6 +95,7 @@ const popMsg = inject('popMsg')
 const openConfirm = inject('openConfirm')
 const route = useRoute()
 const router = useRouter()
+const rootStore = useRootStore()
 const clientStore = useClientStore()
 const VITE_API_DOMAIN = import.meta.env.VITE_API_DOMAIN
 

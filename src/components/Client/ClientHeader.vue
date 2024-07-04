@@ -17,7 +17,14 @@
         <nav :class="[{ show: showMenu }]">
           <a class="me-1 logout-btn"
             @click="rootStore.logout()"><i class="fa fa-sign-out" aria-hidden="true"></i>登出</a>
-          <RouterLink class="logout me-4"
+          
+          <!-- 作業員不提供平台選擇 -->
+          <RouterLink v-if="
+              rootStore.loginUserInfo.roleCode !== 'MOLDING_WORKER' && 
+              rootStore.loginUserInfo.roleCode !== 'CUTTING_WORKER' &&
+              rootStore.loginUserInfo.roleCode !== 'PACKAGING_WORKER'
+            "
+            class="logout me-4"
             :to="{ name: 'AppHome' }">回平台選擇</RouterLink>
 
           <RouterLink 

@@ -21,11 +21,12 @@ export const useRootStore = defineStore('RootStore', {
     getLoginUserInfo: (state) => state.loginUserInfo,
   },
   actions: {
-    async getLoginUserInfoData() {
+    async getLoginUserInfoData(callback = () => { }) {
       const path = VITE_API_DOMAIN + api.app.loginUserInfo;
       const result = await ajax.get(path)
       if (ajax.checkErrorCode(result.errorCode)) {
         this.loginUserInfo = result.data
+        callback()
       } else {
         popMsg('撈取登入者資訊失敗' + result.errorCode)
       }

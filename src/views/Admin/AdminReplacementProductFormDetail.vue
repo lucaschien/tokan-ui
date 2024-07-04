@@ -110,11 +110,11 @@
                 <input type="text" class="form-control d-inline-flex" style="width: 200px"
                   v-model="dataModel.paperCupRemaining"/> pcs
               </div>
-              <!-- <div class="mt-1 mb-1">  
+              <div class="mt-1 mb-1">  
                 需於本次生產進行重包，數量確認:
                 <input type="text" class="form-control d-inline-flex" style="width: 200px"
                   v-model="dataModel.repackageQty"/> pcs
-              </div> -->
+              </div>
               <div class="mt-1">更換產品前次包裝膜餘料
                 <input type="text" class="form-control d-inline-flex" style="width: 200px"
                   v-model="dataModel.filmRemaining"/> 捲，需於本次生產使用
