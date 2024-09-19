@@ -1,3 +1,19 @@
 541257485749
 lucas
 Aa1234567890
+
+----------------
+
+lucas.chien-at-001910775745
+
+vim ~/.ssh/config
+
+i
+exc
+:x
+
+  User APKAQA4PED7AZOZ7FZOD   # mobii 
+#  User APKAX4BLVZW2V7NAERA2  # tokan 
+
+----------------
+
